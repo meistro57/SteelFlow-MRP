@@ -49,13 +49,13 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Microsoft 365 OAuth Integration
 - [x] UI layout & Navigation Shell
 
-### **Phase 2: BOM & Engineering** (In Progress)
+### **Phase 2: BOM & Engineering** (Complete)
 - [x] Weight & Pricing Services
 - [x] KISS/XSR Import Skeleton
 - [x] Reference Data Management
 - [x] KISS Parser Implementation
-- [ ] BOM Extension Logic
-- [ ] Drawing Revision Tracking
+- [x] BOM Extension Logic
+- [x] Drawing Revision Tracking
 
 ### **Phase 3: Procurement & Inventory**
 - [ ] Purchase Order Workflow
