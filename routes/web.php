@@ -29,4 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
     Route::get('/reports/project/{project}/bom', [ReportController::class, 'projectBom'])->name('reports.bom');
+
+    // Settings Routes
+    Route::post('/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
 });

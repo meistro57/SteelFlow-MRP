@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'azure_id',
+        'settings',
     ];
 
     /**
@@ -44,6 +45,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'settings' => 'array',
         ];
     }
 }
