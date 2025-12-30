@@ -133,7 +133,21 @@ app/
 resources/
 ├── js/               # Vue pages that feel like magic
 └── views/            # Report templates for high-quality PDFs
+docs/
+└── ESTIMATING_PLAN.md # Roadmap for the estimating module
 ```
+
+---
+
+## 🤝 Community & Legacy
+
+### **Open Source**
+- 📄 [LICENSE](LICENSE) (MIT)
+- 🛠️ [CONTRIBUTING.md](CONTRIBUTING.md)
+- 🌈 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
+### **Legacy Foundation**
+This project is built with deep respect for the original FabTrol system. Business logic for weights and labor formulas have been reverse-engineered from `S:\Fabtrol\` to ensure 100% data fidelity during migration.
 
 ---
 *Built with ❤️ for the Steel Industry.*
