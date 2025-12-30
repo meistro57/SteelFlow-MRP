@@ -85,6 +85,13 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Dashboard (Project overview, Production metrics)
 - [x] Polish (Performance, Error handling)
 
+### **Phase 8: Estimating Module** (Planned)
+- [ ] Bid & Revision Management
+- [ ] Material Takeoff Engine
+- [ ] Labor Standard Application
+- [ ] Proposal & Quote Generation (PDF)
+- [ ] Bid-to-Project Conversion Logic
+
 ---
 
 ## 🔧 Installation & Setup
