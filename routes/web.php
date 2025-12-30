@@ -32,4 +32,16 @@ Route::middleware(['auth'])->group(function () {
 
     // Settings Routes
     Route::post('/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
+
+    // Production Routes
+    Route::get('/scan', [\App\Http\Controllers\ProductionController::class, 'scan'])->name('production.scan');
+    Route::post('/scan', [\App\Http\Controllers\ProductionController::class, 'processScan'])->name('production.process-scan');
+
+    // Label Routes
+    Route::get('/labels/part/{part}', [\App\Http\Controllers\LabelController::class, 'part'])->name('labels.part');
+    Route::get('/labels/stock/{item}', [\App\Http\Controllers\LabelController::class, 'stock'])->name('labels.stock');
+
+    // Drawing Routes
+    Route::get('/drawings/{drawing}', [\App\Http\Controllers\DrawingController::class, 'show'])->name('drawings.show');
+    Route::post('/drawings/{drawing}/upload', [\App\Http\Controllers\DrawingController::class, 'upload'])->name('drawings.upload');
 });

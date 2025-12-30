@@ -17,6 +17,16 @@ class Drawing extends Model
         'revised_at',
     ];
 
+    protected $casts = [
+        'revised_at' => 'datetime',
+    ];
+
+    public function getUrlAttribute(): ?string
+    {
+        if (!$this->file_path) return null;
+        return route('drawings.show', $this->id);
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

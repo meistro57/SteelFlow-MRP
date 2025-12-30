@@ -52,11 +52,11 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 
 ### **Phase 2: BOM & Engineering** (Complete)
 - [x] Weight & Pricing Services
-- [x] KISS/XSR Import Skeleton
+- [x] KISS/XSR Import Implementation
 - [x] Reference Data Management
-- [x] KISS Parser Implementation
+- [x] KISS Parser Implementation (FT-IN-16 support)
 - [x] BOM Extension Logic
-- [x] Drawing Revision Tracking
+- [x] Drawing Revision Tracking & File Storage
 
 ### **Phase 3: Procurement & Inventory** (Complete)
 - [x] Purchase Order Workflow

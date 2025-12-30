@@ -124,8 +124,16 @@ class KissImporter
 
     protected function parseLength(string $lengthStr): float
     {
-        // Simple decimal parse for now. 
-        // In full implementation, would handle FT-IN-16 format.
+        if (str_contains($lengthStr, '-')) {
+            $parts = explode('-', $lengthStr);
+            if (count($parts) === 3) {
+                $feet = (float) $parts[0];
+                $inches = (float) $parts[1];
+                $sixteenths = (float) $parts[2];
+                return ($feet * 12) + $inches + ($sixteenths / 16);
+            }
+        }
+        
         return (float) $lengthStr;
     }
 
