@@ -3,15 +3,23 @@
 namespace App\Services\Import;
 
 use App\Models\Project;
+use App\Models\Assembly;
+use App\Models\Part;
+use App\Services\ReferenceDataService;
+use App\Services\Pricing\WeightCalculator;
 use Illuminate\Support\Facades\DB;
 
 class KissImporter
 {
     protected array $errors = [];
 
+    public function __construct(
+        protected ReferenceDataService $referenceData,
+        protected WeightCalculator $weightCalculator
+    ) {}
+
     /**
      * Parse and import a KISS file.
-     * KISS (Keep It Simple, Steel) is a standard format for steel fabrication data.
      */
     public function import(string $filePath, Project $project): bool
     {
@@ -20,7 +28,7 @@ class KissImporter
             return false;
         }
 
-        $lines = file($filePath);
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         
         return DB::transaction(function () use ($lines, $project) {
             foreach ($lines as $line) {
@@ -32,25 +40,14 @@ class KissImporter
 
     protected function processLine(string $line, Project $project): void
     {
-        $data = explode(',', $line);
-        $type = $data[0] ?? '';
+        $data = str_getcsv($line, ',');
+        $type = strtoupper(trim($data[0] ?? ''));
 
         switch ($type) {
-            case 'KISS':
-                // Header record
-                break;
-            case 'FAB':
-                // Fabricator record
-                break;
-            case 'PRO':
-                // Project record
-                break;
             case 'SHP':
-                // Shop assembly record
                 $this->importAssembly($data, $project);
                 break;
             case 'DET':
-                // Detail/Part record
                 $this->importPart($data, $project);
                 break;
         }
@@ -58,19 +55,88 @@ class KissImporter
 
     protected function importAssembly(array $data, Project $project): void
     {
-        // TODO: Implement assembly creation logic
-        // $mark = $data[1];
-        // $qty = $data[2];
-        // ...
+        // Reference: SHP, Mark, Qty, Description, WeightEach, WeightTotal, Remark, Drawing
+        $mark = trim($data[1] ?? '');
+        if (!$mark) return;
+
+        Assembly::updateOrCreate(
+            [
+                'project_id' => $project->id,
+                'mark' => $mark,
+            ],
+            [
+                'quantity' => (int) ($data[2] ?? 1),
+                'description' => trim($data[3] ?? ''),
+                'weight_each_lbs' => (float) ($data[4] ?? 0),
+                'total_weight_lbs' => (float) ($data[5] ?? 0),
+                'weight_each_kg' => (float) ($data[4] ?? 0) * 0.453592,
+                'total_weight_kg' => (float) ($data[5] ?? 0) * 0.453592,
+            ]
+        );
     }
 
     protected function importPart(array $data, Project $project): void
     {
-        // TODO: Implement part creation logic
-        // $assMark = $data[1];
-        // $partMark = $data[2];
-        // $qty = $data[3];
-        // ...
+        // Reference: DET, AssemblyMark, PartMark, QtyEach, Description, Material, Size, Length
+        $assemblyMark = trim($data[1] ?? '');
+        $partMark = trim($data[2] ?? '');
+        
+        $assembly = Assembly::where('project_id', $project->id)
+            ->where('mark', $assemblyMark)
+            ->first();
+
+        if (!$assembly) {
+            $this->errors[] = "Assembly $assemblyMark not found for part $partMark";
+            return;
+        }
+
+        $materialType = $this->parseMaterialType($data[6] ?? '');
+        $material = $this->referenceData->findMaterial($materialType, trim($data[6] ?? ''));
+        $grade = $this->referenceData->findOrCreateGrade(trim($data[5] ?? 'A36'));
+
+        $length = $this->parseLength(trim($data[7] ?? '0'));
+
+        $part = Part::updateOrCreate(
+            [
+                'project_id' => $project->id,
+                'assembly_id' => $assembly->id,
+                'part_mark' => $partMark,
+            ],
+            [
+                'material_id' => $material?->id,
+                'type' => $materialType,
+                'size_imperial' => trim($data[6] ?? ''),
+                'grade' => $grade->code,
+                'length' => $length,
+                'quantity' => (int) ($data[3] ?? 1),
+                'description' => trim($data[4] ?? ''),
+                'weight_each_lbs' => (float) ($data[8] ?? 0),
+                'total_weight_lbs' => (float) ($data[9] ?? 0),
+            ]
+        );
+
+        // Recalculate weights if zero provided in file
+        if ($part->weight_each_lbs <= 0 && $material) {
+            $weights = $this->weightCalculator->calculatePartWeights($part);
+            $part->update($weights);
+        }
+    }
+
+    protected function parseLength(string $lengthStr): float
+    {
+        // Simple decimal parse for now. 
+        // In full implementation, would handle FT-IN-16 format.
+        return (float) $lengthStr;
+    }
+
+    protected function parseMaterialType(string $size): string
+    {
+        if (str_starts_with($size, 'W')) return 'W';
+        if (str_starts_with($size, 'L')) return 'L';
+        if (str_starts_with($size, 'C')) return 'C';
+        if (str_starts_with($size, 'HSS')) return 'HSS';
+        if (str_starts_with($size, 'PL')) return 'PL';
+        return 'OT';
     }
 
     public function getErrors(): array

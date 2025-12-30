@@ -53,7 +53,7 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Weight & Pricing Services
 - [x] KISS/XSR Import Skeleton
 - [x] Reference Data Management
-- [ ] KISS Parser Implementation
+- [x] KISS Parser Implementation
 - [ ] BOM Extension Logic
 - [ ] Drawing Revision Tracking
 
