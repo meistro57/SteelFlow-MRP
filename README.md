@@ -57,11 +57,11 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] BOM Extension Logic
 - [x] Drawing Revision Tracking
 
-### **Phase 3: Procurement & Inventory**
-- [ ] Purchase Order Workflow
-- [ ] Material Receiving & Heat Certs
-- [ ] Multi-Location Stock Tracking
-- [ ] Stock Move Audit Trails
+### **Phase 3: Procurement & Inventory** (Complete)
+- [x] Purchase Order Workflow
+- [x] Material Receiving & Heat Certs
+- [x] Multi-Location Stock Tracking
+- [x] Stock Move Audit Trails
 
 ### **Phase 4: Optimization (Nesting)**
 - [ ] Linear Nesting Engine
