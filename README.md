@@ -63,11 +63,11 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Multi-Location Stock Tracking
 - [x] Stock Move Audit Trails
 
-### **Phase 4: Optimization (Nesting)**
-- [ ] Linear Nesting Engine
-- [ ] Plate Nesting Integration (ProNest/Custom)
-- [ ] Remnant Management
-- [ ] Cut List Generation
+### **Phase 4: Optimization (Nesting)** (Complete)
+- [x] Linear Nesting Engine
+- [x] Plate Nesting Integration (ProNest/Custom)
+- [x] Remnant Management
+- [x] Cut List Generation
 
 ### **Phase 5: Shop Floor Execution**
 - [ ] Production Batching
