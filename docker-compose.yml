@@ -1,0 +1,56 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: steelflow-app
+    container_name: steelflow-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - steelflow
+
+  web:
+    image: nginx:alpine
+    container_name: steelflow-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - steelflow
+
+  mysql:
+    image: mysql:8.0
+    container_name: steelflow-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - steelflow-db:/var/lib/mysql
+    networks:
+      - steelflow
+
+  redis:
+    image: redis:alpine
+    container_name: steelflow-redis
+    restart: unless-stopped
+    networks:
+      - steelflow
+
+networks:
+  steelflow:
+    driver: bridge
+
+volumes:
+  steelflow-db:
+    driver: local
