@@ -46,7 +46,7 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Database Schema Foundation (Migrations)
 - [x] Project & Master Data Models
 - [x] Base Environment Configuration
-- [ ] Microsoft 365 OAuth Integration
+- [x] Microsoft 365 OAuth Integration
 - [x] UI layout & Navigation Shell
 
 ### **Phase 2: BOM & Engineering** (In Progress)
