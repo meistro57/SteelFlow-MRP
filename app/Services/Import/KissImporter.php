@@ -7,6 +7,7 @@ use App\Models\Assembly;
 use App\Models\Part;
 use App\Services\ReferenceDataService;
 use App\Services\Pricing\WeightCalculator;
+use App\Services\BOMExtensionService;
 use Illuminate\Support\Facades\DB;
 
 class KissImporter
@@ -15,7 +16,8 @@ class KissImporter
 
     public function __construct(
         protected ReferenceDataService $referenceData,
-        protected WeightCalculator $weightCalculator
+        protected WeightCalculator $weightCalculator,
+        protected BOMExtensionService $bomExtensionService
     ) {}
 
     /**
@@ -30,12 +32,18 @@ class KissImporter
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         
-        return DB::transaction(function () use ($lines, $project) {
+        $success = DB::transaction(function () use ($lines, $project) {
             foreach ($lines as $line) {
                 $this->processLine($line, $project);
             }
             return true;
         });
+
+        if ($success) {
+            $this->bomExtensionService->extendProject($project);
+        }
+
+        return $success;
     }
 
     protected function processLine(string $line, Project $project): void

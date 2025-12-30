@@ -11,6 +11,14 @@ use Illuminate\Support\Str;
 class AuthController extends Controller
 {
     /**
+     * Show the login page.
+     */
+    public function login()
+    {
+        return \Inertia\Inertia::render('Auth/Login');
+    }
+
+    /**
      * Redirect the user to the Microsoft authentication page.
      */
     public function redirectToProvider()

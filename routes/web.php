@@ -10,6 +10,7 @@ Route::get('/', function () {
 });
 
 // Authentication Routes
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/login/microsoft', [AuthController::class, 'redirectToProvider'])->name('login.microsoft');
 Route::get('/login/microsoft/callback', [AuthController::class, 'handleProviderCallback']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

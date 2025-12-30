@@ -5,10 +5,15 @@ namespace App\Services\Import;
 use App\Models\Project;
 use App\Models\Assembly;
 use App\Models\Part;
+use App\Services\BOMExtensionService;
 use Illuminate\Support\Facades\DB;
 
 class XsrImporter
 {
+    public function __construct(
+        protected BOMExtensionService $bomExtensionService
+    ) {}
+
     /**
      * Parse and import an XSR file
      */
@@ -20,7 +25,7 @@ class XsrImporter
         $header = fgetcsv($handle); // Assume first row is header
         $map = array_flip($header);
 
-        return DB::transaction(function () use ($handle, $project, $map) {
+        $success = DB::transaction(function () use ($handle, $project, $map) {
             while (($parts = fgetcsv($handle)) !== false) {
                 if (count($parts) < 2) continue;
                 
@@ -41,6 +46,12 @@ class XsrImporter
             fclose($handle);
             return true;
         });
+
+        if ($success) {
+            $this->bomExtensionService->extendProject($project);
+        }
+
+        return $success;
     }
 
     protected function processData(array $data, Project $project)
