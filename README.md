@@ -47,7 +47,7 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Project & Master Data Models
 - [x] Base Environment Configuration
 - [ ] Microsoft 365 OAuth Integration
-- [ ] UI layout & Navigation Shell
+- [x] UI layout & Navigation Shell
 
 ### **Phase 2: BOM & Engineering** (In Progress)
 - [x] Weight & Pricing Services
