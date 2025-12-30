@@ -138,6 +138,7 @@ docs/
 ├── ESTIMATING_PLAN.md # Roadmap for the estimating module
 ├── INSTALLATION.md    # WSL2 Setup and Testing guide
 └── GUI_MANAGER.md     # How to use and customize the interface
+CRUSH.md               # Agent guide and project core concepts
 ```
 
 ---
