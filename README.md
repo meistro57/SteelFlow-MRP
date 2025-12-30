@@ -1,5 +1,6 @@
 # 🏗️ SteelFlow MRP
 
+[![SteelFlow MRP CI](https://github.com/meistro57/SteelFlow-MRP/actions/workflows/laravel.yml/badge.svg)](https://github.com/meistro57/SteelFlow-MRP/actions/workflows/laravel.yml)
 [![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
 [![Vue](https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=for-the-badge&logo=vue.js)](https://vuejs.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com)
