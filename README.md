@@ -75,10 +75,10 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 - [x] Real-time Barcode Tracking App
 - [x] Labor Time Clocking
 
-### **Phase 6: Shipping & Logistics**
-- [ ] Load Builder
-- [ ] Shipping Document Generation (BOL/Packing Lists)
-- [ ] Delivery Confirmation
+### **Phase 6: Shipping & Logistics** (Complete)
+- [x] Load Builder
+- [x] Shipping Document Generation (BOL/Packing Lists)
+- [x] Delivery Confirmation
 
 ---
 
