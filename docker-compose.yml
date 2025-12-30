@@ -47,6 +47,18 @@ services:
     networks:
       - steelflow
 
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: steelflow-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - steelflow
+
 networks:
   steelflow:
     driver: bridge
