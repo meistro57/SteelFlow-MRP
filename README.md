@@ -136,7 +136,8 @@ resources/
 └── views/            # Report templates for high-quality PDFs
 docs/
 ├── ESTIMATING_PLAN.md # Roadmap for the estimating module
-└── INSTALLATION.md    # WSL2 Setup and Testing guide
+├── INSTALLATION.md    # WSL2 Setup and Testing guide
+└── GUI_MANAGER.md     # How to use and customize the interface
 ```
 
 ---
