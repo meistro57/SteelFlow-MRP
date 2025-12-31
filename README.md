@@ -13,6 +13,19 @@
 ## 🌟 Vision
 To replace obsolete legacy systems with a high-performance, web-native platform that centralizes estimating, production, and logistics into a single source of truth.
 
+## 📊 Current Status
+
+**Development Stage:** Foundation Complete, Feature Implementation In Progress
+
+SteelFlow MRP has a **solid foundation** with complete database architecture (11 migrations, 23 models) and comprehensive backend services. The project is currently in **active development** with focus on building out the user interface and controllers to connect the backend logic to the frontend.
+
+- ✅ **Infrastructure:** Docker environment, authentication, database schema
+- ✅ **Backend Services:** Import parsers, nesting engines, inventory management, reporting
+- 🔄 **Controllers & UI:** Partially implemented - core modules need frontend interfaces
+- 📅 **Estimating Module:** Planned for Phase 8
+
+See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed status.
+
 ## 🛠️ The SteelFlow Stack
 
 ### **Backend Core**
@@ -42,56 +55,81 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 
 ## 🗺️ Roadmap & Progress
 
-### **Phase 1: Foundation** (Infrastructure)
-- [x] Dockerized Development Environment
-- [x] Database Schema Foundation (Migrations)
-- [x] Project & Master Data Models
+### **Phase 1: Foundation** ✅ Complete
+- [x] Dockerized Development Environment (Docker Compose v2)
+- [x] Database Schema Foundation (11 migrations)
+- [x] Project & Master Data Models (23 models)
 - [x] Base Environment Configuration
 - [x] Microsoft 365 OAuth Integration
-- [x] UI layout & Navigation Shell
+- [x] Composer and NPM Configuration
 
-### **Phase 2: BOM & Engineering** (Complete)
-- [x] Weight & Pricing Services
-- [x] KISS/XSR Import Implementation
-- [x] Reference Data Management
-- [x] KISS Parser Implementation (FT-IN-16 support)
-- [x] BOM Extension Logic
-- [x] Drawing Revision Tracking & File Storage
+### **Phase 2: BOM & Engineering** 🔄 In Progress
+- [x] Database Schema (migrations complete)
+- [x] Models: Project, Assembly, Part, Drawing
+- [x] Services: BOMExtensionService, ReferenceDataService
+- [x] Import Services (KISS/XSR parsers)
+- [x] DrawingController & UI
+- [ ] Full BOM Management Interface
+- [ ] Weight & Pricing UI Integration
+- [ ] KISS/XSR Import UI
 
-### **Phase 3: Procurement & Inventory** (Complete)
-- [x] Purchase Order Workflow
-- [x] Material Receiving & Heat Certs
-- [x] Multi-Location Stock Tracking
-- [x] Stock Move Audit Trails
+### **Phase 3: Procurement & Inventory** 🔄 In Progress
+- [x] Database Schema (migrations complete)
+- [x] Models: PurchaseOrder, StockItem, ReceivingRecord
+- [x] Services: InventoryService
+- [ ] Purchase Order Controllers & UI
+- [ ] Material Receiving Interface
+- [ ] Stock Tracking Dashboard
+- [ ] Heat Certificate Management UI
 
-### **Phase 4: Optimization (Nesting)** (Complete)
-- [x] Linear Nesting Engine
-- [x] Plate Nesting Integration (ProNest/Custom)
-- [x] Remnant Management
-- [x] Cut List Generation
+### **Phase 4: Optimization (Nesting)** 🔄 In Progress
+- [x] Database Schema (migrations complete)
+- [x] Models: Nesting, NestingBar, NestingPart
+- [x] Services: Nesting services
+- [ ] Nesting Controllers & UI
+- [ ] Linear Nesting Interface
+- [ ] Plate Nesting Integration
+- [ ] Cut List Generation UI
 
-### **Phase 5: Shop Floor Execution** (Complete)
-- [x] Production Batching
-- [x] Work Area Routing
-- [x] Real-time Barcode Tracking App
-- [x] Labor Time Clocking
+### **Phase 5: Shop Floor Execution** 🔄 In Progress
+- [x] Database Schema (migrations complete)
+- [x] Models: ProductionBatch, WorkArea, TimeEntry, PartWorkArea
+- [x] Services: Production services
+- [x] ProductionController
+- [x] Basic Production Pages
+- [x] LabelService (ZPL generation)
+- [ ] Complete Barcode Tracking App
+- [ ] Work Area Routing Interface
+- [ ] Labor Time Clocking UI
 
-### **Phase 6: Shipping & Logistics** (Complete)
-- [x] Load Builder
-- [x] Shipping Document Generation (BOL/Packing Lists)
-- [x] Delivery Confirmation
+### **Phase 6: Shipping & Logistics** 📋 Backend Only
+- [x] Database Schema (migrations complete)
+- [x] Models: Load, LoadItem, ShippingDocument
+- [x] Services: ShippingService
+- [ ] Shipping Controllers & UI
+- [ ] Load Builder Interface
+- [ ] BOL & Packing List Generation
+- [ ] Delivery Confirmation System
 
-### **Phase 7: Reporting & Polish** (Complete)
-- [x] Reports (BOM, Purchasing, Production, Shipping, Inventory)
-- [x] Dashboard (Project overview, Production metrics)
-- [x] Polish (Performance, Error handling)
+### **Phase 7: Reporting & Analytics** 🔄 In Progress
+- [x] ReportController
+- [x] Services: ReportingService
+- [x] Dashboard Page (basic)
+- [ ] BOM Reports
+- [ ] Purchasing Reports
+- [ ] Production Metrics Dashboard
+- [ ] Inventory Reports
+- [ ] Shipping Reports
 
-### **Phase 8: Estimating Module** (Planned)
+### **Phase 8: Estimating Module** 📅 Planned
+- [ ] Database Schema Design
 - [ ] Bid & Revision Management
 - [ ] Material Takeoff Engine
 - [ ] Labor Standard Application
 - [ ] Proposal & Quote Generation (PDF)
 - [ ] Bid-to-Project Conversion Logic
+
+**Legend:** ✅ Complete | 🔄 In Progress | 📋 Backend Only | 📅 Planned
 
 ---
 
