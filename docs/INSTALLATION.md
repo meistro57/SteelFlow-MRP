@@ -29,11 +29,11 @@ Once installed, verify the integrity of the system by running the full test suit
 
 ```bash
 # Run all tests
-docker-compose exec app php artisan test
+docker compose exec app php artisan test
 
 # Run specific suites
-docker-compose exec app php artisan test --testsuite=Unit
-docker-compose exec app php artisan test --testsuite=Feature
+docker compose exec app php artisan test --testsuite=Unit
+docker compose exec app php artisan test --testsuite=Feature
 ```
 
 ### Coverage Included:
@@ -44,6 +44,6 @@ docker-compose exec app php artisan test --testsuite=Feature
 
 ## 🛠️ Manual Maintenance
 
-- **Restart Services**: `docker-compose restart`
-- **View Logs**: `docker-compose logs -f`
+- **Restart Services**: `docker compose restart`
+- **View Logs**: `docker compose logs -f`
 - **Database Access**: [http://localhost:8080](http://localhost:8080)
