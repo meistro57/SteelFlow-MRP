@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
+    su-exec \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -24,8 +25,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Configure git to trust /var/www directory (fixes ownership issues with mounted volumes)
-RUN git config --global --add safe.directory /var/www
+# Copy entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Switch to non-root user
-USER www-data
+# Configure git to trust /var/www directory at system level
+RUN git config --system --add safe.directory /var/www
+
+# Set entrypoint to handle permissions
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Default command for php-fpm
+CMD ["php-fpm"]
