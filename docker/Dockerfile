@@ -24,5 +24,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
+# Configure git to trust /var/www directory (fixes ownership issues with mounted volumes)
+RUN git config --global --add safe.directory /var/www
+
 # Switch to non-root user
 USER www-data
