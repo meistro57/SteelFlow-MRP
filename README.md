@@ -148,12 +148,12 @@ git clone https://github.com/meistro57/SteelFlow-MRP.git && cd SteelFlow-MRP
 cp .env.example .env
 
 # 3. Launch the containers
-docker-compose up -d
+docker compose up -d
 
 # 4. Initialize the application
-docker-compose exec app composer install
-docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan migrate --seed
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
 
 # 5. Compile the frontend
 npm install && npm run dev

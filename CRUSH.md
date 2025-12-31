@@ -5,7 +5,7 @@ Modern, web-based steel fabrication management system replacing legacy FabTrol.
 ## Commands
 
 ### Backend (Laravel)
-- **Start Env**: `docker-compose up -d`
+- **Start Env**: `docker compose up -d`
 - **Migrations**: `php artisan migrate`
 - **Seed Data**: `php artisan db:seed`
 - **Import Legacy**: `php artisan migrate:fabtrol all`
