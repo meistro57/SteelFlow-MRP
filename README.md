@@ -140,8 +140,22 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [Node.js](https://nodejs.org/) (Local development)
 
 ### 🚀 Quick Start
+
+#### Option 1: Using the Install Script (Recommended for first-time setup)
 ```bash
-# 1. Clone the vision
+# 1. Clone the repository
+git clone https://github.com/meistro57/SteelFlow-MRP.git && cd SteelFlow-MRP
+
+# 2. Configure the environment
+cp .env.example .env
+
+# 3. Run the install script
+./scripts/install.sh
+```
+
+#### Option 2: Manual Setup
+```bash
+# 1. Clone the repository
 git clone https://github.com/meistro57/SteelFlow-MRP.git && cd SteelFlow-MRP
 
 # 2. Configure the environment
@@ -158,6 +172,28 @@ docker compose exec app php artisan migrate --seed
 # 5. Compile the frontend
 npm install && npm run dev
 ```
+
+### 🔄 Updating the Application
+
+To update SteelFlow MRP after pulling new changes or updating dependencies, simply run:
+
+```bash
+./update.sh
+```
+
+This automated script will:
+- Pull the latest code from git (if applicable)
+- Rebuild Docker containers
+- Update all dependencies (PHP & Node)
+- Run database migrations
+- Seed the database (if empty)
+- Clear and rebuild all caches
+- Build frontend assets
+- Set proper permissions
+
+**Default Login Credentials (after seeding):**
+- Email: `admin@steelflow.local`
+- Password: `password`
 
 ---
 
