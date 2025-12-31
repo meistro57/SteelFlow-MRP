@@ -15,7 +15,7 @@ if [ "$(id -u)" = "0" ]; then
     chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache 2>/dev/null || true
 
     # Execute the main command as www-data
-    exec su-exec www-data "$@"
+    exec gosu www-data "$@"
 else
     # Already running as www-data
     git config --global --add safe.directory /var/www 2>/dev/null || true
