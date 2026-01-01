@@ -13,7 +13,7 @@ chmod +x scripts/install.sh && ./scripts/install.sh
 ### What This Script Does:
 1. **Environment Initialization**: Creates `.env` from `.env.example`.
 2. **Infrastructure Launch**: Boots Docker containers for:
-   - **PHP 8.3 FPM** (Application Logic)
+   - **PHP 8.4 FPM** (Application Logic)
    - **Nginx** (Web Server)
    - **MySQL 8.0** (Primary Database)
    - **Redis** (Queue & Cache)
