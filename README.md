@@ -29,7 +29,7 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 ## 🛠️ The SteelFlow Stack
 
 ### **Backend Core**
-- **Framework**: Laravel 11 (PHP 8.3+)
+- **Framework**: Laravel 11 (PHP 8.4+)
 - **Database**: MySQL 8.0 / PostgreSQL
 - **Cache/Queue**: Redis + Laravel Horizon
 - **Search Engine**: Meilisearch for sub-millisecond lookups
