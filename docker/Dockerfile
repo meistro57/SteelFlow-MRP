@@ -35,5 +35,5 @@ RUN git config --system --add safe.directory /var/www
 # Set entrypoint to handle permissions
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-# Default command for php-fpm
-CMD ["php-fpm"]
+# Default command for php-fpm (run in foreground to prevent container exit)
+CMD ["php-fpm", "-F"]
