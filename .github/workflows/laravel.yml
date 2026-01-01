@@ -69,12 +69,12 @@ jobs:
 
 
     - name: Execute tests
-           env:
-        DB_CONNECTION: mysql
-        DB_HOST: 127.0.0.1
-        DB_DATABASE: steelflow_test
-        DB_PORT: 3306
-        DB_USERNAME: root
-        DB_PASSWORD: ""
+      env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_DATABASE: steelflow_test
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: ""
 
         DB_USER: root
