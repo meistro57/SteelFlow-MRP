@@ -49,6 +49,10 @@ function wait_for_container() {
     while [ $attempt -lt $max_attempts ]; do
         if docker inspect --format='{{.State.Health.Status}}' "$container_name" 2>/dev/null | grep -q "healthy"; then
             success "$container_name is healthy"
+            # Add stabilization delay to ensure container is ready for exec commands
+            status "Waiting for container to stabilize..."
+            sleep 5
+            success "$container_name is ready"
             return 0
         fi
 
@@ -58,6 +62,10 @@ function wait_for_container() {
             local running_time=$(docker inspect --format='{{.State.StartedAt}}' "$container_name" 2>/dev/null)
             if [ -n "$running_time" ]; then
                 success "$container_name is running"
+                # Add stabilization delay for containers without health check too
+                status "Waiting for container to stabilize..."
+                sleep 5
+                success "$container_name is ready"
                 return 0
             fi
         fi
