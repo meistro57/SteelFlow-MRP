@@ -197,6 +197,58 @@ This automated script will:
 
 ---
 
+## 🔧 Troubleshooting
+
+### Container Restart Loops
+
+If the `steelflow-app` container is stuck in a restart loop:
+
+**Cause:** Missing `.env` file or empty `APP_KEY` configuration.
+
+**Solution:** The Docker entrypoint now automatically handles this, but if you encounter issues:
+
+```bash
+# Quick fix - restart the containers
+docker compose restart app
+
+# If the issue persists, rebuild from scratch
+docker compose down
+docker compose up -d --build
+```
+
+The entrypoint script (`docker/entrypoint.sh`) automatically:
+- Creates `.env` from `.env.example` if missing
+- Generates `APP_KEY` if not set
+- Sets proper file ownership for Laravel
+
+### Common Issues
+
+**Problem:** `Permission denied` errors in logs
+```bash
+# Fix permissions
+docker compose exec app chmod -R 775 storage bootstrap/cache
+```
+
+**Problem:** Database connection failures
+```bash
+# Wait for MySQL to be fully ready (can take 30-60 seconds on first start)
+docker compose exec mysql mysqladmin ping -h"localhost"
+
+# Check MySQL logs
+docker compose logs mysql
+```
+
+**Problem:** Missing dependencies
+```bash
+# Reinstall all dependencies
+docker compose exec app composer install
+npm install
+```
+
+For more troubleshooting help, see [docs/INSTALLATION.md](docs/INSTALLATION.md).
+
+---
+
 ## 📂 Architecture Overview
 
 ```text
