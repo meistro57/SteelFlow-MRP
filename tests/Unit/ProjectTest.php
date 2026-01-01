@@ -7,7 +7,7 @@ use App\Models\Project;
 use App\Models\Assembly;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProjectModelTest extends TestCase
+class ProjectTest extends TestCase
 {
     /**
      * Test basic attributes and relations
