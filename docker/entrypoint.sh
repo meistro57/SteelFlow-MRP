@@ -29,10 +29,7 @@ if [ "$(id -u)" = "0" ]; then
     chown -R www-data:www-data /var/www/storage 2>/dev/null || true
     chown -R www-data:www-data /var/www/bootstrap/cache 2>/dev/null || true
     chown www-data:www-data /var/www/.env 2>/dev/null || true
-
-    # Drop privileges and execute command
-    exec gosu www-data "$@"
 fi
 
-# If not root, just execute the command
+# Execute command as root (php-fpm will drop privileges for worker processes)
 exec "$@"
