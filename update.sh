@@ -31,9 +31,9 @@ function ensure_laravel_directories() {
     # Create bootstrap cache directory
     mkdir -p bootstrap/cache
 
-    # Add .gitkeep files to track empty directories
-    touch storage/logs/.gitkeep
-    touch bootstrap/cache/.gitkeep
+    # Add .gitkeep files to track empty directories (only if they don't exist)
+    [ -f storage/logs/.gitkeep ] || touch storage/logs/.gitkeep 2>/dev/null || true
+    [ -f bootstrap/cache/.gitkeep ] || touch bootstrap/cache/.gitkeep 2>/dev/null || true
 
     success "Laravel directories ready"
 }
