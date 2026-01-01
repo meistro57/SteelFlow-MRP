@@ -32,7 +32,7 @@ We are working on extending the GUI Manager to support:
 The system uses a unified approach to UI state:
 1. **Frontend**: The `ThemeToggle.vue` component uses Inertia's `useForm` to send updates.
 2. **Backend**: `SettingsController.php` merges new settings into the user's `settings` JSON column.
-3. **Rendering**: The `AppLayout.vue` component reads the settings from the auth object and applies the `dark` class to the root HTML element.
+3. **Rendering**: The `ThemeToggle.vue` component applies the `dark` class to the root HTML element upon successful theme change, while `AppLayout.vue` uses Tailwind's dark mode classes for styling.
 
 ### **Database Schema**
 Settings are stored in the `users` table:
