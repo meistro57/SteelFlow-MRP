@@ -21,11 +21,65 @@ function warning() {
     echo "⚠️  $1"
 }
 
+# Function to create required Laravel directories
+function ensure_laravel_directories() {
+    status "Ensuring Laravel directory structure exists..."
+
+    # Create storage directories
+    mkdir -p storage/{app/{public,private},framework/{cache/data,sessions,testing,views},logs}
+
+    # Create bootstrap cache directory
+    mkdir -p bootstrap/cache
+
+    # Add .gitkeep files to track empty directories
+    touch storage/logs/.gitkeep
+    touch bootstrap/cache/.gitkeep
+
+    success "Laravel directories ready"
+}
+
+# Function to wait for a container to be healthy
+function wait_for_container() {
+    local container_name=$1
+    local max_attempts=30
+    local attempt=0
+
+    status "Waiting for $container_name to be healthy..."
+
+    while [ $attempt -lt $max_attempts ]; do
+        if docker inspect --format='{{.State.Health.Status}}' "$container_name" 2>/dev/null | grep -q "healthy"; then
+            success "$container_name is healthy"
+            return 0
+        fi
+
+        # Check if container is running (for containers without health check)
+        if docker inspect --format='{{.State.Running}}' "$container_name" 2>/dev/null | grep -q "true"; then
+            # If no health check defined, check if it's been running for at least 5 seconds
+            local running_time=$(docker inspect --format='{{.State.StartedAt}}' "$container_name" 2>/dev/null)
+            if [ -n "$running_time" ]; then
+                success "$container_name is running"
+                return 0
+            fi
+        fi
+
+        echo -n "."
+        sleep 2
+        ((attempt++))
+    done
+
+    warning "$container_name did not become healthy in time"
+    docker logs "$container_name" --tail 50
+    return 1
+}
+
 # Check if Docker is running
 if ! docker info > /dev/null 2>&1; then
     echo "❌ Error: Docker is not running. Please start Docker Desktop first."
     exit 1
 fi
+
+# Step 0: Ensure Laravel directory structure exists
+ensure_laravel_directories
 
 # Step 1: Pull latest code (if in a git repo)
 if [ -d .git ]; then
@@ -51,7 +105,10 @@ status "Starting Docker containers..."
 docker compose up -d
 success "Containers started"
 
-# Step 5: Wait for MySQL to be ready
+# Step 5: Wait for app container to be healthy
+wait_for_container "steelflow-app"
+
+# Step 6: Wait for MySQL to be ready
 status "Waiting for MySQL to be ready..."
 until docker compose exec mysql mysqladmin ping -h"localhost" --silent; do
     echo -n "."
@@ -60,12 +117,12 @@ done
 echo ""
 success "MySQL is ready"
 
-# Step 6: Update PHP dependencies
+# Step 7: Update PHP dependencies
 status "Updating PHP dependencies..."
 docker compose exec app composer install --no-interaction --prefer-dist --optimize-autoloader
 success "PHP dependencies updated"
 
-# Step 7: Update frontend dependencies
+# Step 8: Update frontend dependencies
 if [ -f "package.json" ]; then
     status "Updating frontend dependencies..."
     npm install
@@ -74,7 +131,7 @@ else
     warning "No package.json found - skipping npm install"
 fi
 
-# Step 8: Clear Laravel caches
+# Step 9: Clear Laravel caches
 status "Clearing application caches..."
 docker compose exec app php artisan config:clear
 docker compose exec app php artisan cache:clear
@@ -82,7 +139,7 @@ docker compose exec app php artisan view:clear
 docker compose exec app php artisan route:clear
 success "Caches cleared"
 
-# Step 9: Generate application key if not set
+# Step 10: Generate application key if not set
 status "Ensuring application key is set..."
 if ! docker compose exec app grep -q "APP_KEY=base64:" .env 2>/dev/null; then
     docker compose exec app php artisan key:generate --force
@@ -91,12 +148,12 @@ else
     echo "   Application key already set"
 fi
 
-# Step 10: Run database migrations
+# Step 11: Run database migrations
 status "Running database migrations..."
 docker compose exec app php artisan migrate --force
 success "Database migrations completed"
 
-# Step 11: Seed database (optional - only if empty)
+# Step 12: Seed database (optional - only if empty)
 status "Checking if database needs seeding..."
 USER_COUNT=$(docker compose exec mysql mysql -u${DB_USERNAME:-steelflow} -p${DB_PASSWORD:-secret} ${DB_DATABASE:-steelflow} -sNe "SELECT COUNT(*) FROM users;" 2>/dev/null || echo "0")
 
@@ -108,21 +165,21 @@ else
     echo "   Database already contains data - skipping seed"
 fi
 
-# Step 12: Optimize application
+# Step 13: Optimize application
 status "Optimizing application..."
 docker compose exec app php artisan config:cache
 docker compose exec app php artisan route:cache
 docker compose exec app php artisan view:cache
 success "Application optimized"
 
-# Step 13: Build frontend assets
+# Step 14: Build frontend assets
 if [ -f "package.json" ]; then
     status "Building frontend assets..."
     npm run build
     success "Frontend assets built"
 fi
 
-# Step 14: Set proper permissions
+# Step 15: Set proper permissions
 status "Setting proper permissions..."
 docker compose exec app chmod -R 775 storage bootstrap/cache
 success "Permissions set"
