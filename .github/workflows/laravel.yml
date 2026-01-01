@@ -62,15 +62,19 @@ jobs:
     - name: Run Migrations
       run: php artisan migrate --force
       env:
-        DB_CONNECTION: mysql
-        DB_DATABASE: steelflow_test
-        DB_PORT: 3306
-        DB_USER: root
+      DB_CONNECTION: mysql
+      DB_DATABASE: steelflow_test
+      DB_PORT: 3306
+      DB_USER: root
+
 
     - name: Execute tests
-      run: php artisan test
-      env:
+           env:
         DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
         DB_DATABASE: steelflow_test
         DB_PORT: 3306
+        DB_USERNAME: root
+        DB_PASSWORD: ""
+
         DB_USER: root
