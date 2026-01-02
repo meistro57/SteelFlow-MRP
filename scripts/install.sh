@@ -32,13 +32,13 @@ done
 echo "📦 Installing PHP dependencies..."
 docker compose exec app composer install
 
-# 6. Install Frontend Dependencies inside the app container (Node is bundled in the image)
-if docker compose exec app command -v npm > /dev/null 2>&1; then
-    echo "🎨 Installing Frontend dependencies inside container..."
-    docker compose exec app npm install
-    docker compose exec app npm run build
+# 6. Install Frontend Dependencies
+if [ -x "$(command -v npm)" ]; then
+    echo "🎨 Installing Frontend dependencies..."
+    npm install
+    npm run build
 else
-    echo "⚠️  npm is not available in the app container. Please ensure the image built correctly."
+    echo "⚠️  npm not found locally. Skipping frontend build. Run npm manually inside WSL2."
 fi
 
 # 7. Application Setup
