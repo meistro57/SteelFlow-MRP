@@ -1,4 +1,5 @@
 <?php
+// app/Services/Import/XsrImporter.php
 
 namespace App\Services\Import;
 
@@ -7,9 +8,16 @@ use App\Models\Assembly;
 use App\Models\Part;
 use App\Services\BOMExtensionService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class XsrImporter
 {
+    protected array $errors = [];
+    protected string $operationId;
+    protected int $assemblyCount = 0;
+    protected int $partCount = 0;
+
     public function __construct(
         protected BOMExtensionService $bomExtensionService
     ) {}
@@ -19,16 +27,52 @@ class XsrImporter
      */
     public function import(string $filePath, Project $project)
     {
+        $this->errors = [];
+        $this->operationId = Str::uuid()->toString();
+        $this->assemblyCount = 0;
+        $this->partCount = 0;
+
+        Log::info('Starting XSR import', [
+            'operation_id' => $this->operationId,
+            'project_id' => $project->id,
+            'file' => $filePath,
+        ]);
+
+        if (!file_exists($filePath)) {
+            $this->errors[] = "File not found: {$filePath}";
+            Log::error('XSR import failed - file missing', [
+                'operation_id' => $this->operationId,
+                'project_id' => $project->id,
+                'file' => $filePath,
+            ]);
+            return false;
+        }
+
         $handle = fopen($filePath, "r");
-        if (!$handle) return false;
+        if (!$handle) {
+            $this->errors[] = "Unable to open file: {$filePath}";
+            Log::error('XSR import failed - cannot open file', [
+                'operation_id' => $this->operationId,
+                'project_id' => $project->id,
+                'file' => $filePath,
+            ]);
+            return false;
+        }
 
         $header = fgetcsv($handle); // Assume first row is header
         $map = array_flip($header);
 
         $success = DB::transaction(function () use ($handle, $project, $map) {
             while (($parts = fgetcsv($handle)) !== false) {
-                if (count($parts) < 2) continue;
-                
+                if (count($parts) < 2) {
+                    Log::warning('Skipping malformed XSR row', [
+                        'operation_id' => $this->operationId,
+                        'project_id' => $project->id,
+                        'raw' => $parts,
+                    ]);
+                    continue;
+                }
+
                 $data = [
                     'assembly' => $parts[$map['AssemblyMark'] ?? $map['Assembly'] ?? 0] ?? '',
                     'mark'     => $parts[$map['PartMark'] ?? $map['Mark'] ?? 1] ?? '',
@@ -41,6 +85,13 @@ class XsrImporter
 
                 if ($data['mark']) {
                     $this->processData($data, $project);
+                } else {
+                    $this->errors[] = 'Encountered row without part mark';
+                    Log::warning('XSR row missing part mark', [
+                        'operation_id' => $this->operationId,
+                        'project_id' => $project->id,
+                        'raw' => $parts,
+                    ]);
                 }
             }
             fclose($handle);
@@ -49,6 +100,19 @@ class XsrImporter
 
         if ($success) {
             $this->bomExtensionService->extendProject($project);
+            Log::info('XSR import completed', [
+                'operation_id' => $this->operationId,
+                'project_id' => $project->id,
+                'assemblies_processed' => $this->assemblyCount,
+                'parts_processed' => $this->partCount,
+                'errors' => $this->errors,
+            ]);
+        } else {
+            Log::error('XSR import transaction failed', [
+                'operation_id' => $this->operationId,
+                'project_id' => $project->id,
+                'errors' => $this->errors,
+            ]);
         }
 
         return $success;
@@ -61,7 +125,16 @@ class XsrImporter
             'mark' => $data['assembly'] ?: 'DETACHED'
         ]);
 
-        Part::create([
+        $this->assemblyCount++;
+
+        Log::info('XSR assembly processed', [
+            'operation_id' => $this->operationId,
+            'project_id' => $project->id,
+            'assembly_id' => $assembly->id,
+            'mark' => $data['assembly'] ?: 'DETACHED',
+        ]);
+
+        $part = Part::create([
             'assembly_id' => $assembly->id,
             'project_id'  => $project->id,
             'part_mark'   => $data['mark'],
@@ -70,6 +143,17 @@ class XsrImporter
             'size_imperial' => $data['shape'],
             'length'      => $data['length'],
             'weight_each_lbs' => $data['weight'],
+        ]);
+
+        $this->partCount++;
+
+        Log::info('XSR part processed', [
+            'operation_id' => $this->operationId,
+            'project_id' => $project->id,
+            'assembly_id' => $assembly->id,
+            'part_id' => $part->id,
+            'part_mark' => $data['mark'],
+            'quantity' => $data['quantity'],
         ]);
     }
 }

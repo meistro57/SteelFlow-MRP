@@ -1,4 +1,5 @@
 <?php
+// app/Services/InventoryService.php
 
 namespace App\Services;
 
@@ -8,6 +9,8 @@ use App\Models\ReceivingRecord;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class InventoryService
 {
@@ -16,7 +19,7 @@ class InventoryService
      */
     public function recordMovement(StockItem $item, string $type, int $qty, array $data = []): StockMovement
     {
-        return StockMovement::create([
+        $movement = StockMovement::create([
             'stock_item_id' => $item->id,
             'movement_type' => $type,
             'quantity' => $qty,
@@ -29,6 +32,16 @@ class InventoryService
             'notes' => $data['notes'] ?? null,
             'created_by' => Auth::id(),
         ]);
+
+        Log::info('Stock movement recorded', [
+            'movement_id' => $movement->id,
+            'stock_item_id' => $item->id,
+            'movement_type' => $type,
+            'quantity' => $qty,
+            'context' => $data,
+        ]);
+
+        return $movement;
     }
 
     /**
@@ -36,50 +49,77 @@ class InventoryService
      */
     public function receiveLine(PurchaseOrderLine $line, array $data): ReceivingRecord
     {
-        return DB::transaction(function () use ($line, $data) {
-            // 1. Create receiving record
-            $record = ReceivingRecord::create([
-                'purchase_order_line_id' => $line->id,
-                'quantity_received' => $data['quantity'],
-                'receive_date' => $data['receive_date'] ?? now(),
-                'heat_number' => $data['heat_number'] ?? null,
-                'mill_cert_number' => $data['mill_cert_number'] ?? null,
-                'country_of_origin' => $data['country_of_origin'] ?? null,
-                'stock_area' => $data['stock_area'] ?? null,
-                'received_by' => Auth::id(),
-                'notes' => $data['notes'] ?? null,
+        $operationId = Str::uuid()->toString();
+
+        Log::info('Starting PO line receiving', [
+            'operation_id' => $operationId,
+            'purchase_order_id' => $line->purchase_order_id,
+            'line_id' => $line->id,
+            'quantity' => $data['quantity'],
+        ]);
+
+        try {
+            return DB::transaction(function () use ($line, $data, $operationId) {
+                // 1. Create receiving record
+                $record = ReceivingRecord::create([
+                    'purchase_order_line_id' => $line->id,
+                    'quantity_received' => $data['quantity'],
+                    'receive_date' => $data['receive_date'] ?? now(),
+                    'heat_number' => $data['heat_number'] ?? null,
+                    'mill_cert_number' => $data['mill_cert_number'] ?? null,
+                    'country_of_origin' => $data['country_of_origin'] ?? null,
+                    'stock_area' => $data['stock_area'] ?? null,
+                    'received_by' => Auth::id(),
+                    'notes' => $data['notes'] ?? null,
+                ]);
+
+                // 2. Update PO line quantity
+                $line->increment('quantity_received', $data['quantity']);
+
+                // 3. Create stock items
+                for ($i = 0; $i < $data['quantity']; $i++) {
+                    $stock = StockItem::create([
+                        'stock_id' => $this->generateStockId(),
+                        'material_id' => $line->material_id,
+                        'type' => $line->type,
+                        'size' => $line->size,
+                        'grade' => $line->grade,
+                        'length' => $line->length,
+                        'quantity' => 1,
+                        'status' => 'free',
+                        'reserved_project_id' => $line->purchaseOrder->project_id,
+                        'stock_area' => $data['stock_area'] ?? null,
+                        'heat_number' => $data['heat_number'] ?? null,
+                        'po_number' => $line->purchaseOrder->po_number,
+                        'receive_date' => $data['receive_date'] ?? now(),
+                    ]);
+
+                    // 4. Record movement
+                    $this->recordMovement($stock, 'receive', 1, [
+                        'reference_type' => 'po',
+                        'reference_id' => $line->purchase_order_id,
+                    ]);
+
+                    Log::info('Stock item created from receiving', [
+                        'operation_id' => $operationId,
+                        'stock_item_id' => $stock->id,
+                        'po_number' => $line->purchaseOrder->po_number,
+                        'heat_number' => $data['heat_number'] ?? null,
+                    ]);
+                }
+
+                return $record;
+            });
+        } catch (\Throwable $exception) {
+            Log::error('Receiving transaction failed', [
+                'operation_id' => $operationId,
+                'purchase_order_id' => $line->purchase_order_id,
+                'line_id' => $line->id,
+                'message' => $exception->getMessage(),
             ]);
 
-            // 2. Update PO line quantity
-            $line->increment('quantity_received', $data['quantity']);
-
-            // 3. Create stock items
-            for ($i = 0; $i < $data['quantity']; $i++) {
-                $stock = StockItem::create([
-                    'stock_id' => $this->generateStockId(),
-                    'material_id' => $line->material_id,
-                    'type' => $line->type,
-                    'size' => $line->size,
-                    'grade' => $line->grade,
-                    'length' => $line->length,
-                    'quantity' => 1,
-                    'status' => 'free',
-                    'reserved_project_id' => $line->purchaseOrder->project_id,
-                    'stock_area' => $data['stock_area'] ?? null,
-                    'heat_number' => $data['heat_number'] ?? null,
-                    'po_number' => $line->purchaseOrder->po_number,
-                    'receive_date' => $data['receive_date'] ?? now(),
-                ]);
-
-                // 4. Record movement
-                $this->recordMovement($stock, 'receive', 1, [
-                    'reference_type' => 'po',
-                    'reference_id' => $line->purchase_order_id,
-                ]);
-            }
-
-            return $record;
-        });
+            throw $exception;
+        }
     }
 
     protected function generateStockId(): string
