@@ -130,11 +130,15 @@ status "Updating PHP dependencies..."
 docker compose exec app composer install --no-interaction --prefer-dist --optimize-autoloader
 success "PHP dependencies updated"
 
-# Step 8: Update frontend dependencies
+# Step 8: Update frontend dependencies inside the app container
 if [ -f "package.json" ]; then
-    status "Updating frontend dependencies..."
-    npm install
-    success "Frontend dependencies updated"
+    status "Updating frontend dependencies inside container..."
+    if docker compose exec app command -v npm > /dev/null 2>&1; then
+        docker compose exec app npm install
+        success "Frontend dependencies updated"
+    else
+        warning "npm is unavailable in the app container - check the Docker build"
+    fi
 else
     warning "No package.json found - skipping npm install"
 fi
@@ -180,11 +184,15 @@ docker compose exec app php artisan route:cache
 docker compose exec app php artisan view:cache
 success "Application optimized"
 
-# Step 14: Build frontend assets
+# Step 14: Build frontend assets inside the container
 if [ -f "package.json" ]; then
-    status "Building frontend assets..."
-    npm run build
-    success "Frontend assets built"
+    status "Building frontend assets inside container..."
+    if docker compose exec app command -v npm > /dev/null 2>&1; then
+        docker compose exec app npm run build
+        success "Frontend assets built"
+    else
+        warning "npm is unavailable in the app container - skipping asset build"
+    fi
 fi
 
 # Step 15: Set proper permissions
