@@ -4,22 +4,17 @@ FROM php:8.3-fpm
 LABEL maintainer="SteelFlow MRP"
 LABEL version="2.0"
 
-# Install system dependencies, Node.js (for frontend builds), and PHP extensions in a single layer
+# Install system dependencies and PHP extensions in a single layer
 RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    curl \
     git \
-    gnupg \
-    libonig-dev \
+    curl \
     libpng-dev \
+    libonig-dev \
     libxml2-dev \
-    libzip-dev \
-    unzip \
     zip \
+    unzip \
+    libzip-dev \
     gosu \
-    # Add NodeSource repository for Node.js 20 (needed to build the Vue frontend inside the container)
-    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
