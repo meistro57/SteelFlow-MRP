@@ -14,8 +14,7 @@ class WeightCalculatorTest extends TestCase
 
     protected function setUp(): void
     {
-        // For a unit test, we can use a plain class if it doesn't need Laravel's container
-        // But since we are using PHPUnit within Laravel context, standard setup applies.
+        parent::setUp();
         $this->calculator = new WeightCalculator();
     }
 
@@ -24,6 +23,7 @@ class WeightCalculatorTest extends TestCase
         $material = Mockery::mock(Material::class);
         $material->shouldReceive('getAttribute')->with('unit_weight_lbs')->andReturn(10.0);
         $material->shouldReceive('getAttribute')->with('unit_weight_kg')->andReturn(14.88);
+        $material->shouldReceive('offsetExists')->andReturn(true);
 
         $part = Mockery::mock(Part::class);
         $part->shouldReceive('getAttribute')->with('material')->andReturn($material);
@@ -31,6 +31,7 @@ class WeightCalculatorTest extends TestCase
         $part->shouldReceive('getAttribute')->with('quantity')->andReturn(5);
         $part->shouldReceive('getAttribute')->with('weight_each_lbs')->andReturn(null);
         $part->shouldReceive('getAttribute')->with('weight_each_kg')->andReturn(null);
+        $part->shouldReceive('offsetExists')->andReturn(true);
 
         $results = $this->calculator->calculatePartWeights($part);
 
@@ -43,6 +44,7 @@ class WeightCalculatorTest extends TestCase
         $material = Mockery::mock(Material::class);
         $material->shouldReceive('getAttribute')->with('unit_weight_lbs')->andReturn(1.0);
         $material->shouldReceive('getAttribute')->with('unit_weight_kg')->andReturn(1.488);
+        $material->shouldReceive('offsetExists')->andReturn(true);
 
         $part = Mockery::mock(Part::class);
         $part->shouldReceive('getAttribute')->with('material')->andReturn($material);
@@ -50,6 +52,7 @@ class WeightCalculatorTest extends TestCase
         $part->shouldReceive('getAttribute')->with('quantity')->andReturn(1);
         $part->shouldReceive('getAttribute')->with('weight_each_lbs')->andReturn(null);
         $part->shouldReceive('getAttribute')->with('weight_each_kg')->andReturn(null);
+        $part->shouldReceive('offsetExists')->andReturn(true);
 
         $results = $this->calculator->calculatePartWeights($part);
 
