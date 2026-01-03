@@ -8,10 +8,10 @@ class WeightCalculator
 {
     /**
      * Calculate weights for a part.
-     * 
+     *
      * Imperial: lbs = unit_weight_lbs (per ft) * length (ft) * quantity
      * Metric: kg = unit_weight_kg (per m) * length (m) * quantity
-     * 
+     *
      * Note: Part.length is stored in feet (standard FabTrol convention).
      */
     public function calculatePartWeights(Part $part): array

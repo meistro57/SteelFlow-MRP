@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\Part;
 use App\Models\Material;
+use App\Models\Part;
 use App\Services\Pricing\WeightCalculator;
 use Mockery;
+use Tests\TestCase;
 
 class WeightCalculatorTest extends TestCase
 {

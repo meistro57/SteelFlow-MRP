@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Project;
 use App\Models\Assembly;
-use App\Models\AssemblyInstance;
 use App\Models\Part;
 use App\Models\PartInstance;
+use App\Models\Project;
 use App\Services\Pricing\WeightCalculator;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +43,7 @@ class BOMExtensionService
             foreach ($assembly->parts as $part) {
                 $weights = $this->weightCalculator->calculatePartWeights($part);
                 $part->update($weights);
-                
+
                 $totalLbs += $weights['total_weight_lbs'];
                 $totalKg += $weights['total_weight_kg'];
             }

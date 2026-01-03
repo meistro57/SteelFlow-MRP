@@ -2,10 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\Project;
-use App\Models\Assembly;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
@@ -15,7 +13,7 @@ class ProjectTest extends TestCase
     public function test_project_has_assemblies()
     {
         $project = new Project(['name' => 'Bridge 101', 'job_number' => 'J-101']);
-        
+
         $this->assertEquals('Bridge 101', $project->name);
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class, $project->assemblies());
     }

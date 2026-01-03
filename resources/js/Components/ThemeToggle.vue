@@ -25,8 +25,11 @@ const toggleTheme = () => {
 </script>
 
 <template>
-    <button @click="toggleTheme" class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700">
-        <span v-if="currentTheme === 'light'">🌙 Dark</span>
-        <span v-else>☀️ Light</span>
-    </button>
+  <button
+    class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+    @click="toggleTheme"
+  >
+    <span v-if="currentTheme === 'light'">🌙 Dark</span>
+    <span v-else>☀️ Light</span>
+  </button>
 </template>

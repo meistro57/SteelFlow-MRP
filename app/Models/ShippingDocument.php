@@ -15,7 +15,7 @@ class ShippingDocument extends Model
         'sent_at',
     ];
 
-    public function load(): BelongsTo
+    public function truckLoad(): BelongsTo
     {
         return $this->belongsTo(Load::class);
     }

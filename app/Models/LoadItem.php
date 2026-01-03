@@ -18,7 +18,7 @@ class LoadItem extends Model
         'notes',
     ];
 
-    public function load(): BelongsTo
+    public function truckLoad(): BelongsTo
     {
         return $this->belongsTo(Load::class);
     }

@@ -4,10 +4,9 @@ namespace App\Services\Nesting;
 
 use App\Models\Nesting;
 use App\Models\StockItem;
-use App\Models\StockMovement;
 use App\Services\InventoryService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class NestingService
 {
@@ -73,9 +72,9 @@ class NestingService
     protected function createRemnant($bar): void
     {
         $parent = $bar->stockItem;
-        
+
         $remnant = StockItem::create([
-            'stock_id' => 'REM-' . strtoupper(uniqid()),
+            'stock_id' => 'REM-'.strtoupper(uniqid()),
             'material_id' => $parent->material_id,
             'type' => $parent->type,
             'size' => $parent->size,
@@ -91,7 +90,7 @@ class NestingService
         ]);
 
         $this->inventoryService->recordMovement($remnant, 'receive', 1, [
-            'notes' => 'Created as remnant from nesting ' . $bar->nesting->nesting_number,
+            'notes' => 'Created as remnant from nesting '.$bar->nesting->nesting_number,
         ]);
     }
 }

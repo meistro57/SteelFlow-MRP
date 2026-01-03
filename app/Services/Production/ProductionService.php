@@ -1,15 +1,16 @@
 <?php
+
 // app/Services/Production/ProductionService.php
 
 namespace App\Services\Production;
 
+use App\Models\Employee;
 use App\Models\PartWorkArea;
 use App\Models\TimeEntry;
-use App\Models\Employee;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class ProductionService
 {

@@ -1,10 +1,11 @@
 <?php
+
 // app/Http/Controllers/ProductionController.php
 
 namespace App\Http\Controllers;
 
+use App\Services\Production\ProductionService;
 use Illuminate\Http\Request;
-use App\Services\ProductionService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -32,6 +33,6 @@ class ProductionController extends Controller
 
         // Logic to parse barcode and update production/inventory
         // For now, just return a success message
-        return back()->with('success', 'Processed barcode: ' . $barcode);
+        return back()->with('success', 'Processed barcode: '.$barcode);
     }
 }

@@ -1,14 +1,15 @@
 <?php
+
 // app/Services/InventoryService.php
 
 namespace App\Services;
 
+use App\Models\PurchaseOrderLine;
+use App\Models\ReceivingRecord;
 use App\Models\StockItem;
 use App\Models\StockMovement;
-use App\Models\ReceivingRecord;
-use App\Models\PurchaseOrderLine;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -124,6 +125,6 @@ class InventoryService
 
     protected function generateStockId(): string
     {
-        return 'STK-' . strtoupper(uniqid());
+        return 'STK-'.strtoupper(uniqid());
     }
 }

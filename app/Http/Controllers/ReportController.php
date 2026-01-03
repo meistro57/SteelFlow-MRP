@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Services\ReportingService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ReportController extends Controller
@@ -16,7 +15,7 @@ class ReportController extends Controller
     public function index()
     {
         return Inertia::render('Reports/Index', [
-            'metrics' => $this->reportingService->getDashboardMetrics()
+            'metrics' => $this->reportingService->getDashboardMetrics(),
         ]);
     }
 

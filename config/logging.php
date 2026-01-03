@@ -1,4 +1,5 @@
 <?php
+
 // config/logging.php
 
 use Monolog\Handler\NullHandler;

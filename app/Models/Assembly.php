@@ -10,7 +10,8 @@ use Laravel\Scout\Searchable;
 
 class Assembly extends Model
 {
-    use SoftDeletes, Searchable;
+    use Searchable, SoftDeletes;
+
     protected $fillable = [
         'project_id',
         'mark',
