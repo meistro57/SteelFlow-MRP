@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\AssemblyInstance;
 use App\Models\Load;
 use App\Models\LoadItem;
-use App\Models\AssemblyInstance;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShippingService
 {

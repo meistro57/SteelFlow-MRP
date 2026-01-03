@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Drawing extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'project_id',
         'number',
@@ -25,7 +26,10 @@ class Drawing extends Model
 
     public function getUrlAttribute(): ?string
     {
-        if (!$this->file_path) return null;
+        if (! $this->file_path) {
+            return null;
+        }
+
         return route('drawings.show', $this->id);
     }
 

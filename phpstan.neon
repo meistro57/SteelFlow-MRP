@@ -12,9 +12,13 @@ parameters:
 
     ignoreErrors:
         # Ignore dynamic method calls on facades
-        - '#Call to an undefined method Illuminate\\.*#'
+        -
+            message: '#Call to an undefined method Illuminate\\.*#'
+            reportUnmatched: false
+        # Ignore missing iterable value type hints
+        -
+            identifier: missingType.iterableValue
+            reportUnmatched: false
 
     excludePaths:
         - app/Console/Kernel.php
-
-    checkMissingIterableValueType: false

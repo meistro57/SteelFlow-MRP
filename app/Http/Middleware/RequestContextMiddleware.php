@@ -1,4 +1,5 @@
 <?php
+
 // app/Http/Middleware/RequestContextMiddleware.php
 
 namespace App\Http\Middleware;

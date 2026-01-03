@@ -10,7 +10,7 @@ class DrawingController extends Controller
 {
     public function show(Drawing $drawing)
     {
-        if (!Storage::disk('drawings')->exists($drawing->file_path)) {
+        if (! Storage::disk('drawings')->exists($drawing->file_path)) {
             abort(404);
         }
 
@@ -23,8 +23,8 @@ class DrawingController extends Controller
             'file' => 'required|file|mimes:pdf,dwg,dxf,jpg,png|max:10240',
         ]);
 
-        $path = $request->file('file')->store('project_' . $drawing->project_id, 'drawings');
-        
+        $path = $request->file('file')->store('project_'.$drawing->project_id, 'drawings');
+
         $drawing->update([
             'file_path' => $path,
             'revised_at' => now(),

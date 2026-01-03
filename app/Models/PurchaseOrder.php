@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PurchaseOrder extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'po_number',
         'vendor_id',

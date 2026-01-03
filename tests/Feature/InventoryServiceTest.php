@@ -2,16 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\PurchaseOrder;
-use App\Models\PurchaseOrderLine;
-use App\Models\Vendor;
-use App\Models\Material;
 use App\Models\Grade;
+use App\Models\Material;
+use App\Models\PurchaseOrder;
 use App\Models\User;
+use App\Models\Vendor;
 use App\Services\InventoryService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class InventoryServiceTest extends TestCase
 {
@@ -32,10 +31,10 @@ class InventoryServiceTest extends TestCase
 
         $grade = Grade::create(['code' => 'A36']);
         $material = Material::create([
-            'type' => 'W', 
-            'size_imperial' => 'W12X26', 
+            'type' => 'W',
+            'size_imperial' => 'W12X26',
             'grade_id' => $grade->id,
-            'unit_weight_lbs' => 26.0
+            'unit_weight_lbs' => 26.0,
         ]);
 
         $vendor = Vendor::create(['name' => 'Steel Corp', 'code' => 'V-001']);
@@ -60,7 +59,7 @@ class InventoryServiceTest extends TestCase
         $this->assertDatabaseCount('stock_items', 2);
         $this->assertDatabaseHas('stock_items', [
             'heat_number' => 'HEAT-123',
-            'po_number' => 'PO-100'
+            'po_number' => 'PO-100',
         ]);
     }
 }

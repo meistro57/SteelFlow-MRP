@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Nesting;
 use App\Models\NestingBar;
 use App\Models\StockItem;
 use App\Models\User;
-use App\Services\Nesting\NestingService;
 use App\Services\InventoryService;
+use App\Services\Nesting\NestingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class NestingTest extends TestCase
 {
@@ -27,9 +27,9 @@ class NestingTest extends TestCase
 
         $stockItem = new StockItem([
             'status' => 'free',
-            'stock_id' => 'STK-UNIT-TEST'
+            'stock_id' => 'STK-UNIT-TEST',
         ]);
-        // In a real test, we would save to DB. 
+        // In a real test, we would save to DB.
         // Here we'll mock or assume Eloquent methods like update() work via standard Laravel testing.
 
         $nesting = new Nesting(['nesting_number' => 'NEST-001', 'status' => 'draft']);
@@ -39,7 +39,7 @@ class NestingTest extends TestCase
 
         // We can't actually run this successfully without a DB and full Laravel boot
         // but this shows the structure of the test logic.
-        
+
         $this->assertTrue(true); // Placeholder for structural demonstration
     }
 }

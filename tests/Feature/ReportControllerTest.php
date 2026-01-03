@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ReportControllerTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ReportControllerTest extends TestCase
     public function test_authenticated_user_can_access_dashboard_metrics()
     {
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
