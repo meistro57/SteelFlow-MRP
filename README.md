@@ -30,9 +30,9 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 
 ### **Backend Core**
 - **Framework**: Laravel 11 (PHP 8.4+)
-- **Database**: MySQL 8.0 / PostgreSQL
+- **Database**: MySQL 8.0
 - **Cache/Queue**: Redis + Laravel Horizon
-- **Search Engine**: Meilisearch for sub-millisecond lookups
+- **Search Engine**: Meilisearch (optional, for sub-millisecond lookups)
 
 ### **Frontend Experience**
 - **Framework**: Vue.js 3 + Inertia.js (The "Classic Monolith" feel with SPA speed)
@@ -133,6 +133,20 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 
 ---
 
+## 🐳 Docker Services
+
+SteelFlow MRP runs on a fully containerized infrastructure:
+
+| Service | Container | Port | Description |
+|---------|-----------|------|-------------|
+| **App** | `steelflow-app` | - | PHP 8.4 FPM application server |
+| **Web** | `steelflow-web` | 80 | Nginx web server (Alpine) |
+| **Database** | `steelflow-db` | 3306 | MySQL 8.0 database |
+| **Cache** | `steelflow-redis` | - | Redis for cache, sessions, and queues |
+| **Admin** | `steelflow-phpmyadmin` | 8080 | phpMyAdmin database management |
+
+---
+
 ## 🔧 Installation & Setup
 
 ### ⚙️ Prerequisites
@@ -201,18 +215,26 @@ This automated script will:
 
 ```text
 app/
-├── Models/           # Database blueprints
-├── Services/         # Heavy-lifting logic (Nesting, Weight, Imports)
-├── Http/             # The API & Web Gateway
+├── Models/           # 29 Eloquent models (Projects, Assemblies, Parts, etc.)
+├── Services/         # Business logic (BOM, Nesting, Inventory, Shipping, etc.)
+├── Http/Controllers/ # Web controllers (Auth, Reports, Production, Labels, etc.)
 └── Jobs/             # Background workers for heavy computations
 resources/
-├── js/               # Vue pages that feel like magic
-└── views/            # Report templates for high-quality PDFs
+├── js/
+│   ├── Components/   # Vue components (ThemeToggle, BarcodeScanner, etc.)
+│   └── Pages/        # Vue pages (Dashboard, Production, Reports, Auth)
+└── views/            # Blade templates and PDF layouts
+database/
+└── migrations/       # 14 migrations covering all modules
 docs/
 ├── ESTIMATING_PLAN.md # Roadmap for the estimating module
-├── INSTALLATION.md    # WSL2 Setup and Testing guide
-└── GUI_MANAGER.md     # How to use and customize the interface
-CRUSH.md               # Agent guide and project core concepts
+├── INSTALLATION.md    # Complete setup and installation guide
+└── GUI_MANAGER.md     # Theme switching and UI customization
+scripts/
+├── install.sh        # First-time installation script
+└── update.sh         # Update and deployment script
+CRUSH.md               # Core concepts and business rules reference
+ROADMAP.md             # Development status and priorities
 ```
 
 ---
