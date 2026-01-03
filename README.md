@@ -209,6 +209,13 @@ This automated script will:
 - Email: `admin@steelflow.local`
 - Password: `password`
 
+**Default Database Credentials (.env file):**
+- Database: `steelflow`
+- Username: `steelflow`
+- Password: `secret`
+
+> **Note:** These are development defaults. For production deployments, change the database credentials in your `.env` file to secure values.
+
 ---
 
 ## 📂 Architecture Overview
