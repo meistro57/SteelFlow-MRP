@@ -1,0 +1,20 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+        - config
+        - database
+        - routes
+
+    level: 5
+
+    ignoreErrors:
+        # Ignore dynamic method calls on facades
+        - '#Call to an undefined method Illuminate\\.*#'
+
+    excludePaths:
+        - app/Console/Kernel.php
+
+    checkMissingIterableValueType: false

@@ -10,3 +10,4 @@
 .phpunit.result.cache
 docker-compose.override.yml
 user.ini
+/coverage
