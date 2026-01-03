@@ -66,6 +66,7 @@ class ProductionService
 
         DB::transaction(function () use ($step, $employee, $data, $operationId) {
             $now = now();
+            $hours = 0;
 
             // 1. Close open time entries
             $openEntry = TimeEntry::where('part_work_area_id', $step->id)
@@ -101,14 +102,14 @@ class ProductionService
                 'status' => 'complete',
                 'completed_at' => $now,
                 'completed_by' => $employee->id,
-                'actual_hours' => ($step->actual_hours ?? 0) + ($hours ?? 0),
+                'actual_hours' => ($step->actual_hours ?? 0) + $hours,
             ]);
 
             Log::info('Routing step completed', [
                 'operation_id' => $operationId,
                 'step_id' => $step->id,
                 'employee_id' => $employee->id,
-                'duration_hours' => $hours ?? 0,
+                'duration_hours' => $hours,
             ]);
 
             // 3. Trigger events for assembly completion if all parts done
