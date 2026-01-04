@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -18,13 +19,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [ReportController::class, 'index'])->name('dashboard');
 
-    Route::get('/projects', function () {
-        return Inertia::render('Projects/Index');
-    })->name('projects');
+    // Project CRUD Routes
+    Route::resource('projects', ProjectController::class);
 
-    Route::get('/inventory', function () {
-        return Inertia::render('Inventory/Index');
-    })->name('inventory');
+    // Inventory CRUD Routes
+    Route::resource('inventory', InventoryController::class);
 
     // Reporting Routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UploadDrawingRequest;
 use App\Models\Drawing;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class DrawingController extends Controller
@@ -17,12 +17,8 @@ class DrawingController extends Controller
         return Storage::disk('drawings')->response($drawing->file_path);
     }
 
-    public function upload(Request $request, Drawing $drawing)
+    public function upload(UploadDrawingRequest $request, Drawing $drawing)
     {
-        $request->validate([
-            'file' => 'required|file|mimes:pdf,dwg,dxf,jpg,png|max:10240',
-        ]);
-
         $path = $request->file('file')->store('project_'.$drawing->project_id, 'drawings');
 
         $drawing->update([

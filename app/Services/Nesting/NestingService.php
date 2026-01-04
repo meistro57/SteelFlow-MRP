@@ -19,6 +19,9 @@ class NestingService
      */
     public function approve(Nesting $nesting): void
     {
+        // Eager load bars with stock items to prevent N+1 queries
+        $nesting->load('bars.stockItem');
+
         DB::transaction(function () use ($nesting) {
             $nesting->bars->each(function ($bar) {
                 if ($bar->stockItem) {
@@ -44,6 +47,9 @@ class NestingService
      */
     public function confirm(Nesting $nesting): void
     {
+        // Eager load bars with stock items and nesting relationship to prevent N+1 queries
+        $nesting->load('bars.stockItem');
+
         DB::transaction(function () use ($nesting) {
             $nesting->bars->each(function ($bar) {
                 if ($bar->stockItem) {

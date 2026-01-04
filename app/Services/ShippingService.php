@@ -15,6 +15,11 @@ class ShippingService
      */
     public function addItemToLoad(Load $load, AssemblyInstance $instance): LoadItem
     {
+        // Eager load assembly to prevent N+1 query
+        if (!$instance->relationLoaded('assembly')) {
+            $instance->load('assembly');
+        }
+
         return DB::transaction(function () use ($load, $instance) {
             $item = LoadItem::create([
                 'load_id' => $load->id,
@@ -45,6 +50,9 @@ class ShippingService
      */
     public function shipLoad(Load $load): void
     {
+        // Eager load items with assembly instances to prevent N+1 queries
+        $load->load('items.assemblyInstance');
+
         $load->update([
             'status' => 'in_transit',
             'shipped_at' => now(),
