@@ -8,6 +8,24 @@
         "new_with_braces": {
             "anonymous_class": false,
             "named_class": true
+        },
+        "no_unused_imports": true,
+        "ordered_imports": {
+            "sort_algorithm": "alpha",
+            "imports_order": ["class", "function", "const"]
+        },
+        "no_empty_comment": true,
+        "no_empty_phpdoc": true,
+        "no_useless_else": true,
+        "no_useless_return": true,
+        "trailing_comma_in_multiline": {
+            "elements": ["arrays", "arguments", "parameters"]
         }
-    }
+    },
+    "exclude": [
+        "bootstrap",
+        "storage",
+        "vendor",
+        "node_modules"
+    ]
 }

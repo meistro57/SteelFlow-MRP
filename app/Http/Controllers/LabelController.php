@@ -17,6 +17,9 @@ class LabelController extends Controller
 
     public function part(Part $part)
     {
+        // Eager load project to prevent N+1 query in LabelService
+        $part->load('project');
+
         $zpl = $this->labelService->generatePartZpl($part);
 
         return response($zpl)->header('Content-Type', 'text/plain');

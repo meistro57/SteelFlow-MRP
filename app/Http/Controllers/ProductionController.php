@@ -4,8 +4,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProcessScanRequest;
 use App\Services\Production\ProductionService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -23,11 +23,14 @@ class ProductionController extends Controller
         return Inertia::render('Production/Scan');
     }
 
-    public function processScan(Request $request)
+    public function processScan(ProcessScanRequest $request)
     {
-        $barcode = $request->input('barcode');
+        $validated = $request->validated();
+        $barcode = $validated['barcode'];
+
         Log::info('Production barcode scanned', [
             'barcode' => $barcode,
+            'scan_type' => $validated['scan_type'] ?? 'unknown',
             'user_id' => $request->user()?->id,
         ]);
 

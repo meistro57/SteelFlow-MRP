@@ -16,8 +16,9 @@ class WeightCalculator
      */
     public function calculatePartWeights(Part $part): array
     {
-        $unitWeightLbs = $part->weight_each_lbs ?: ($part->material->unit_weight_lbs ?? 0);
-        $unitWeightKg = $part->weight_each_kg ?: ($part->material->unit_weight_kg ?? 0);
+        // Use null-safe operator to prevent errors when material is not loaded or null
+        $unitWeightLbs = $part->weight_each_lbs ?: ($part->material?->unit_weight_lbs ?? 0);
+        $unitWeightKg = $part->weight_each_kg ?: ($part->material?->unit_weight_kg ?? 0);
 
         $lengthFt = $part->length;
         $lengthM = $lengthFt * 0.3048;
