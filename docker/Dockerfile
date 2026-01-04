@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 # Set labels
 LABEL maintainer="SteelFlow MRP"
@@ -14,17 +14,41 @@ RUN apt-get update && apt-get install -y \
     libwebp-dev \
     libonig-dev \
     libxml2-dev \
+    libicu-dev \
+    libcurl4-openssl-dev \
+    libsodium-dev \
     zip \
     unzip \
     libzip-dev \
     gosu \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        mbstring \
+        exif \
+        pcntl \
+        bcmath \
+        gd \
+        zip \
+        intl \
+        curl \
+        dom \
+        xml \
+        xmlreader \
+        xmlwriter \
+        sodium \
+        opcache \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy PHP configuration
+COPY docker/php.ini $PHP_INI_DIR/conf.d/99-custom.ini
 
 # Set working directory
 WORKDIR /var/www
