@@ -26,7 +26,7 @@ return new class extends Migration
             $table->decimal('weight_kg', 12, 4)->nullable();
             $table->timestamp('loaded_at')->nullable();
             $table->foreignId('loaded_by')->nullable()->constrained('users');
-            $table->timestamp('unloaded_at', 500)->nullable();
+            $table->timestamp('unloaded_at')->nullable();
             $table->text('notes')->nullable();
             $table->unique(['load_id', 'assembly_instance_id']);
             $table->timestamps();
