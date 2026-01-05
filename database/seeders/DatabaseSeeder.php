@@ -33,65 +33,11 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
-        // Seed Grades
-        DB::table('grades')->insert([
-            ['code' => 'A36', 'description' => 'Carbon Steel', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['code' => 'A572-50', 'description' => 'High-Strength Low-Alloy Steel', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['code' => 'A992', 'description' => 'Structural Steel', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['code' => '304SS', 'description' => 'Stainless Steel 304', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        // Seed Grades (expanded with GradeSeeder)
+        $this->call(GradeSeeder::class);
 
-        // Seed Materials
-        $gradeA36 = DB::table('grades')->where('code', 'A36')->first()->id;
-        $gradeA572 = DB::table('grades')->where('code', 'A572-50')->first()->id;
-
-        DB::table('materials')->insert([
-            [
-                'type' => 'PLATE',
-                'size_imperial' => '1/2"',
-                'size_metric' => '12.7mm',
-                'grade_id' => $gradeA36,
-                'unit_weight_lbs' => 20.40,
-                'unit_weight_kg' => 9.25,
-                'price_per_lb' => 0.65,
-                'price_per_kg' => 1.43,
-                'surface_area_sqft' => 1.0,
-                'is_active' => true,
-                'sort_order' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'type' => 'ANGLE',
-                'size_imperial' => 'L4x4x1/2',
-                'size_metric' => 'L100x100x12',
-                'grade_id' => $gradeA36,
-                'unit_weight_lbs' => 12.80,
-                'unit_weight_kg' => 5.81,
-                'price_per_lb' => 0.72,
-                'price_per_kg' => 1.59,
-                'surface_area_sqft' => null,
-                'is_active' => true,
-                'sort_order' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'type' => 'BEAM',
-                'size_imperial' => 'W12x26',
-                'size_metric' => 'W310x38.7',
-                'grade_id' => $gradeA572,
-                'unit_weight_lbs' => 26.00,
-                'unit_weight_kg' => 11.79,
-                'price_per_lb' => 0.85,
-                'price_per_kg' => 1.87,
-                'surface_area_sqft' => null,
-                'is_active' => true,
-                'sort_order' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        // Seed Materials from AISC database (1200+ shapes)
+        $this->call(MaterialSeeder::class);
 
         // Seed Customers
         DB::table('customers')->insert([
@@ -123,6 +69,22 @@ class DatabaseSeeder extends Seeder
                 'phone' => '216-555-0200',
                 'email' => 'contracts@bridgebuilders.com',
                 'notes' => 'Specializes in bridge structures',
+                'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'METRO',
+                'name' => 'Metro Steel Erectors',
+                'address_1' => '789 Main Street',
+                'address_2' => null,
+                'city' => 'Columbus',
+                'state' => 'OH',
+                'zip' => '43215',
+                'country' => 'USA',
+                'phone' => '614-555-0300',
+                'email' => 'info@metrosteel.com',
+                'notes' => 'Commercial building erector',
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -159,6 +121,22 @@ class DatabaseSeeder extends Seeder
                 'email' => 'orders@premiummetals.com',
                 'contact_name' => 'Sarah Johnson',
                 'payment_terms' => 'NET 45',
+                'is_active' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'code' => 'MIDWEST',
+                'name' => 'Midwest Steel Service',
+                'address_1' => '500 Industrial Park',
+                'city' => 'Chicago',
+                'state' => 'IL',
+                'zip' => '60601',
+                'phone' => '312-555-0500',
+                'fax' => '312-555-0501',
+                'email' => 'orders@midweststeel.com',
+                'contact_name' => 'Mike Thompson',
+                'payment_terms' => 'NET 30',
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -217,6 +195,7 @@ class DatabaseSeeder extends Seeder
         // Seed Sample Projects
         $customerAcme = DB::table('customers')->where('code', 'ACME')->first()->id;
         $customerBridge = DB::table('customers')->where('code', 'BRIDGE')->first()->id;
+        $customerMetro = DB::table('customers')->where('code', 'METRO')->first()->id;
 
         DB::table('projects')->insert([
             [
@@ -247,33 +226,61 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'job_number' => 'J2024-003',
+                'name' => 'Metro Plaza Parking Structure',
+                'customer_id' => $customerMetro,
+                'status' => 'active',
+                'job_type' => 'Parking Structure',
+                'po_number' => 'METRO-2024-15',
+                'contract_weight_lbs' => 220000.00,
+                'contract_weight_kg' => 99790.00,
+                'ship_date' => now()->addDays(120),
+                'notes' => 'Multi-level parking garage - phased delivery',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         // Seed Phases for Projects
         $project1 = DB::table('projects')->where('job_number', 'J2024-001')->first()->id;
         $project2 = DB::table('projects')->where('job_number', 'J2024-002')->first()->id;
+        $project3 = DB::table('projects')->where('job_number', 'J2024-003')->first()->id;
 
         DB::table('phases')->insert([
             ['project_id' => $project1, 'code' => 'P1', 'description' => 'Main Structure', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project1, 'code' => 'P2', 'description' => 'Secondary Framing', 'sort_order' => 2, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project2, 'code' => 'MAIN', 'description' => 'Expansion Joint Assembly', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['project_id' => $project3, 'code' => 'L1', 'description' => 'Level 1 - Ground', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['project_id' => $project3, 'code' => 'L2', 'description' => 'Level 2', 'sort_order' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['project_id' => $project3, 'code' => 'L3', 'description' => 'Level 3 - Roof', 'sort_order' => 3, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         // Seed Lots
         $phase1 = DB::table('phases')->where('project_id', $project1)->where('code', 'P1')->first()->id;
         $phase2 = DB::table('phases')->where('project_id', $project1)->where('code', 'P2')->first()->id;
         $phase3 = DB::table('phases')->where('project_id', $project2)->where('code', 'MAIN')->first()->id;
+        $phase4 = DB::table('phases')->where('project_id', $project3)->where('code', 'L1')->first()->id;
+        $phase5 = DB::table('phases')->where('project_id', $project3)->where('code', 'L2')->first()->id;
 
         DB::table('lots')->insert([
             ['project_id' => $project1, 'phase_id' => $phase1, 'code' => 'L1', 'description' => 'Columns', 'ship_date' => now()->addDays(75), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project1, 'phase_id' => $phase1, 'code' => 'L2', 'description' => 'Beams', 'ship_date' => now()->addDays(80), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project1, 'phase_id' => $phase2, 'code' => 'L3', 'description' => 'Bracing', 'ship_date' => now()->addDays(85), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project2, 'phase_id' => $phase3, 'code' => 'SHIP1', 'description' => 'First Shipment', 'ship_date' => now()->addDays(60), 'created_at' => now(), 'updated_at' => now()],
+            ['project_id' => $project3, 'phase_id' => $phase4, 'code' => 'COL-1', 'description' => 'Ground Columns', 'ship_date' => now()->addDays(100), 'created_at' => now(), 'updated_at' => now()],
+            ['project_id' => $project3, 'phase_id' => $phase4, 'code' => 'BM-1', 'description' => 'Ground Beams', 'ship_date' => now()->addDays(105), 'created_at' => now(), 'updated_at' => now()],
+            ['project_id' => $project3, 'phase_id' => $phase5, 'code' => 'COL-2', 'description' => 'Level 2 Columns', 'ship_date' => now()->addDays(110), 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        $this->command->info('✅ Database seeded successfully!');
-        $this->command->info('📧 Default users created:');
-        $this->command->info('   - admin@steelflow.local / password');
-        $this->command->info('   - manager@steelflow.local / password');
+        // Seed Stock Items with realistic inventory
+        $this->call(StockItemSeeder::class);
+
+        $this->command->info('');
+        $this->command->info('Database seeded successfully!');
+        $this->command->info('');
+        $this->command->info('Default users created:');
+        $this->command->info('  - admin@steelflow.local / password');
+        $this->command->info('  - manager@steelflow.local / password');
     }
 }
