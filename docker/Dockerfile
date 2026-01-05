@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     gosu \
+    gnupg \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-configure intl \
     && docker-php-ext-install -j$(nproc) \
@@ -43,6 +44,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable redis \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js LTS (v22.x) and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install -g npm@latest
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
