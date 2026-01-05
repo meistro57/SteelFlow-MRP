@@ -18,6 +18,13 @@ class ProductionController extends Controller
         $this->productionService = $productionService;
     }
 
+    public function index()
+    {
+        return Inertia::render('Production/Index', [
+            'title' => 'Production Dashboard',
+        ]);
+    }
+
     public function scan()
     {
         return Inertia::render('Production/Scan');

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // Seed Users
         DB::table('users')->insert([
             [
-                'id' => 1,                   
+                'id' => 1,
                 'name' => 'Admin User',
                 'email' => 'admin@steelflow.local',
                 'password' => Hash::make('password'),
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'id' => 2,                   
+                'id' => 2,
                 'name' => 'Shop Manager',
                 'email' => 'manager@steelflow.local',
                 'password' => Hash::make('password'),

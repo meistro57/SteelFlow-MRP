@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/settings', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
 
     // Production Routes
+    Route::get('/production', [\App\Http\Controllers\ProductionController::class, 'index'])->name('production.index');
     Route::get('/scan', [\App\Http\Controllers\ProductionController::class, 'scan'])->name('production.scan');
     Route::post('/scan', [\App\Http\Controllers\ProductionController::class, 'processScan'])->name('production.process-scan');
 

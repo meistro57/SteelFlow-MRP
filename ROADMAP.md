@@ -61,9 +61,9 @@ These are the critical gaps that need to be addressed:
 |--------|--------|-------------|
 | **BOM Management** | Needed | Project/Assembly/Part CRUD interfaces |
 | **Procurement** | Needed | Purchase Orders, Material Receiving |
-| **Inventory** | Needed | Stock tracking, movements, locations |
+| **Inventory** | Partial | Stock list with sorting/filtering, manual entry |
 | **Nesting** | Needed | Linear/plate nesting visualization |
-| **Production** | Partial | Complete barcode tracking, work routing |
+| **Production** | Partial | Dashboard, barcode scanner operational |
 
 ### Medium Priority - Feature Completion
 
@@ -164,6 +164,25 @@ Items to address as development progresses:
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to this project.
+
+---
+
+## Recent Updates
+
+### January 5, 2026
+
+**Inventory Module Enhancements:**
+- Added comprehensive sorting for all major columns (Stock ID, Type, Grade, Length, Qty, Status, Location)
+- Implemented multi-filter system (Status, Location, Grade)
+- Added visual sort indicators with ascending/descending arrows
+- Pagination now preserves all active filters and sorting parameters
+- Made `material_id` nullable in database to support manual stock entry
+
+**Production Module:**
+- Created Production Dashboard page with metrics and quick actions
+- Added route for `/production` to fix 404 error
+- Integrated barcode scanner link from main dashboard
+- Production page now displays active batch status and shop efficiency metrics
 
 ---
 

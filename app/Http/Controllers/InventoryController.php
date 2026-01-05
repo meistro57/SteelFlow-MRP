@@ -19,14 +19,66 @@ class InventoryController extends Controller
      */
     public function index(): Response
     {
-        $stockItems = StockItem::with(['material', 'reservedProject'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $query = StockItem::with(['material', 'reservedProject']);
+
+        // Apply search filter
+        if (request('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('stock_id', 'like', "%{$search}%")
+                    ->orWhere('heat_number', 'like', "%{$search}%")
+                    ->orWhere('po_number', 'like', "%{$search}%")
+                    ->orWhere('type', 'like', "%{$search}%")
+                    ->orWhere('size', 'like', "%{$search}%")
+                    ->orWhere('grade', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply status filter
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        // Apply location filter
+        if (request('location')) {
+            $query->where('stock_area', request('location'));
+        }
+
+        // Apply grade filter
+        if (request('grade')) {
+            $query->where('grade', request('grade'));
+        }
+
+        // Apply sorting
+        $sortBy = request('sort_by', 'created_at');
+        $sortDirection = request('sort_direction', 'desc');
+
+        // Validate sort direction
+        $sortDirection = in_array($sortDirection, ['asc', 'desc']) ? $sortDirection : 'desc';
+
+        // Map sortable columns
+        $sortableColumns = [
+            'stock_id' => 'stock_id',
+            'type' => 'type',
+            'grade' => 'grade',
+            'length' => 'length',
+            'quantity' => 'quantity',
+            'status' => 'status',
+            'location' => 'stock_area',
+            'created_at' => 'created_at',
+        ];
+
+        $sortColumn = $sortableColumns[$sortBy] ?? 'created_at';
+        $query->orderBy($sortColumn, $sortDirection);
+
+        $stockItems = $query->paginate(20)->withQueryString();
 
         return Inertia::render('Inventory/Index', [
             'stockItems' => $stockItems,
-            'filters' => request()->only(['search', 'status', 'type']),
+            'filters' => request()->only(['search', 'status', 'location', 'grade', 'sort_by', 'sort_direction']),
             'statuses' => $this->getStatuses(),
+            'locations' => $this->getStockAreas(),
+            'grades' => $this->getUniqueGrades(),
         ]);
     }
 
@@ -219,6 +271,18 @@ class InventoryController extends Controller
         return Grade::where('is_active', true)
             ->orderBy('code')
             ->pluck('code')
+            ->toArray();
+    }
+
+    /**
+     * Get unique grades from stock items.
+     */
+    protected function getUniqueGrades(): array
+    {
+        return StockItem::distinct()
+            ->orderBy('grade')
+            ->pluck('grade')
+            ->filter()
             ->toArray();
     }
 }

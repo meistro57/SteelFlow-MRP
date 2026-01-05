@@ -7,13 +7,26 @@ const props = defineProps({
     stockItems: Object,
     filters: Object,
     statuses: Object,
+    locations: Object,
+    grades: Array,
 });
 
 const search = ref(props.filters?.search || '');
 const statusFilter = ref(props.filters?.status || '');
+const locationFilter = ref(props.filters?.location || '');
+const gradeFilter = ref(props.filters?.grade || '');
+const sortBy = ref(props.filters?.sort_by || 'created_at');
+const sortDirection = ref(props.filters?.sort_direction || 'desc');
 
-watch([search, statusFilter], ([searchVal, statusVal]) => {
-    router.get('/inventory', { search: searchVal, status: statusVal }, {
+watch([search, statusFilter, locationFilter, gradeFilter], () => {
+    router.get('/inventory', {
+        search: search.value,
+        status: statusFilter.value,
+        location: locationFilter.value,
+        grade: gradeFilter.value,
+        sort_by: sortBy.value,
+        sort_direction: sortDirection.value,
+    }, {
         preserveState: true,
         replace: true,
     });
@@ -22,6 +35,36 @@ watch([search, statusFilter], ([searchVal, statusVal]) => {
 const formatLength = (length) => {
     if (!length) return '-';
     return `${length}"`;
+};
+
+const handleSort = (column) => {
+    if (sortBy.value === column) {
+        sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
+    } else {
+        sortBy.value = column;
+        sortDirection.value = 'asc';
+    }
+
+    router.get('/inventory', {
+        search: search.value,
+        status: statusFilter.value,
+        location: locationFilter.value,
+        grade: gradeFilter.value,
+        sort_by: sortBy.value,
+        sort_direction: sortDirection.value,
+    }, {
+        preserveState: true,
+        replace: true,
+    });
+};
+
+const getSortIcon = (column) => {
+    if (sortBy.value !== column) return '';
+    return sortDirection.value === 'asc' ? '↑' : '↓';
+};
+
+const isSortedBy = (column) => {
+    return sortBy.value === column;
 };
 </script>
 
@@ -61,52 +104,99 @@ const formatLength = (length) => {
 
     <div class="card-industrial">
       <!-- Search & Filters -->
-      <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="md:col-span-2">
-          <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
-            Search Inventory
-          </label>
-          <div class="relative">
-            <input
-              v-model="search"
-              type="text"
-              placeholder="Stock ID, heat #, PO #, material..."
-              class="input-industrial w-full pl-10"
-            >
-            <svg
-              class="w-5 h-5 text-steel-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+      <div class="mb-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+              Search Inventory
+            </label>
+            <div class="relative">
+              <input
+                v-model="search"
+                type="text"
+                placeholder="Stock ID, heat #, PO #, material..."
+                class="input-industrial w-full pl-10"
+              >
+              <svg
+                class="w-5 h-5 text-steel-500 absolute left-3 top-1/2 transform -translate-y-1/2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
           </div>
         </div>
-        <div>
-          <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
-            Filter by Status
-          </label>
-          <select
-            v-model="statusFilter"
-            class="input-industrial w-full"
-          >
-            <option value="">
-              All Statuses
-            </option>
-            <option
-              v-for="(label, value) in statuses"
-              :key="value"
-              :value="value"
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+              Status
+            </label>
+            <select
+              v-model="statusFilter"
+              class="input-industrial w-full"
             >
-              {{ label }}
-            </option>
-          </select>
+              <option value="">
+                All Statuses
+              </option>
+              <option
+                v-for="(label, value) in statuses"
+                :key="value"
+                :value="value"
+              >
+                {{ label }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+              Location
+            </label>
+            <select
+              v-model="locationFilter"
+              class="input-industrial w-full"
+            >
+              <option value="">
+                All Locations
+              </option>
+              <option
+                v-for="(label, value) in locations"
+                :key="value"
+                :value="value"
+              >
+                {{ label }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+              Grade
+            </label>
+            <select
+              v-model="gradeFilter"
+              class="input-industrial w-full"
+            >
+              <option value="">
+                All Grades
+              </option>
+              <option
+                v-for="grade in grades"
+                :key="grade"
+                :value="grade"
+              >
+                {{ grade }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -115,17 +205,104 @@ const formatLength = (length) => {
         <table class="table-industrial">
           <thead>
             <tr>
-              <th>Stock ID</th>
-              <th>Type / Size</th>
-              <th>Grade</th>
-              <th class="text-right">
-                Length
+              <th
+                class="cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('stock_id')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Stock ID</span>
+                  <span
+                    v-if="isSortedBy('stock_id')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('stock_id') }}
+                  </span>
+                </div>
               </th>
-              <th class="text-right">
-                Qty
+              <th
+                class="cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('type')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Type / Size</span>
+                  <span
+                    v-if="isSortedBy('type')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('type') }}
+                  </span>
+                </div>
               </th>
-              <th>Status</th>
-              <th>Location</th>
+              <th
+                class="cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('grade')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Grade</span>
+                  <span
+                    v-if="isSortedBy('grade')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('grade') }}
+                  </span>
+                </div>
+              </th>
+              <th
+                class="text-right cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('length')"
+              >
+                <div class="flex items-center justify-end">
+                  <span>Length</span>
+                  <span
+                    v-if="isSortedBy('length')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('length') }}
+                  </span>
+                </div>
+              </th>
+              <th
+                class="text-right cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('quantity')"
+              >
+                <div class="flex items-center justify-end">
+                  <span>Qty</span>
+                  <span
+                    v-if="isSortedBy('quantity')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('quantity') }}
+                  </span>
+                </div>
+              </th>
+              <th
+                class="cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('status')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Status</span>
+                  <span
+                    v-if="isSortedBy('status')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('status') }}
+                  </span>
+                </div>
+              </th>
+              <th
+                class="cursor-pointer hover:bg-steel-700 transition-colors"
+                @click="handleSort('location')"
+              >
+                <div class="flex items-center justify-between">
+                  <span>Location</span>
+                  <span
+                    v-if="isSortedBy('location')"
+                    class="ml-2 text-weld-400 font-bold"
+                  >
+                    {{ getSortIcon('location') }}
+                  </span>
+                </div>
+              </th>
               <th>Heat #</th>
               <th>Reserved</th>
               <th class="text-right">
