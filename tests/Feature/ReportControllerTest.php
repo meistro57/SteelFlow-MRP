@@ -13,7 +13,7 @@ class ReportControllerTest extends TestCase
     public function test_guests_are_redirected_from_reports()
     {
         $response = $this->get('/reports');
-        $response->assertRedirect('/login/microsoft');
+        $response->assertRedirect('/login');
     }
 
     public function test_authenticated_user_can_access_dashboard_metrics()
