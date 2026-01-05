@@ -1,6 +1,7 @@
 <script setup>
 import { Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     projects: Object,
@@ -28,47 +29,41 @@ const formatDate = (date) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-steel-950">
+  <AppLayout title="Projects">
     <!-- Page Header -->
-    <div class="border-b border-steel-800 bg-gradient-steel">
-      <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 class="text-3xl font-bold text-steel-100 uppercase tracking-wide text-glow-forge">
-              Projects
-            </h1>
-            <p class="mt-1 text-sm text-steel-400 uppercase tracking-wider font-mono">
-              Active Fabrication Jobs
-            </p>
-          </div>
-          <div class="mt-4 md:mt-0">
-            <Link
-              href="/projects/create"
-              class="btn-primary"
-            >
-              <svg
-                class="h-5 w-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              New Project
-            </Link>
-          </div>
-        </div>
+    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-steel-100 uppercase tracking-wide text-glow-forge">
+          Projects
+        </h1>
+        <p class="mt-1 text-sm text-steel-400 uppercase tracking-wider font-mono">
+          Active Fabrication Jobs
+        </p>
+      </div>
+      <div class="mt-4 md:mt-0">
+        <Link
+          href="/projects/create"
+          class="btn-primary"
+        >
+          <svg
+            class="h-5 w-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          New Project
+        </Link>
       </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <!-- Search Filter -->
+    <!-- Search Filter -->
       <div class="card mb-6">
         <div class="p-4">
           <label class="block text-xs uppercase tracking-wider text-steel-400 mb-2 font-mono">
@@ -299,6 +294,5 @@ const formatDate = (date) => {
           </div>
         </div>
       </div>
-    </div>
-  </div>
+  </AppLayout>
 </template>
