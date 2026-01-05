@@ -14,6 +14,7 @@ services:
     depends_on:
       - mysql
       - redis
+      - meilisearch
     healthcheck:
       test: ["CMD", "pgrep", "-f", "php-fpm"]
       interval: 10s
@@ -58,6 +59,20 @@ services:
     networks:
       - steelflow
 
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: steelflow-meilisearch
+    restart: unless-stopped
+    ports:
+      - "7700:7700"
+    environment:
+      MEILI_ENV: development
+      MEILI_NO_ANALYTICS: true
+    volumes:
+      - steelflow-meilisearch:/meili_data
+    networks:
+      - steelflow
+
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: steelflow-phpmyadmin
@@ -78,4 +93,6 @@ networks:
 
 volumes:
   steelflow-db:
+    driver: local
+  steelflow-meilisearch:
     driver: local

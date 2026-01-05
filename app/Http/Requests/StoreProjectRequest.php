@@ -23,7 +23,7 @@ class StoreProjectRequest extends FormRequest
             'job_number' => ['required', 'string', 'max:50', 'unique:projects,job_number'],
             'name' => ['required', 'string', 'max:255'],
             'customer_id' => ['nullable', 'exists:customers,id'],
-            'status' => ['required', 'string', 'in:pending,active,on_hold,completed,cancelled'],
+            'status' => ['required', 'string', 'in:bid,active,production,shipping,complete,archived'],
             'job_type' => ['nullable', 'string', 'in:new_construction,renovation,repair,miscellaneous'],
             'po_number' => ['nullable', 'string', 'max:100'],
             'contract_weight_lbs' => ['nullable', 'numeric', 'min:0'],

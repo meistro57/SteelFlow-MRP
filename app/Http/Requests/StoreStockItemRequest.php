@@ -20,13 +20,13 @@ class StoreStockItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'material_id' => ['nullable', 'exists:materials,id'],
-            'type' => ['required', 'string', 'max:50'],
-            'size' => ['required', 'string', 'max:50'],
-            'grade' => ['required', 'string', 'max:50'],
+            'material_id' => ['required', 'exists:materials,id'],
+            'type' => ['nullable', 'string', 'max:50'],
+            'size' => ['nullable', 'string', 'max:50'],
+            'grade' => ['nullable', 'string', 'max:50'],
             'length' => ['required', 'numeric', 'min:0'],
             'quantity' => ['required', 'integer', 'min:1'],
-            'status' => ['required', 'string', 'in:free,assigned,used,scrapped'],
+            'status' => ['required', 'string', 'in:free,assigned,committed,used'],
             'reserved_project_id' => ['nullable', 'exists:projects,id'],
             'stock_area' => ['nullable', 'string', 'max:50'],
             'heat_number' => ['nullable', 'string', 'max:100'],
@@ -44,9 +44,8 @@ class StoreStockItemRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'type.required' => 'Material type is required.',
-            'size.required' => 'Material size is required.',
-            'grade.required' => 'Material grade is required.',
+            'material_id.required' => 'Please select a material.',
+            'material_id.exists' => 'The selected material does not exist.',
             'length.required' => 'Length is required.',
             'quantity.required' => 'Quantity is required.',
             'quantity.min' => 'Quantity must be at least 1.',

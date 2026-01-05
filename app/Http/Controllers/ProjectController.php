@@ -116,11 +116,12 @@ class ProjectController extends Controller
     protected function getStatuses(): array
     {
         return [
-            'pending' => 'Pending',
+            'bid' => 'Bid',
             'active' => 'Active',
-            'on_hold' => 'On Hold',
-            'completed' => 'Completed',
-            'cancelled' => 'Cancelled',
+            'production' => 'Production',
+            'shipping' => 'Shipping',
+            'complete' => 'Complete',
+            'archived' => 'Archived',
         ];
     }
 

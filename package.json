@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.1.1",
-        "pinia": "^2.1.7"
+        "pinia": "^2.1.7",
+        "ziggy-js": "^2.6.0"
     }
 }

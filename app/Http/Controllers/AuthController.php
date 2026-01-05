@@ -19,6 +19,27 @@ class AuthController extends Controller
     }
 
     /**
+     * Handle an incoming authentication request.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    /**
      * Redirect the user to the Microsoft authentication page.
      */
     public function redirectToProvider()

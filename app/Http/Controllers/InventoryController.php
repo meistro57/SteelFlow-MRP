@@ -34,7 +34,7 @@ class InventoryController extends Controller
      */
     public function create(): Response
     {
-        $materials = Material::orderBy('description')->get(['id', 'description', 'type', 'size', 'grade']);
+        $materials = Material::with('grade')->orderBy('sort_order')->get(['id', 'type', 'size_imperial', 'size_metric', 'grade_id']);
         $projects = Project::where('status', 'active')->orderBy('job_number')->get(['id', 'job_number', 'name']);
 
         return Inertia::render('Inventory/Create', [
@@ -52,6 +52,16 @@ class InventoryController extends Controller
     {
         $data = $request->validated();
         $data['stock_id'] = $this->generateStockId();
+
+        // Populate type, size, and grade from material if not provided
+        if (isset($data['material_id'])) {
+            $material = Material::with('grade')->find($data['material_id']);
+            if ($material) {
+                $data['type'] = $data['type'] ?? $material->type;
+                $data['size'] = $data['size'] ?? ($material->size_imperial ?: $material->size_metric);
+                $data['grade'] = $data['grade'] ?? ($material->grade->code ?? '');
+            }
+        }
 
         StockItem::create($data);
 
@@ -77,7 +87,7 @@ class InventoryController extends Controller
      */
     public function edit(StockItem $inventory): Response
     {
-        $materials = Material::orderBy('description')->get(['id', 'description', 'type', 'size', 'grade']);
+        $materials = Material::with('grade')->orderBy('sort_order')->get(['id', 'type', 'size_imperial', 'size_metric', 'grade_id']);
         $projects = Project::orderBy('job_number')->get(['id', 'job_number', 'name']);
 
         return Inertia::render('Inventory/Edit', [
@@ -94,7 +104,19 @@ class InventoryController extends Controller
      */
     public function update(UpdateStockItemRequest $request, StockItem $inventory): RedirectResponse
     {
-        $inventory->update($request->validated());
+        $data = $request->validated();
+
+        // Populate type, size, and grade from material if not provided
+        if (isset($data['material_id'])) {
+            $material = Material::with('grade')->find($data['material_id']);
+            if ($material) {
+                $data['type'] = $data['type'] ?? $material->type;
+                $data['size'] = $data['size'] ?? ($material->size_imperial ?: $material->size_metric);
+                $data['grade'] = $data['grade'] ?? ($material->grade->code ?? '');
+            }
+        }
+
+        $inventory->update($data);
 
         return redirect()
             ->route('inventory.show', $inventory)
@@ -121,8 +143,8 @@ class InventoryController extends Controller
         return [
             'free' => 'Free',
             'assigned' => 'Assigned',
+            'committed' => 'Committed',
             'used' => 'Used',
-            'scrapped' => 'Scrapped',
         ];
     }
 
