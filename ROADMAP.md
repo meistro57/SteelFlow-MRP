@@ -73,6 +73,12 @@ These are the critical gaps that need to be addressed:
 | Shipping UI | Needed | Load builder, BOL generation |
 | Advanced Reports | Needed | BOM, purchasing, production reports |
 | Dashboard Widgets | Partial | Real-time metrics, project overview |
+| Gas Cylinder Tracking | Planned | Database schema, tracking logic, rental billing |
+| Service Call Dispatch | Planned | Mobile app, scheduling, field tracking |
+| Multi-mode POS | Planned | Retail + gas sales + quick jobs support |
+| Truck Inventory Management | Planned | Service vehicle stock tracking |
+| Recurring Billing | Planned | Monthly cylinder rental automation |
+| Integration Architecture | Planned | End-to-end connectivity blueprint |
 
 ### Low Priority - Polish & Optimization
 
