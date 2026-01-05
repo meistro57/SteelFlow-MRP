@@ -1,6 +1,6 @@
 {
     "name": "steelflow-mrp",
-    "version": "1.0.0",
+    "version": "0.1.0-alpha",
     "private": true,
     "type": "module",
     "description": "SteelFlow MRP - Manufacturing Resource Planning for Steel Fabrication",

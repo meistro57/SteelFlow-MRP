@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
+defineProps({
     stockItem: Object,
 });
 

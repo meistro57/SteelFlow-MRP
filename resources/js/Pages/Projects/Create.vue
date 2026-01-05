@@ -2,7 +2,7 @@
 import { useForm, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
+defineProps({
     customers: Array,
     statuses: Object,
     jobTypes: Object,
