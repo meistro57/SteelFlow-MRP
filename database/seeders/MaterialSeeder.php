@@ -53,7 +53,7 @@ class MaterialSeeder extends Seeder
     {
         // Cache grade IDs
         $gradeIds = DB::table('grades')->pluck('id', 'code')->toArray();
-        
+
         $sortOrder = 1;
         $totalCount = 0;
 
@@ -71,7 +71,7 @@ class MaterialSeeder extends Seeder
                     gradeId: $gradeId,
                     weightLbs: $weightLbs,
                     pricePerLb: $pricePerLb,
-                    sortOrder: $sortOrder++
+                    sortOrder: $sortOrder++,
                 );
                 $totalCount++;
             }
@@ -87,7 +87,7 @@ class MaterialSeeder extends Seeder
                 gradeId: $gradeId,
                 weightLbs: $plate['weight_lbs'],
                 pricePerLb: $this->pricePerLb['PLATE'],
-                sortOrder: $sortOrder++
+                sortOrder: $sortOrder++,
             );
             $totalCount++;
         }
@@ -102,7 +102,7 @@ class MaterialSeeder extends Seeder
                 gradeId: $gradeId,
                 weightLbs: $bar['weight_lbs'],
                 pricePerLb: $this->pricePerLb['BAR'],
-                sortOrder: $sortOrder++
+                sortOrder: $sortOrder++,
             );
             $totalCount++;
         }
@@ -120,7 +120,7 @@ class MaterialSeeder extends Seeder
         int $gradeId,
         float $weightLbs,
         float $pricePerLb,
-        int $sortOrder
+        int $sortOrder,
     ): void {
         $weightKg = round($weightLbs * self::LBS_FT_TO_KG_M, 4);
         $pricePerKg = round($pricePerLb * 2.2046, 4);
@@ -142,7 +142,7 @@ class MaterialSeeder extends Seeder
                 'sort_order' => $sortOrder,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         );
     }
 
@@ -153,29 +153,33 @@ class MaterialSeeder extends Seeder
     {
         // For W-shapes: W12x26 -> W310x38.7 (approximate)
         if (preg_match('/^W(\d+)[xX](\d+\.?\d*)$/', $designation, $m)) {
-            $depthMm = round((float)$m[1] * 25.4);
-            $weightKgM = round((float)$m[2] * 1.4882, 1);
+            $depthMm = round((float) $m[1] * 25.4);
+            $weightKgM = round((float) $m[2] * 1.4882, 1);
+
             return "W{$depthMm}x{$weightKgM}";
         }
 
         // For S-shapes: S12x35 -> S310x52
         if (preg_match('/^S(\d+)[xX](\d+\.?\d*)$/', $designation, $m)) {
-            $depthMm = round((float)$m[1] * 25.4);
-            $weightKgM = round((float)$m[2] * 1.4882, 1);
+            $depthMm = round((float) $m[1] * 25.4);
+            $weightKgM = round((float) $m[2] * 1.4882, 1);
+
             return "S{$depthMm}x{$weightKgM}";
         }
 
         // For C-shapes: C12x25 -> C310x37
         if (preg_match('/^C(\d+)[xX](\d+\.?\d*)$/', $designation, $m)) {
-            $depthMm = round((float)$m[1] * 25.4);
-            $weightKgM = round((float)$m[2] * 1.4882, 1);
+            $depthMm = round((float) $m[1] * 25.4);
+            $weightKgM = round((float) $m[2] * 1.4882, 1);
+
             return "C{$depthMm}x{$weightKgM}";
         }
 
         // For MC-shapes: MC12x35 -> MC310x52
         if (preg_match('/^MC(\d+)[xX](\d+\.?\d*)$/', $designation, $m)) {
-            $depthMm = round((float)$m[1] * 25.4);
-            $weightKgM = round((float)$m[2] * 1.4882, 1);
+            $depthMm = round((float) $m[1] * 25.4);
+            $weightKgM = round((float) $m[2] * 1.4882, 1);
+
             return "MC{$depthMm}x{$weightKgM}";
         }
 
@@ -184,6 +188,7 @@ class MaterialSeeder extends Seeder
             $leg1Mm = round($this->fractionToDecimal($m[1]) * 25.4);
             $leg2Mm = round($this->fractionToDecimal($m[2]) * 25.4);
             $thickMm = round($this->fractionToDecimal($m[3]) * 25.4, 1);
+
             return "L{$leg1Mm}x{$leg2Mm}x{$thickMm}";
         }
 
@@ -192,13 +197,15 @@ class MaterialSeeder extends Seeder
             $dim1Mm = round($this->fractionToDecimal($m[1]) * 25.4);
             $dim2Mm = round($this->fractionToDecimal($m[2]) * 25.4);
             $thickMm = round($this->fractionToDecimal($m[3]) * 25.4, 1);
+
             return "HSS{$dim1Mm}x{$dim2Mm}x{$thickMm}";
         }
 
         // For round HSS: HSS6.000x0.500 -> HSS152x12.7
         if (preg_match('/^HSS([\d.]+)[xX]([\d.]+)$/', $designation, $m)) {
-            $odMm = round((float)$m[1] * 25.4);
-            $thickMm = round((float)$m[2] * 25.4, 1);
+            $odMm = round((float) $m[1] * 25.4);
+            $thickMm = round((float) $m[2] * 25.4, 1);
+
             return "HSS{$odMm}x{$thickMm}";
         }
 
@@ -211,21 +218,24 @@ class MaterialSeeder extends Seeder
                 '12' => 323.8, '14' => 355.6, '16' => 406.4, '18' => 457.2,
                 '20' => 508.0, '24' => 609.6, '26' => 660.4, '30' => 762.0,
             ];
-            $odMm = $nominalToOd[$m[1]] ?? round((float)$m[1] * 25.4);
+            $odMm = $nominalToOd[$m[1]] ?? round((float) $m[1] * 25.4);
+
             return "Pipe{$odMm}{$m[2]}";
         }
 
         // For HP: HP14x117 -> HP360x174
         if (preg_match('/^HP(\d+)[xX](\d+)$/', $designation, $m)) {
-            $depthMm = round((float)$m[1] * 25.4);
-            $weightKgM = round((float)$m[2] * 1.4882, 1);
+            $depthMm = round((float) $m[1] * 25.4);
+            $weightKgM = round((float) $m[2] * 1.4882, 1);
+
             return "HP{$depthMm}x{$weightKgM}";
         }
 
         // For WT: WT12x52 -> WT310x77
         if (preg_match('/^WT([\d.]+)[xX]([\d.]+)$/', $designation, $m)) {
-            $depthMm = round((float)$m[1] * 25.4);
-            $weightKgM = round((float)$m[2] * 1.4882, 1);
+            $depthMm = round((float) $m[1] * 25.4);
+            $weightKgM = round((float) $m[2] * 1.4882, 1);
+
             return "WT{$depthMm}x{$weightKgM}";
         }
 
@@ -240,20 +250,20 @@ class MaterialSeeder extends Seeder
     {
         // Already a decimal
         if (is_numeric($value)) {
-            return (float)$value;
+            return (float) $value;
         }
 
         // Mixed number like "1-1/2"
         if (preg_match('/^(\d+)-(\d+)\/(\d+)$/', $value, $m)) {
-            return (float)$m[1] + ((float)$m[2] / (float)$m[3]);
+            return (float) $m[1] + ((float) $m[2] / (float) $m[3]);
         }
 
         // Simple fraction like "1/2"
         if (preg_match('/^(\d+)\/(\d+)$/', $value, $m)) {
-            return (float)$m[1] / (float)$m[2];
+            return (float) $m[1] / (float) $m[2];
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 
     /**

@@ -54,10 +54,10 @@ class GradeSeeder extends Seeder
                 array_merge($grade, [
                     'created_at' => now(),
                     'updated_at' => now(),
-                ])
+                ]),
             );
         }
 
-        $this->command->info('Seeded ' . count($grades) . ' steel grades');
+        $this->command->info('Seeded '.count($grades).' steel grades');
     }
 }

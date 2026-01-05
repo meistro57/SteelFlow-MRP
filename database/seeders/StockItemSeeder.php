@@ -110,7 +110,7 @@ class StockItemSeeder extends Seeder
         ];
 
         foreach ($itemsPerType as $type => $count) {
-            if (!isset($materials[$type])) {
+            if (! isset($materials[$type])) {
                 continue;
             }
 
@@ -130,10 +130,10 @@ class StockItemSeeder extends Seeder
                     $projectId = null;
                 } elseif ($statusRand <= 90) {
                     $status = 'assigned';
-                    $projectId = !empty($projectIds) ? $projectIds[array_rand($projectIds)] : null;
+                    $projectId = ! empty($projectIds) ? $projectIds[array_rand($projectIds)] : null;
                 } else {
                     $status = 'committed';
-                    $projectId = !empty($projectIds) ? $projectIds[array_rand($projectIds)] : null;
+                    $projectId = ! empty($projectIds) ? $projectIds[array_rand($projectIds)] : null;
                 }
 
                 // Generate stock item data
@@ -265,7 +265,7 @@ class StockItemSeeder extends Seeder
         $movementIndex = 0;
         foreach ($stockItems as $index => $item) {
             $stockItemId = $insertedItems[$item['stock_id']] ?? null;
-            if (!$stockItemId) {
+            if (! $stockItemId) {
                 continue;
             }
 
@@ -289,8 +289,8 @@ class StockItemSeeder extends Seeder
         $movementBatches = array_chunk($movements, $batchSize);
         foreach ($movementBatches as $batch) {
             // Filter out any movements without stock_item_id
-            $validBatch = array_filter($batch, fn($m) => $m['stock_item_id'] !== null);
-            if (!empty($validBatch)) {
+            $validBatch = array_filter($batch, fn ($m) => $m['stock_item_id'] !== null);
+            if (! empty($validBatch)) {
                 DB::table('stock_movements')->insert($validBatch);
             }
         }
@@ -309,6 +309,6 @@ class StockItemSeeder extends Seeder
      */
     private function generateStockId(): string
     {
-        return 'STK-' . strtoupper(Str::random(10));
+        return 'STK-'.strtoupper(Str::random(10));
     }
 }
