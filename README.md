@@ -32,7 +32,7 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - **Framework**: Laravel 11 (PHP 8.4+)
 - **Database**: MySQL 8.0
 - **Cache/Queue**: Redis + Laravel Horizon
-- **Search Engine**: Meilisearch (optional, for sub-millisecond lookups)
+- **Search Engine**: Meilisearch (for sub-millisecond lookups)
 
 ### **Frontend Experience**
 - **Framework**: Vue.js 3 + Inertia.js (The "Classic Monolith" feel with SPA speed)
@@ -143,6 +143,7 @@ SteelFlow MRP runs on a fully containerized infrastructure:
 | **Web** | `steelflow-web` | 80 | Nginx web server (Alpine) |
 | **Database** | `steelflow-db` | 3306 | MySQL 8.0 database |
 | **Cache** | `steelflow-redis` | - | Redis for cache, sessions, and queues |
+| **Search** | `steelflow-meilisearch` | 7700 | Meilisearch for fast search indexing |
 | **Admin** | `steelflow-phpmyadmin` | 8080 | phpMyAdmin database management |
 
 ---

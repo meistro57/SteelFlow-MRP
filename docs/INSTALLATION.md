@@ -19,8 +19,10 @@ Before installing SteelFlow MRP, ensure you have the following:
 
 | Software | Version | Purpose |
 |----------|---------|---------|
-| [Node.js](https://nodejs.org/) | 20.x LTS | Frontend asset compilation |
-| [PHP](https://www.php.net/) | 8.4+ | Local Composer/Artisan commands |
+| [Node.js](https://nodejs.org/) | 20.x LTS | Frontend asset compilation (optional - runs in container) |
+| [PHP](https://www.php.net/) | 8.4+ | Local Composer/Artisan commands (optional - runs in container) |
+
+**Note:** Node.js and PHP are optional for local development since all commands can be run inside the Docker containers.
 
 ### Windows-Specific Requirements
 
@@ -53,12 +55,14 @@ chmod +x scripts/install.sh
 The install script will:
 1. Verify Docker is installed and running
 2. Create `.env` from template (if not exists)
-3. Build and start all Docker containers
-4. Wait for MySQL to initialize
-5. Install PHP dependencies via Composer
-6. Install Node.js dependencies and build assets
-7. Generate application key
-8. Run database migrations and seed initial data
+3. Ensure Laravel directory structure exists
+4. Build and start all Docker containers
+5. Wait for containers to be healthy
+6. Install PHP dependencies via Composer (inside container)
+7. Install Node.js dependencies and build assets (inside container)
+8. Generate application key
+9. Run database migrations and seed initial data
+10. Set proper file permissions
 
 ### Option 2: Manual Installation
 
@@ -85,10 +89,7 @@ docker compose exec app php artisan key:generate
 # 7. Run database migrations and seed
 docker compose exec app php artisan migrate --seed
 
-# 8. Install frontend dependencies (if Node.js available locally)
-npm install && npm run build
-
-# OR build inside container:
+# 8. Install frontend dependencies and build assets (inside container)
 docker compose exec app npm install
 docker compose exec app npm run build
 ```
@@ -105,11 +106,13 @@ After installation, the following services will be running:
 | Web Server | `steelflow-web` | 80 | http://localhost |
 | Database | `steelflow-db` | 3306 | mysql://localhost:3306 |
 | Redis Cache | `steelflow-redis` | 6379 | (internal) |
+| Search Engine | `steelflow-meilisearch` | 7700 | http://localhost:7700 |
 | phpMyAdmin | `steelflow-phpmyadmin` | 8080 | http://localhost:8080 |
 
 ### Accessing Services
 
 - **Application**: http://localhost
+- **Meilisearch**: http://localhost:7700 (Search dashboard)
 - **phpMyAdmin**: http://localhost:8080
   - Server: `mysql`
   - Username: `steelflow` (or `root`)
@@ -125,6 +128,19 @@ After seeding the database, you can log in with:
 |-------|-------|
 | Email | `admin@steelflow.local` |
 | Password | `password` |
+
+---
+
+## PHP Configuration
+
+SteelFlow MRP includes optimized PHP settings in `docker/php.ini`:
+
+- **Memory Limit**: 512M (for large BOM imports and nesting operations)
+- **Upload Size**: 100M max file uploads
+- **Execution Time**: 120s timeout
+- **OPcache**: Enabled for production performance with 256M cache
+
+These settings are automatically applied when the Docker container builds.
 
 ---
 
