@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class BOMExtensionService
 {
     public function __construct(
-        protected WeightCalculator $weightCalculator
+        protected WeightCalculator $weightCalculator,
     ) {}
 
     /**
@@ -39,7 +39,7 @@ class BOMExtensionService
     public function extendAssembly(Assembly $assembly): void
     {
         // Eager load parts with material if not already loaded
-        if (!$assembly->relationLoaded('parts')) {
+        if (! $assembly->relationLoaded('parts')) {
             $assembly->load('parts.material');
         }
 

@@ -14,7 +14,7 @@ class UploadDrawingRequest extends FormRequest
         // Verify user has access to the drawing's project
         $drawing = $this->route('drawing');
 
-        if (!$drawing) {
+        if (! $drawing) {
             return false;
         }
 

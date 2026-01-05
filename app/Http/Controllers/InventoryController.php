@@ -167,6 +167,6 @@ class InventoryController extends Controller
      */
     protected function generateStockId(): string
     {
-        return 'STK-' . strtoupper(uniqid());
+        return 'STK-'.strtoupper(uniqid());
     }
 }

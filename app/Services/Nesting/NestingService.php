@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class NestingService
 {
     public function __construct(
-        protected InventoryService $inventoryService
+        protected InventoryService $inventoryService,
     ) {}
 
     /**

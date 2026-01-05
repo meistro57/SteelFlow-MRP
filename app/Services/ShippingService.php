@@ -16,7 +16,7 @@ class ShippingService
     public function addItemToLoad(Load $load, AssemblyInstance $instance): LoadItem
     {
         // Eager load assembly to prevent N+1 query
-        if (!$instance->relationLoaded('assembly')) {
+        if (! $instance->relationLoaded('assembly')) {
             $instance->load('assembly');
         }
 

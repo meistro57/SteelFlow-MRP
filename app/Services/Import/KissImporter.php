@@ -27,7 +27,7 @@ class KissImporter
     public function __construct(
         protected ReferenceDataService $referenceData,
         protected WeightCalculator $weightCalculator,
-        protected BOMExtensionService $bomExtensionService
+        protected BOMExtensionService $bomExtensionService,
     ) {}
 
     /**
@@ -155,7 +155,7 @@ class KissImporter
                 'total_weight_lbs' => (float) ($data[5] ?? 0),
                 'weight_each_kg' => (float) ($data[4] ?? 0) * 0.453592,
                 'total_weight_kg' => (float) ($data[5] ?? 0) * 0.453592,
-            ]
+            ],
         );
 
         $this->assemblyCount++;
@@ -213,7 +213,7 @@ class KissImporter
                 'description' => trim($data[4] ?? ''),
                 'weight_each_lbs' => (float) ($data[8] ?? 0),
                 'total_weight_lbs' => (float) ($data[9] ?? 0),
-            ]
+            ],
         );
 
         $this->partCount++;

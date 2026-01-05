@@ -9,7 +9,7 @@ use Inertia\Inertia;
 class ReportController extends Controller
 {
     public function __construct(
-        protected ReportingService $reportingService
+        protected ReportingService $reportingService,
     ) {}
 
     public function index()

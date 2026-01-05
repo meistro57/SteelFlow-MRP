@@ -23,7 +23,7 @@ class XsrImporter
     protected int $partCount = 0;
 
     public function __construct(
-        protected BOMExtensionService $bomExtensionService
+        protected BOMExtensionService $bomExtensionService,
     ) {}
 
     /**
