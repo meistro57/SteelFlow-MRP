@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStockItemRequest;
 use App\Http\Requests\UpdateStockItemRequest;
+use App\Models\Grade;
 use App\Models\Material;
 use App\Models\Project;
 use App\Models\StockItem;
@@ -42,6 +43,9 @@ class InventoryController extends Controller
             'projects' => $projects,
             'statuses' => $this->getStatuses(),
             'stockAreas' => $this->getStockAreas(),
+            'types' => $this->getUniqueTypes(),
+            'sizesByType' => $this->getSizesByType(),
+            'grades' => $this->getGrades(),
         ]);
     }
 
@@ -96,6 +100,9 @@ class InventoryController extends Controller
             'projects' => $projects,
             'statuses' => $this->getStatuses(),
             'stockAreas' => $this->getStockAreas(),
+            'types' => $this->getUniqueTypes(),
+            'sizesByType' => $this->getSizesByType(),
+            'grades' => $this->getGrades(),
         ]);
     }
 
@@ -168,5 +175,50 @@ class InventoryController extends Controller
     protected function generateStockId(): string
     {
         return 'STK-'.strtoupper(uniqid());
+    }
+
+    /**
+     * Get unique material types.
+     */
+    protected function getUniqueTypes(): array
+    {
+        return Material::where('is_active', true)
+            ->distinct()
+            ->orderBy('type')
+            ->pluck('type')
+            ->toArray();
+    }
+
+    /**
+     * Get sizes grouped by type.
+     */
+    protected function getSizesByType(): array
+    {
+        $materials = Material::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get(['type', 'size_imperial']);
+
+        $sizesByType = [];
+        foreach ($materials as $material) {
+            if (! isset($sizesByType[$material->type])) {
+                $sizesByType[$material->type] = [];
+            }
+            if ($material->size_imperial && ! in_array($material->size_imperial, $sizesByType[$material->type])) {
+                $sizesByType[$material->type][] = $material->size_imperial;
+            }
+        }
+
+        return $sizesByType;
+    }
+
+    /**
+     * Get all active grades.
+     */
+    protected function getGrades(): array
+    {
+        return Grade::where('is_active', true)
+            ->orderBy('code')
+            ->pluck('code')
+            ->toArray();
     }
 }

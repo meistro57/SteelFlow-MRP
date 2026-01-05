@@ -1,4 +1,5 @@
 <script setup>
+import { computed, watch } from 'vue';
 import { useForm, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -7,6 +8,9 @@ const props = defineProps({
     projects: Array,
     statuses: Object,
     stockAreas: Object,
+    types: Array,
+    sizesByType: Object,
+    grades: Array,
 });
 
 const form = useForm({
@@ -14,7 +18,8 @@ const form = useForm({
     type: '',
     size: '',
     grade: '',
-    length: '',
+    length_ft: '',
+    length_in: '',
     quantity: 1,
     status: 'free',
     reserved_project_id: '',
@@ -27,17 +32,36 @@ const form = useForm({
     notes: '',
 });
 
+// Computed property for available sizes based on selected type
+const availableSizes = computed(() => {
+    if (!form.type || !props.sizesByType[form.type]) {
+        return [];
+    }
+    return props.sizesByType[form.type];
+});
+
+// Reset size when type changes
+watch(() => form.type, () => {
+    form.size = '';
+});
+
 const onMaterialChange = () => {
     const material = props.materials.find(m => m.id === parseInt(form.material_id));
     if (material) {
         form.type = material.type;
-        form.size = material.size;
-        form.grade = material.grade;
+        form.size = material.size_imperial || material.size_metric;
+        form.grade = material.grade?.code || '';
     }
 };
 
 const submit = () => {
-    form.post('/inventory');
+    // Convert feet and inches to total feet before submitting
+    const totalFeet = (parseFloat(form.length_ft) || 0) + ((parseFloat(form.length_in) || 0) / 12);
+
+    form.transform((data) => ({
+        ...data,
+        length: totalFeet,
+    })).post('/inventory');
 };
 </script>
 
@@ -85,7 +109,7 @@ const submit = () => {
                 :key="material.id"
                 :value="material.id"
               >
-                {{ material.description }}
+                {{ material.type }} {{ material.size_imperial || material.size_metric }}
               </option>
             </select>
           </div>
@@ -98,14 +122,23 @@ const submit = () => {
             >
               Type *
             </label>
-            <input
+            <select
               id="type"
               v-model="form.type"
-              type="text"
               required
-              placeholder="e.g., W, C, L, HSS"
               class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
+              <option value="">
+                Select Type
+              </option>
+              <option
+                v-for="type in types"
+                :key="type"
+                :value="type"
+              >
+                {{ type }}
+              </option>
+            </select>
             <p
               v-if="form.errors.type"
               class="mt-1 text-sm text-red-600"
@@ -122,14 +155,24 @@ const submit = () => {
             >
               Size *
             </label>
-            <input
+            <select
               id="size"
               v-model="form.size"
-              type="text"
               required
-              placeholder="e.g., W14x30, C10x15.3"
-              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              :disabled="!form.type"
+              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
             >
+              <option value="">
+                {{ form.type ? 'Select Size' : 'Select Type First' }}
+              </option>
+              <option
+                v-for="size in availableSizes"
+                :key="size"
+                :value="size"
+              >
+                {{ size }}
+              </option>
+            </select>
             <p
               v-if="form.errors.size"
               class="mt-1 text-sm text-red-600"
@@ -146,14 +189,23 @@ const submit = () => {
             >
               Grade *
             </label>
-            <input
+            <select
               id="grade"
               v-model="form.grade"
-              type="text"
               required
-              placeholder="e.g., A992, A36"
               class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
+              <option value="">
+                Select Grade
+              </option>
+              <option
+                v-for="grade in grades"
+                :key="grade"
+                :value="grade"
+              >
+                {{ grade }}
+              </option>
+            </select>
             <p
               v-if="form.errors.grade"
               class="mt-1 text-sm text-red-600"
@@ -162,23 +214,47 @@ const submit = () => {
             </p>
           </div>
 
-          <!-- Length -->
+          <!-- Length (Feet and Inches) -->
           <div>
-            <label
-              for="length"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Length (ft) *
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Length *
             </label>
-            <input
-              id="length"
-              v-model="form.length"
-              type="number"
-              step="0.01"
-              min="0"
-              required
-              class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            >
+            <div class="mt-1 flex space-x-2">
+              <div class="flex-1">
+                <div class="relative">
+                  <input
+                    id="length_ft"
+                    v-model="form.length_ft"
+                    type="number"
+                    min="0"
+                    step="1"
+                    required
+                    placeholder="0"
+                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pr-8"
+                  >
+                  <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 text-sm">
+                    ft
+                  </span>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="relative">
+                  <input
+                    id="length_in"
+                    v-model="form.length_in"
+                    type="number"
+                    min="0"
+                    max="11"
+                    step="1"
+                    placeholder="0"
+                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pr-8"
+                  >
+                  <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 text-sm">
+                    in
+                  </span>
+                </div>
+              </div>
+            </div>
             <p
               v-if="form.errors.length"
               class="mt-1 text-sm text-red-600"
