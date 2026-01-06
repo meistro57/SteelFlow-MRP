@@ -20,6 +20,8 @@ class Drawing extends Model
         'revised_at',
     ];
 
+    protected $appends = ['url'];
+
     protected $casts = [
         'revised_at' => 'datetime',
     ];

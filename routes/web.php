@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DrawingController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
@@ -34,6 +35,11 @@ Route::middleware(['auth'])->group(function () {
     // Inventory CRUD Routes
     Route::resource('inventory', InventoryController::class);
 
+    // Drawing Routes
+    Route::resource('drawings', DrawingController::class)->except(['show']);
+    Route::get('/drawings/{drawing}', [DrawingController::class, 'show'])->name('drawings.show');
+    Route::post('/drawings/{drawing}/upload', [DrawingController::class, 'upload'])->name('drawings.upload');
+
     // Shipping Routes
     Route::get('/shipping', [ShippingController::class, 'index'])->name('shipping.index');
 
@@ -53,8 +59,4 @@ Route::middleware(['auth'])->group(function () {
     // Label Routes
     Route::get('/labels/part/{part}', [\App\Http\Controllers\LabelController::class, 'part'])->name('labels.part');
     Route::get('/labels/stock/{item}', [\App\Http\Controllers\LabelController::class, 'stock'])->name('labels.stock');
-
-    // Drawing Routes
-    Route::get('/drawings/{drawing}', [\App\Http\Controllers\DrawingController::class, 'show'])->name('drawings.show');
-    Route::post('/drawings/{drawing}/upload', [\App\Http\Controllers\DrawingController::class, 'upload'])->name('drawings.upload');
 });

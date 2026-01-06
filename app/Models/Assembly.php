@@ -35,6 +35,11 @@ class Assembly extends Model
         return $this->belongsTo(Project::class);
     }
 
+    public function drawing(): BelongsTo
+    {
+        return $this->belongsTo(Drawing::class);
+    }
+
     public function parts(): HasMany
     {
         return $this->hasMany(Part::class);
