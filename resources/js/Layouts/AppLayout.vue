@@ -1,3 +1,4 @@
+<!-- resources/js/Layouts/AppLayout.vue -->
 <script setup>
 import { Link, Head } from '@inertiajs/vue3';
 
@@ -8,6 +9,7 @@ defineProps({
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: 'chart' },
     { name: 'Projects', href: '/projects', icon: 'folder' },
+    { name: 'Customers', href: '/customers', icon: 'users' },
     { name: 'Inventory', href: '/inventory', icon: 'cube' },
     { name: 'Production', href: '/production', icon: 'cog' },
     { name: 'Shipping', href: '/shipping', icon: 'truck' },
