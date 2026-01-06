@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ShippingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,6 +33,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Inventory CRUD Routes
     Route::resource('inventory', InventoryController::class);
+
+    // Shipping Routes
+    Route::get('/shipping', [ShippingController::class, 'index'])->name('shipping.index');
 
     // Reporting Routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
