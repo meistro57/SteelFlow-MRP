@@ -1,6 +1,8 @@
 <?php
+// routes/web.php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
@@ -19,6 +21,11 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [ReportController::class, 'index'])->name('dashboard');
+
+    // Customer CRUD Routes
+    Route::get('/customers/import', [CustomerController::class, 'importForm'])->name('customers.import');
+    Route::post('/customers/import', [CustomerController::class, 'import'])->name('customers.import.store');
+    Route::resource('customers', CustomerController::class)->except(['show']);
 
     // Project CRUD Routes
     Route::resource('projects', ProjectController::class);
