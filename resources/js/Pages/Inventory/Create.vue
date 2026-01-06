@@ -1,7 +1,9 @@
+<!-- resources/js/Pages/Inventory/Create.vue -->
 <script setup>
 import { computed, watch } from 'vue';
 import { useForm, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ManualInventoryRecorder from '@/Components/ManualInventoryRecorder.vue';
 
 const props = defineProps({
     materials: Array,
@@ -54,6 +56,39 @@ const onMaterialChange = () => {
     }
 };
 
+const applyManualEntry = (entry) => {
+    // Allow the speech-to-text manual entry assistant to prefill the form
+    if (entry.shape) {
+        form.type = entry.shape;
+    }
+
+    if (entry.size) {
+        form.size = entry.size;
+    }
+
+    if (entry.grade) {
+        form.grade = entry.grade;
+    }
+
+    if (entry.area) {
+        form.stock_area = entry.area;
+    }
+
+    if (entry.length) {
+        const numericLength = parseFloat(entry.length);
+
+        if (!Number.isNaN(numericLength)) {
+            form.length_ft = numericLength;
+            form.length_in = '';
+        } else {
+            form.notes = [
+                form.notes,
+                `Voice length capture: ${entry.length}`,
+            ].filter(Boolean).join('\n');
+        }
+    }
+};
+
 const submit = () => {
     // Convert feet and inches to total feet before submitting
     const totalFeet = (parseFloat(form.length_ft) || 0) + ((parseFloat(form.length_in) || 0) / 12);
@@ -87,6 +122,10 @@ const submit = () => {
     </template>
 
     <div class="card-industrial">
+      <ManualInventoryRecorder @apply="applyManualEntry" />
+    </div>
+
+    <div class="card-industrial mt-6">
       <form
         class="space-y-8"
         @submit.prevent="submit"
