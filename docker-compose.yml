@@ -12,11 +12,14 @@ services:
     networks:
       - steelflow
     depends_on:
-      - mysql
-      - redis
-      - meilisearch
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      meilisearch:
+        condition: service_started
     healthcheck:
-      test: ["CMD", "pgrep", "-f", "php-fpm"]
+      test: ["CMD-SHELL", "kill -0 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -49,6 +52,11 @@ services:
       - "3306:3306"
     volumes:
       - steelflow-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - steelflow
 
@@ -87,6 +95,18 @@ services:
     depends_on:
       - mysql
 
+  vite:
+    container_name: steelflow-vite
+    image: node:20-alpine
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    ports:
+      - '5173:5173'
+    command: sh -c "npm install && npm run dev -- --host"
+    networks:
+      - steelflow
+
 networks:
   steelflow:
     driver: bridge
@@ -96,3 +116,4 @@ volumes:
     driver: local
   steelflow-meilisearch:
     driver: local
+
