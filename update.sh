@@ -1,8 +1,11 @@
 #!/bin/bash
+# update.sh
 
 # SteelFlow MRP Update Script
 # Handles all Docker operations, updates dependencies, and runs the application
 set -e
+
+DRY_RUN=${DRY_RUN:-0}
 
 echo "🏗️  SteelFlow MRP Update & Deploy Script"
 echo "=========================================="
@@ -19,6 +22,18 @@ function success() {
 
 function warning() {
     echo "⚠️  $1"
+}
+
+function run_command() {
+    local description=$1
+    shift
+
+    if [ "$DRY_RUN" -eq 1 ]; then
+        echo "   [dry-run] $description: $*"
+        return 0
+    fi
+
+    "$@"
 }
 
 # Function to create required Laravel directories
@@ -43,6 +58,11 @@ function wait_for_container() {
     local container_name=$1
     local max_attempts=30
     local attempt=0
+
+    if [ "$DRY_RUN" -eq 1 ]; then
+        warning "Dry run enabled - skipping health check for $container_name"
+        return 0
+    fi
 
     status "Waiting for $container_name to be healthy..."
 
@@ -81,7 +101,9 @@ function wait_for_container() {
 }
 
 # Check if Docker is running
-if ! docker info > /dev/null 2>&1; then
+if [ "$DRY_RUN" -eq 1 ]; then
+    warning "Dry run enabled - skipping Docker availability check"
+elif ! docker info > /dev/null 2>&1; then
     echo "❌ Error: Docker is not running. Please start Docker Desktop first."
     exit 1
 fi
@@ -92,7 +114,7 @@ ensure_laravel_directories
 # Step 1: Pull latest code (if in a git repo)
 if [ -d .git ]; then
     status "Pulling latest code from repository..."
-    git pull origin $(git branch --show-current) || warning "Git pull failed or no changes available"
+    run_command "git pull" git pull origin $(git branch --show-current) || warning "Git pull failed or no changes available"
     success "Code updated"
 else
     warning "Not a git repository - skipping git pull"
@@ -100,17 +122,17 @@ fi
 
 # Step 2: Stop existing containers
 status "Stopping existing containers..."
-docker compose down
+run_command "docker compose down" docker compose down
 success "Containers stopped"
 
 # Step 3: Build/rebuild Docker images
 status "Building Docker images..."
-docker compose build --no-cache
+run_command "docker compose build --no-cache" docker compose build --no-cache
 success "Docker images built"
 
 # Step 4: Start containers
 status "Starting Docker containers..."
-docker compose up -d
+run_command "docker compose up -d" docker compose up -d
 success "Containers started"
 
 # Step 5: Wait for app container to be healthy
@@ -118,23 +140,29 @@ wait_for_container "steelflow-app"
 
 # Step 6: Wait for MySQL to be ready
 status "Waiting for MySQL to be ready..."
-until docker compose exec mysql mysqladmin ping -h"localhost" --silent; do
-    echo -n "."
-    sleep 2
-done
-echo ""
-success "MySQL is ready"
+if [ "$DRY_RUN" -eq 1 ]; then
+    warning "Dry run enabled - skipping MySQL readiness check"
+else
+    until docker compose exec mysql mysqladmin ping -h"localhost" --silent; do
+        echo -n "."
+        sleep 2
+    done
+    echo ""
+    success "MySQL is ready"
+fi
 
 # Step 7: Update PHP dependencies
 status "Updating PHP dependencies..."
-docker compose exec app composer install --no-interaction --prefer-dist --optimize-autoloader
+run_command "composer install" docker compose exec app composer install --no-interaction --prefer-dist --optimize-autoloader
 success "PHP dependencies updated"
 
 # Step 8: Update frontend dependencies inside the app container
 if [ -f "package.json" ]; then
     status "Updating frontend dependencies inside container..."
-    if docker compose exec app command -v npm > /dev/null 2>&1; then
-        docker compose exec app npm install
+    if [ "$DRY_RUN" -eq 1 ]; then
+        warning "Dry run enabled - skipping npm install"
+    elif docker compose exec app command -v npm > /dev/null 2>&1; then
+        run_command "npm install" docker compose exec app npm install
         success "Frontend dependencies updated"
     else
         warning "npm is unavailable in the app container - check the Docker build"
@@ -145,16 +173,18 @@ fi
 
 # Step 9: Clear Laravel caches
 status "Clearing application caches..."
-docker compose exec app php artisan config:clear
-docker compose exec app php artisan cache:clear
-docker compose exec app php artisan view:clear
-docker compose exec app php artisan route:clear
+run_command "config:clear" docker compose exec app php artisan config:clear
+run_command "cache:clear" docker compose exec app php artisan cache:clear
+run_command "view:clear" docker compose exec app php artisan view:clear
+run_command "route:clear" docker compose exec app php artisan route:clear
 success "Caches cleared"
 
 # Step 10: Generate application key if not set
 status "Ensuring application key is set..."
-if ! docker compose exec app grep -q "APP_KEY=base64:" .env 2>/dev/null; then
-    docker compose exec app php artisan key:generate --force
+if [ "$DRY_RUN" -eq 1 ]; then
+    warning "Dry run enabled - skipping application key check"
+elif ! docker compose exec app grep -q "APP_KEY=base64:" .env 2>/dev/null; then
+    run_command "key:generate" docker compose exec app php artisan key:generate --force
     success "Application key generated"
 else
     echo "   Application key already set"
@@ -162,33 +192,39 @@ fi
 
 # Step 11: Run database migrations
 status "Running database migrations..."
-docker compose exec app php artisan migrate --force
+run_command "php artisan migrate" docker compose exec app php artisan migrate --force
 success "Database migrations completed"
 
 # Step 12: Seed database (optional - only if empty)
 status "Checking if database needs seeding..."
-USER_COUNT=$(docker compose exec mysql mysql -u${DB_USERNAME:-steelflow} -p${DB_PASSWORD:-secret} ${DB_DATABASE:-steelflow} -sNe "SELECT COUNT(*) FROM users;" 2>/dev/null || echo "0")
-
-if [ "$USER_COUNT" -eq "0" ]; then
-    status "Database is empty - seeding with initial data..."
-    docker compose exec app php artisan db:seed --force
-    success "Database seeded with sample data"
+if [ "$DRY_RUN" -eq 1 ]; then
+    warning "Dry run enabled - skipping database seed check"
 else
-    echo "   Database already contains data - skipping seed"
+    USER_COUNT=$(docker compose exec mysql mysql -u${DB_USERNAME:-steelflow} -p${DB_PASSWORD:-secret} ${DB_DATABASE:-steelflow} -sNe "SELECT COUNT(*) FROM users;" 2>/dev/null || echo "0")
+
+    if [ "$USER_COUNT" -eq "0" ]; then
+        status "Database is empty - seeding with initial data..."
+        run_command "php artisan db:seed" docker compose exec app php artisan db:seed --force
+        success "Database seeded with sample data"
+    else
+        echo "   Database already contains data - skipping seed"
+    fi
 fi
 
 # Step 13: Optimize application
 status "Optimizing application..."
-docker compose exec app php artisan config:cache
-docker compose exec app php artisan route:cache
-docker compose exec app php artisan view:cache
+run_command "config:cache" docker compose exec app php artisan config:cache
+run_command "route:cache" docker compose exec app php artisan route:cache
+run_command "view:cache" docker compose exec app php artisan view:cache
 success "Application optimized"
 
 # Step 14: Build frontend assets inside the container
 if [ -f "package.json" ]; then
     status "Building frontend assets inside container..."
-    if docker compose exec app command -v npm > /dev/null 2>&1; then
-        docker compose exec app npm run build
+    if [ "$DRY_RUN" -eq 1 ]; then
+        warning "Dry run enabled - skipping asset build"
+    elif docker compose exec app command -v npm > /dev/null 2>&1; then
+        run_command "npm run build" docker compose exec app npm run build
         success "Frontend assets built"
     else
         warning "npm is unavailable in the app container - skipping asset build"
@@ -197,14 +233,18 @@ fi
 
 # Step 15: Set proper permissions
 status "Setting proper permissions..."
-docker compose exec app chmod -R 775 storage bootstrap/cache
+run_command "chmod permissions" docker compose exec app chmod -R 775 storage bootstrap/cache
 success "Permissions set"
 
 # Final status check
 echo ""
 echo "=========================================="
 status "Checking container status..."
-docker compose ps
+if [ "$DRY_RUN" -eq 1 ]; then
+    warning "Dry run enabled - skipping docker compose ps"
+else
+    docker compose ps
+fi
 
 echo ""
 echo "✨ Update Complete! ✨"
