@@ -21,6 +21,10 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 
 <img width="1569" height="862" alt="image" src="https://github.com/user-attachments/assets/5b9699a7-1b70-484f-b45f-fa80b2f11ec5" />
 
+<img width="1566" height="829" alt="image" src="https://github.com/user-attachments/assets/fd732c4c-7cb3-4541-b83c-1424817d4e90" />
+
+<img width="1569" height="1147" alt="image" src="https://github.com/user-attachments/assets/cd6047bc-93c7-4128-b5f6-beded31d937b" />
+
 
 
 ## 📊 Current Status
