@@ -5,11 +5,17 @@ defineProps({
     status: String,
 });
 
-const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-});
+const form = useForm(
+    {
+        email: '',
+        password: '',
+        remember: false,
+    },
+    {
+        // Keep login details available across visits when the user opts in
+        remember: 'loginCredentials',
+    },
+);
 
 const submit = () => {
     form.post(route('login'), {

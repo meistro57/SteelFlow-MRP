@@ -66,7 +66,8 @@ class AuthController extends Controller
             'password' => bcrypt(Str::random(24)), // Random password for OAuth users
         ]);
 
-        Auth::login($user);
+        // Persist Azure SSO logins across browser sessions just like the standard "Remember me" flow
+        Auth::login($user, remember: true);
 
         return redirect()->intended('/dashboard');
     }
