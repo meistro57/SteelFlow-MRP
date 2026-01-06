@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Inertia\Inertia;
 
 class AdminController extends Controller
 {
     public function users()
     {
         return Inertia::render('Admin/Users/Index', [
-            'users' => User::all()
+            'users' => User::all(),
         ]);
     }
 

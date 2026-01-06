@@ -1,4 +1,5 @@
 <?php
+
 // app/Models/GasBottleRental.php
 
 namespace App\Models;

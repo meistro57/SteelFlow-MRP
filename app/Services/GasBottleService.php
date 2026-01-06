@@ -1,4 +1,5 @@
 <?php
+
 // app/Services/GasBottleService.php
 
 namespace App\Services;
@@ -195,7 +196,7 @@ class GasBottleService
                 $rental->due_back_at ?? now()->addWeek(),
                 $rental->deposit_cents,
                 $rental->rental_rate_cents,
-                $rental->rental_rate_period
+                $rental->rental_rate_period,
             );
         });
     }

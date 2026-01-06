@@ -1,4 +1,5 @@
 <?php
+
 // app/Http/Controllers/ShippingController.php
 
 namespace App\Http\Controllers;

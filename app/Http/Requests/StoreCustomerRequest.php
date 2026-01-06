@@ -1,4 +1,5 @@
 <?php
+
 // app/Http/Requests/StoreCustomerRequest.php
 
 namespace App\Http\Requests;

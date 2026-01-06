@@ -1,4 +1,5 @@
 <?php
+
 // app/Http/Controllers/CustomerController.php
 
 namespace App\Http\Controllers;
@@ -128,6 +129,7 @@ class CustomerController extends Controller
         while (($row = fgetcsv($handle, 0, ',')) !== false) {
             if ($header === null) {
                 $header = array_map(fn ($value) => Str::slug(trim((string) $value), '_'), $row);
+
                 continue;
             }
 
@@ -138,6 +140,7 @@ class CustomerController extends Controller
             $data = array_combine($header, $row);
             if ($data === false) {
                 $skipped++;
+
                 continue;
             }
 
@@ -145,6 +148,7 @@ class CustomerController extends Controller
 
             if (empty($payload['name'])) {
                 $skipped++;
+
                 continue;
             }
 
@@ -166,7 +170,7 @@ class CustomerController extends Controller
             'Import complete: %d added, %d updated, %d skipped.',
             $created,
             $updated,
-            $skipped
+            $skipped,
         );
 
         return redirect()
@@ -200,14 +204,14 @@ class CustomerController extends Controller
      */
     protected function findExistingCustomer(array $payload): ?Customer
     {
-        if (!empty($payload['code'])) {
+        if (! empty($payload['code'])) {
             $customerByCode = Customer::where('code', $payload['code'])->first();
             if ($customerByCode) {
                 return $customerByCode;
             }
         }
 
-        if (!empty($payload['email'])) {
+        if (! empty($payload['email'])) {
             return Customer::where('email', $payload['email'])->first();
         }
 
@@ -235,6 +239,6 @@ class CustomerController extends Controller
 
         $normalized = strtolower(trim((string) $value));
 
-        return !in_array($normalized, ['0', 'false', 'no', 'n', 'inactive'], true);
+        return ! in_array($normalized, ['0', 'false', 'no', 'n', 'inactive'], true);
     }
 }

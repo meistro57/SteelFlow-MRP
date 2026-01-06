@@ -136,7 +136,7 @@ class DrawingController extends Controller
         $path = $file->storeAs(
             'project_'.$drawing->project_id,
             now()->format('Ymd_His').'_'.$safeName.'.'.$extension,
-            'drawings'
+            'drawings',
         );
 
         $drawing->update([
