@@ -1,3 +1,4 @@
+<!-- resources/js/Pages/Dashboard.vue -->
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -10,6 +11,7 @@ const activeProjects = 24;
 const totalWeight = 450200;
 const productionProgress = 84;
 const readyToShip = 8;
+const repositoryUrl = 'https://github.com/SteelFlow-MRP/SteelFlow-MRP'; // Default repo link; update if hosted elsewhere.
 
 const recentActivity = [
     { id: 1, type: 'production', message: 'Batch B-2024-147 started cutting', time: '2 min ago', status: 'in_progress' },
@@ -32,6 +34,15 @@ const recentActivity = [
         </p>
       </div>
       <div class="flex gap-3">
+        <a
+          :href="repositoryUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-secondary"
+        >
+          <span>📂</span>
+          <span>View Repo</span>
+        </a>
         <button class="btn-ghost">
           <span>⚙️</span>
           <span>Settings</span>
