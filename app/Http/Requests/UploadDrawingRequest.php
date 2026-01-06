@@ -35,6 +35,7 @@ class UploadDrawingRequest extends FormRequest
                 'mimes:pdf,dwg,dxf,jpg,jpeg,png',
                 'max:10240', // 10MB max
             ],
+            'revision' => ['nullable', 'string', 'max:10'],
         ];
     }
 
