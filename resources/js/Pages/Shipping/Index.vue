@@ -272,7 +272,7 @@ const sortSymbol = (column) => {
             <div>
               <div class="text-text-secondary">Total Pieces</div>
               <div class="text-2xl font-mono text-white">
-                {{ stats.totalPieces?.toLocaleString?.() ?? stats.totalPieces || 0 }}
+                {{ (stats.totalPieces?.toLocaleString?.() ?? stats.totalPieces) || 0 }}
               </div>
             </div>
             <div class="text-xs text-text-tertiary">Across every load on file</div>
@@ -283,7 +283,7 @@ const sortSymbol = (column) => {
             <div>
               <div class="text-text-secondary">Total Weight</div>
               <div class="text-2xl font-mono text-white">
-                {{ stats.totalWeightLbs?.toLocaleString?.(undefined, { maximumFractionDigits: 1 }) ?? stats.totalWeightLbs || 0 }} lbs
+                {{ (stats.totalWeightLbs?.toLocaleString?.(undefined, { maximumFractionDigits: 1 }) ?? stats.totalWeightLbs) || 0 }} lbs
               </div>
             </div>
             <div class="text-xs text-text-tertiary">Reported weight in pounds</div>

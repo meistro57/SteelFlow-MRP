@@ -58,5 +58,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Label Routes
     Route::get('/labels/part/{part}', [\App\Http\Controllers\LabelController::class, 'part'])->name('labels.part');
-    Route::get('/labels/stock/{item}', [\App\Http\Controllers\LabelController::class, 'stock'])->name('labels.stock');
+    Route::get('/labels/stock/{item}', [\App\Http\Controllers\LabelController::class, 'stock'])->name('labels.stock')
+
+    // Drawing Routes
+    Route::get('/drawings/{drawing}', [\App\Http\Controllers\DrawingController::class, 'show'])->name('drawings.show');
+    Route::post('/drawings/{drawing}/upload', [\App\Http\Controllers\DrawingController::class, 'upload'])->name('drawings.upload');
+
+    // Admin Routes
+    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
+        Route::post('/users', [\App\Http\Controllers\AdminController::class, 'storeUser'])->name('users.store');
+        Route::put('/users/{user}', [\App\Http\Controllers\AdminController::class, 'updateUser'])->name('users.update');
+        Route::delete('/users/{user}', [\App\Http\Controllers\AdminController::class, 'destroyUser'])->name('users.destroy');
+    });
 });

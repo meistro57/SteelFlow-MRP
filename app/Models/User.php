@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'azure_id',
         'settings',
+        'role',
     ];
 
     /**
@@ -47,5 +48,13 @@ class User extends Authenticatable
             'password' => 'hashed',
             'settings' => 'array',
         ];
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 }
