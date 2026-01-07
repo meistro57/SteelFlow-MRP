@@ -202,6 +202,46 @@ docker compose exec app php artisan migrate --seed
 npm install && npm run dev
 ```
 
+## 📱 LAN & Mobile Access (HTTP/HTTPS)
+
+Use this section when you want to open SteelFlow from a phone or tablet on the same Wi‑Fi network.
+
+### ✅ Find your host machine LAN IP
+
+- **Linux/macOS**: run `hostname -I` (Linux) or `ipconfig getifaddr en0` (macOS) and pick the LAN address (usually `192.168.x.x` or `10.x.x.x`).
+- **Windows**: run `ipconfig` and use the IPv4 address listed under your active adapter.
+- **Docker Desktop**: your **host** LAN IP is still the one you use; containers are already mapped via `docker compose`.
+
+### 🌐 Access from a phone (HTTP)
+
+1. Make sure your phone is on the **same Wi‑Fi** as your dev machine.
+2. Open the site in the phone browser using the LAN IP:
+   - **Nginx / app**: `http://<LAN-IP>/`
+   - **Vite dev server** (if running): `http://<LAN-IP>:5173/`
+
+### 🔒 Access from a phone (HTTPS)
+
+If you have self‑signed HTTPS enabled (e.g. via mkcert/Traefik/Nginx):
+
+1. Browse to `https://<LAN-IP>/` from the phone.
+2. Install and trust the **local root CA** used to sign the cert (not just the leaf cert):
+   - **iOS**:
+     - Send the CA file to the phone (AirDrop, Files, or email).
+     - Install it via **Settings → General → VPN & Device Management**.
+     - **Enable trust** in **Settings → General → About → Certificate Trust Settings**.
+   - **Android**:
+     - Copy the CA file to the device.
+     - Install via **Settings → Security → Install a certificate → CA certificate**.
+     - On newer Android versions, user‑installed CAs may not be trusted by all apps; browsers are usually fine.
+
+### ⚠️ Common pitfalls
+
+- **Firewall**: allow inbound traffic to ports **80**, **443**, and **5173** (if Vite is running).
+- **Captive portals**: guest Wi‑Fi networks often block device‑to‑device traffic.
+- **HMR host settings**: Vite’s HMR host is set to `localhost` in `vite.config.js`.  
+  Update `server.hmr.host` to your LAN IP (or make it conditional via env) so mobile HMR works.
+- **HTTPS + HMR**: if using HTTPS for the dev server, ensure the HMR client is also pointed at the HTTPS host/port.
+
 ### 🔄 Updating the Application
 
 To update SteelFlow MRP after pulling new changes or updating dependencies, simply run:
