@@ -55,7 +55,7 @@ class ReportController extends Controller
             "Expires"             => "0"
         ];
 
-        $callback = function() use($items) {
+        $callback = function() use($items): void {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['Stock ID', 'Type', 'Size', 'Grade', 'Length (ft)', 'Quantity', 'Status', 'Location', 'Heat Number', 'PO Number', 'Reserved Project', 'Unit Cost', 'Total Cost']);
 
@@ -109,7 +109,7 @@ class ReportController extends Controller
             "Expires"             => "0"
         ];
 
-        $callback = function() use($project) {
+        $callback = function() use($project): void {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['Assembly Mark', 'Assembly Description', 'Assembly Qty', 'Part Mark', 'Part Qty', 'Material', 'Size', 'Length (ft)', 'Weight Each (lbs)', 'Total Weight (lbs)']);
 

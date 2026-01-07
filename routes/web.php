@@ -25,7 +25,7 @@ Route::get('/login/microsoft', [AuthController::class, 'redirectToProvider'])->n
 Route::get('/login/microsoft/callback', [AuthController::class, 'handleProviderCallback']);
 
 // Authenticated Routes Group
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function (): void {
     // Moved Logout here (makes more sense logically)
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/labels/stock/{item}', [LabelController::class, 'stock'])->name('labels.stock');
 
     // Admin Routes
-    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function (): void {
         // FIXED: Used imported class
         Route::get('/users', [AdminController::class, 'users'])->name('users');
         Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');

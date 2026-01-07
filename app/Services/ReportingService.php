@@ -36,7 +36,7 @@ class ReportingService
             'active_projects' => Project::whereIn('status', ['active', 'production'])->count(),
             'total_weight_lbs' => Assembly::sum('total_weight_lbs'),
             'production_completion_percentage' => $this->calculateProductionProgress(),
-            'ready_to_ship_pieces' => Assembly::whereHas('instances', function ($q) {
+            'ready_to_ship_pieces' => Assembly::whereHas('instances', function ($q): void {
                 $q->where('status', 'complete');
             })->count(),
         ];

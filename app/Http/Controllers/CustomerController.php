@@ -23,7 +23,7 @@ class CustomerController extends Controller
         $query = Customer::query()->orderBy('name');
 
         if ($search = request('search')) {
-            $query->where(function ($q) use ($search) {
+            $query->where(function ($q) use ($search): void {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('code', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")

@@ -22,8 +22,8 @@ class NestingService
         // Eager load bars with stock items to prevent N+1 queries
         $nesting->load('bars.stockItem');
 
-        DB::transaction(function () use ($nesting) {
-            $nesting->bars->each(function ($bar) {
+        DB::transaction(function () use ($nesting): void {
+            $nesting->bars->each(function ($bar): void {
                 if ($bar->stockItem) {
                     $bar->stockItem->update(['status' => 'assigned']);
                     $this->inventoryService->recordMovement($bar->stockItem, 'assign', 1, [
@@ -50,8 +50,8 @@ class NestingService
         // Eager load bars with stock items and nesting relationship to prevent N+1 queries
         $nesting->load('bars.stockItem');
 
-        DB::transaction(function () use ($nesting) {
-            $nesting->bars->each(function ($bar) {
+        DB::transaction(function () use ($nesting): void {
+            $nesting->bars->each(function ($bar): void {
                 if ($bar->stockItem) {
                     $bar->stockItem->update(['status' => 'used']);
                     $this->inventoryService->recordMovement($bar->stockItem, 'use', 1, [

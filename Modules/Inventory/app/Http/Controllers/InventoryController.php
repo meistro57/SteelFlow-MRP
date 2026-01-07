@@ -24,7 +24,7 @@ class InventoryController extends Controller
         // Apply search filter
         if (request('search')) {
             $search = request('search');
-            $query->where(function ($q) use ($search) {
+            $query->where(function ($q) use ($search): void {
                 $q->where('stock_id', 'like', "%{$search}%")
                     ->orWhere('heat_number', 'like', "%{$search}%")
                     ->orWhere('po_number', 'like', "%{$search}%")

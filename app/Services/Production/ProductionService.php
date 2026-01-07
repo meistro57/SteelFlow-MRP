@@ -64,7 +64,7 @@ class ProductionService
             'payload' => $data,
         ]);
 
-        DB::transaction(function () use ($step, $employee, $data, $operationId) {
+        DB::transaction(function () use ($step, $employee, $data, $operationId): void {
             $now = now();
             $hours = 0;
 

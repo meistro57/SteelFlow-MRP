@@ -22,15 +22,15 @@ class DrawingController extends Controller
     {
         $drawings = Drawing::query()
             ->with('project')
-            ->when(request('search'), function ($query, $search) {
-                $query->where(function ($q) use ($search) {
+            ->when(request('search'), function ($query, $search): void {
+                $query->where(function ($q) use ($search): void {
                     $q->where('number', 'like', "%{$search}%")
                         ->orWhere('title', 'like', "%{$search}%")
                         ->orWhere('revision', 'like', "%{$search}%");
                 });
             })
             ->when(request('project_id'), fn ($q, $projectId) => $q->where('project_id', $projectId))
-            ->when(request()->filled('has_file'), function ($query) {
+            ->when(request()->filled('has_file'), function ($query): void {
                 $hasFile = filter_var(request('has_file'), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
                 if ($hasFile === true) {

@@ -13,7 +13,7 @@ class ReferenceDataService
     public function findMaterial(string $type, string $size)
     {
         return Material::where('type', $type)
-            ->where(function ($query) use ($size) {
+            ->where(function ($query) use ($size): void {
                 $query->where('size_imperial', $size)
                     ->orWhere('size_metric', $size);
             })
