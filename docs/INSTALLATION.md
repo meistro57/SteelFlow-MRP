@@ -177,6 +177,16 @@ SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://meilisearch:7700
 ```
 
+When enabling TLS locally, set `APP_URL` to the HTTPS host, for example:
+
+```bash
+APP_URL=https://localhost
+```
+
+### Local TLS (Optional)
+
+Generate development certificates in `docker/certs/` (see `docker/certs/README.md`), then expose port `443` and update `APP_URL` to `https://<host>` in your `.env`.
+
 ### Azure OAuth (Optional)
 
 For Microsoft 365 authentication, configure:
