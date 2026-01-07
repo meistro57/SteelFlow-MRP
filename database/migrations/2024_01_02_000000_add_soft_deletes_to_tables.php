@@ -6,37 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
-    {
-        $tables = [
-            'phases', 'lots', 'assemblies', 'parts', 'drawings',
-            'stock_items', 'purchase_orders', 'purchase_order_lines',
-            'production_batches', 'loads', 'assembly_instances', 'part_instances',
-        ];
+   public function up(): void
+{
+    // 1. Define ALL tables that need soft deletes here
+    $tables = [
+        'projects',
+        'assemblies',
+        'drawings',
+        'purchase_orders', // <--- Make sure this one is here!
+        'stock_items',
+        'receiving_lines',
+    ];
 
-        foreach ($tables as $tableName) {
-            if (Schema::hasTable($tableName)) {
+    foreach ($tables as $tableName) {
+        // 2. Only check if the table exists first
+        if (Schema::hasTable($tableName)) {
+            // 3. Then check if the column is missing before adding it
+            if (!Schema::hasColumn($tableName, 'deleted_at')) {
                 Schema::table($tableName, function (Blueprint $table) {
                     $table->softDeletes();
                 });
             }
         }
     }
-
-    public function down(): void
-    {
-        $tables = [
-            'phases', 'lots', 'assemblies', 'parts', 'drawings',
-            'stock_items', 'purchase_orders', 'purchase_order_lines',
-            'production_batches', 'loads', 'assembly_instances', 'part_instances',
-        ];
-
-        foreach ($tables as $tableName) {
-            if (Schema::hasTable($tableName)) {
-                Schema::table($tableName, function (Blueprint $table) {
-                    $table->dropSoftDeletes();
-                });
-            }
-        }
-    }
+} 
 };
