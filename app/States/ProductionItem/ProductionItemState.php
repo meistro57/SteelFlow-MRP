@@ -26,7 +26,7 @@ abstract class ProductionItemState extends State
 
     public static function config(): StateConfig
     {
-        return StateConfig::make()
+        return parent::config()
             ->default(Queued::class)
             ->allowTransition(Queued::class, Cut::class)
             ->allowTransition(Cut::class, Welded::class)

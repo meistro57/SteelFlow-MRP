@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Drawing;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +22,10 @@ class UpdateDrawingRequest extends FormRequest
      */
     public function rules(): array
     {
-        $drawingId = $this->route('drawing')?->id;
+        $drawingParam = $this->route('drawing');
+        $drawingId = $drawingParam instanceof Drawing
+            ? $drawingParam->id
+            : (is_numeric($drawingParam) ? (int) $drawingParam : null);
 
         return [
             'project_id' => ['required', 'exists:projects,id'],

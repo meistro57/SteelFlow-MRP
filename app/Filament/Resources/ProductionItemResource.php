@@ -8,10 +8,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductionItemResource\Pages;
 use App\Models\ProductionItem;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Throwable;
@@ -20,18 +22,18 @@ class ProductionItemResource extends Resource
 {
     protected static ?string $model = ProductionItem::class;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\TextInput::make('name')
+        return $schema->components([
+            TextInput::make('name')
                 ->label('Name')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\TextInput::make('part_number')
+            TextInput::make('part_number')
                 ->label('Part Number')
                 ->required()
                 ->maxLength(255),
-            Forms\Components\Placeholder::make('status')
+            Placeholder::make('status')
                 ->label('Status')
                 ->content(fn (?ProductionItem $record): string => $record?->displayStatus ?? 'Queued'),
         ]);
@@ -55,7 +57,7 @@ class ProductionItemResource extends Resource
                     ->sortable(),
             ])
             ->actions([
-                Tables\Actions\Action::make('advanceStatus')
+                Action::make('advanceStatus')
                     ->label('Advance Status')
                     ->icon('heroicon-m-arrow-right-circle')
                     ->requiresConfirmation()

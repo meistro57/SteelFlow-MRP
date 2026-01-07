@@ -26,7 +26,7 @@ class UpdateStockItemRequest extends FormRequest
             'grade' => ['required', 'string', 'max:50'],
             'length' => ['required', 'numeric', 'min:0'],
             'quantity' => ['required', 'integer', 'min:0'],
-            'status' => ['required', 'string', 'in:free,assigned,committed,used'],
+            'status' => ['required', 'string', 'in:free,assigned,committed,used,available,reserved,checked_out,lost,damaged'],
             'reserved_project_id' => ['nullable', 'exists:projects,id'],
             'stock_area' => ['nullable', 'string', 'max:50'],
             'heat_number' => ['nullable', 'string', 'max:100'],

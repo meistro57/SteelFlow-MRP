@@ -24,8 +24,15 @@ class ProductionItem extends Model
         'status' => ProductionItemState::class,
     ];
 
-    public string $displayStatus {
-        get => $this->status->label();
+    public function getDisplayStatusAttribute(): string
+    {
+        $status = $this->status;
+
+        if ($status instanceof ProductionItemState) {
+            return $status->label();
+        }
+
+        return $status !== null ? (string) $status : '';
     }
 
     public function nextStatus(): ?string
