@@ -172,7 +172,9 @@ const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valu
             href="/reports/inventory"
             class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
           >
-            <div class="text-sm font-semibold text-white">Inventory Snapshot</div>
+            <div class="text-sm font-semibold text-white">
+              Inventory Snapshot
+            </div>
             <div class="mt-1 text-xs text-text-secondary">
               Stock valuation, usage, and type totals.
             </div>
@@ -182,7 +184,9 @@ const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valu
             href="/projects"
             class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
           >
-            <div class="text-sm font-semibold text-white">Project BOMs</div>
+            <div class="text-sm font-semibold text-white">
+              Project BOMs
+            </div>
             <div class="mt-1 text-xs text-text-secondary">
               Select a project to open its Bill of Materials report.
             </div>
@@ -218,10 +222,18 @@ const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valu
         <table class="min-w-full text-sm">
           <thead class="text-xs uppercase tracking-wider text-text-tertiary">
             <tr class="border-b border-steel-700">
-              <th class="py-3 text-left">Job</th>
-              <th class="py-3 text-left">Customer</th>
-              <th class="py-3 text-left">Status</th>
-              <th class="py-3 text-right">Actions</th>
+              <th class="py-3 text-left">
+                Job
+              </th>
+              <th class="py-3 text-left">
+                Customer
+              </th>
+              <th class="py-3 text-left">
+                Status
+              </th>
+              <th class="py-3 text-right">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>

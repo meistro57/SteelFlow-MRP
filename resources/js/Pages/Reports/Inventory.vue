@@ -96,9 +96,15 @@ const formatCurrency = (value) => {
         <table class="min-w-full text-sm">
           <thead class="text-xs uppercase tracking-wider text-text-tertiary">
             <tr class="border-b border-steel-700">
-              <th class="py-3 text-left">Type</th>
-              <th class="py-3 text-right">Item Count</th>
-              <th class="py-3 text-right">Total Length</th>
+              <th class="py-3 text-left">
+                Type
+              </th>
+              <th class="py-3 text-right">
+                Item Count
+              </th>
+              <th class="py-3 text-right">
+                Total Length
+              </th>
             </tr>
           </thead>
           <tbody>

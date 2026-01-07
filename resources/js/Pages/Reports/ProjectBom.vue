@@ -66,12 +66,24 @@ const formatWeight = (value) => {
           <table class="min-w-full text-sm">
             <thead class="text-xs uppercase tracking-wider text-text-tertiary">
               <tr class="border-b border-steel-700">
-                <th class="py-3 text-left">Part Mark</th>
-                <th class="py-3 text-right">Qty</th>
-                <th class="py-3 text-left">Material</th>
-                <th class="py-3 text-left">Size</th>
-                <th class="py-3 text-right">Length</th>
-                <th class="py-3 text-right">Weight (ea)</th>
+                <th class="py-3 text-left">
+                  Part Mark
+                </th>
+                <th class="py-3 text-right">
+                  Qty
+                </th>
+                <th class="py-3 text-left">
+                  Material
+                </th>
+                <th class="py-3 text-left">
+                  Size
+                </th>
+                <th class="py-3 text-right">
+                  Length
+                </th>
+                <th class="py-3 text-right">
+                  Weight (ea)
+                </th>
               </tr>
             </thead>
             <tbody>
