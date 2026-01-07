@@ -175,17 +175,18 @@ REDIS_PORT=6379
 # Search (Optional)
 SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://meilisearch:7700
+
+# Vite HMR (Optional)
+# When testing on a phone, set this to your machine's LAN IP (e.g. 192.168.1.25).
+# Leave blank to let Vite use the current hostname.
+VITE_HMR_HOST=
 ```
 
-When enabling TLS locally, set `APP_URL` to the HTTPS host, for example:
+### Vite HMR on Mobile Devices
 
-```bash
-APP_URL=https://localhost
-```
-
-### Local TLS (Optional)
-
-Generate development certificates in `docker/certs/` (see `docker/certs/README.md`), then expose port `443` and update `APP_URL` to `https://<host>` in your `.env`.
+If you are testing the frontend on a phone or tablet, set `VITE_HMR_HOST` in your `.env` to your
+machine's LAN IP (for example, `192.168.1.25`). Vite already binds to `0.0.0.0` and Docker exposes
+port `5173`, so the dev server remains reachable on your local network.
 
 ### Azure OAuth (Optional)
 
