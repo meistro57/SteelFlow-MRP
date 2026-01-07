@@ -71,6 +71,12 @@ class InventoryController extends Controller
         $sortColumn = $sortableColumns[$sortBy] ?? 'created_at';
         $query->orderBy($sortColumn, $sortDirection);
 
+        $statusCounts = (clone $query)
+            ->selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+
         $stockItems = $query->paginate(20)->withQueryString();
 
         return Inertia::render('Inventory/Index', [
@@ -79,6 +85,7 @@ class InventoryController extends Controller
             'statuses' => $this->getStatuses(),
             'locations' => $this->getStockAreas(),
             'grades' => $this->getUniqueGrades(),
+            'statusCounts' => $statusCounts,
         ]);
     }
 
