@@ -9,6 +9,7 @@ const props = defineProps({
     statuses: Object,
     locations: Object,
     grades: Array,
+    statusCounts: Object,
 });
 
 const search = ref(props.filters?.search || '');
@@ -65,6 +66,14 @@ const getSortIcon = (column) => {
 
 const isSortedBy = (column) => {
     return sortBy.value === column;
+};
+
+const getStatusCount = (status) => {
+    if (!props.statusCounts) {
+        return 0;
+    }
+
+    return props.statusCounts[status] ?? 0;
 };
 </script>
 
@@ -462,7 +471,7 @@ const isSortedBy = (column) => {
           Free Stock
         </div>
         <div class="text-2xl font-bold font-mono text-green-400 mt-2">
-          {{ stockItems.data.filter(i => i.status === 'free').length }}
+          {{ getStatusCount('free') }}
         </div>
       </div>
       <div class="card-industrial bg-steel-900 border-weld-900">
@@ -470,7 +479,7 @@ const isSortedBy = (column) => {
           Assigned
         </div>
         <div class="text-2xl font-bold font-mono text-weld-400 mt-2">
-          {{ stockItems.data.filter(i => i.status === 'assigned').length }}
+          {{ getStatusCount('assigned') }}
         </div>
       </div>
       <div class="card-industrial bg-steel-900 border-steel-700">
@@ -478,7 +487,7 @@ const isSortedBy = (column) => {
           Used
         </div>
         <div class="text-2xl font-bold font-mono text-text-tertiary mt-2">
-          {{ stockItems.data.filter(i => i.status === 'used').length }}
+          {{ getStatusCount('used') }}
         </div>
       </div>
     </div>
