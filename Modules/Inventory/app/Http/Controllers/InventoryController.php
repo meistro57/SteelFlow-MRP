@@ -2,7 +2,6 @@
 
 namespace Modules\Inventory\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Modules\Inventory\Http\Requests\StoreStockItemRequest;
 use Modules\Inventory\Http\Requests\UpdateStockItemRequest;
 use Modules\Inventory\Models\Grade;
