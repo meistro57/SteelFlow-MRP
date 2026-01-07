@@ -23,6 +23,18 @@
         <p><strong>Date:</strong> {{ date('m/d/Y') }}</p>
     </div>
 
+    @php
+        if (!function_exists('formatLength')) {
+            function formatLength($length) {
+                if (!$length) return '-';
+                $feet = floor($length);
+                $inches = round(($length - $feet) * 12);
+                if ($inches == 12) { $feet++; $inches = 0; }
+                return $inches > 0 ? "{$feet}' {$inches}\"" : "{$feet}'";
+            }
+        }
+    @endphp
+
     @foreach($project->assemblies as $assembly)
         <h3>Assembly: {{ $assembly->mark }} - {{ $assembly->description }} (Qty: {{ $assembly->quantity }})</h3>
         <table>
@@ -43,7 +55,7 @@
                         <td>{{ $part->quantity }}</td>
                         <td>{{ $part->grade }}</td>
                         <td>{{ $part->size_imperial }}</td>
-                        <td>{{ $part->length }}</td>
+                        <td>{{ formatLength($part->length) }}</td>
                         <td>{{ number_format($part->weight_each_lbs, 2) }} lbs</td>
                     </tr>
                 @endforeach

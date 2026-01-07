@@ -3,19 +3,26 @@
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
-    total_items: Number,
+defineProps({
+    totalItems: Number,
     valuation: Number,
-    by_type: Array,
+    byType: Array,
 });
 
 const formatCurrency = (value) => {
-    if (!value && value !== 0) return '£0';
-    return new Intl.NumberFormat('en-GB', {
+    if (!value && value !== 0) return '$0';
+    return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'GBP',
+        currency: 'USD',
         maximumFractionDigits: 0,
     }).format(value);
+};
+
+const formatLength = (length) => {
+    if (!length) return '-';
+    const feet = Math.floor(length);
+    const inches = Math.round((length - feet) * 12);
+    return inches > 0 ? `${feet}' ${inches}"` : `${feet}'`;
 };
 </script>
 
@@ -32,12 +39,28 @@ const formatCurrency = (value) => {
               A tidy summary of available stock and valuation totals.
             </p>
           </div>
-          <Link
-            href="/reports"
-            class="btn-secondary"
-          >
-            Back to Reports
-          </Link>
+          <div class="flex gap-3">
+            <a
+              :href="route('reports.inventory.csv')"
+              target="_blank"
+              class="btn-secondary"
+            >
+              Export CSV
+            </a>
+            <a
+              :href="route('reports.inventory.pdf')"
+              target="_blank"
+              class="btn-secondary"
+            >
+              Export PDF
+            </a>
+            <Link
+              href="/reports"
+              class="btn-secondary"
+            >
+              Back to Reports
+            </Link>
+          </div>
         </div>
       </div>
     </template>
@@ -49,7 +72,7 @@ const formatCurrency = (value) => {
           Usable Stock Items
         </div>
         <div class="mt-4 text-3xl font-bold text-white">
-          {{ total_items ?? 0 }}
+          {{ totalItems ?? 0 }}
         </div>
         <p class="mt-2 text-sm text-text-secondary">
           Items not marked as used.
@@ -73,7 +96,7 @@ const formatCurrency = (value) => {
           Material Types
         </div>
         <div class="mt-4 text-3xl font-bold text-white">
-          {{ (by_type ?? []).length }}
+          {{ (byType ?? []).length }}
         </div>
         <p class="mt-2 text-sm text-text-secondary">
           Distinct types with available stock.
@@ -109,7 +132,7 @@ const formatCurrency = (value) => {
           </thead>
           <tbody>
             <tr
-              v-for="type in by_type ?? []"
+              v-for="type in byType ?? []"
               :key="type.type"
               class="border-b border-steel-800/80 text-text-secondary"
             >
@@ -120,10 +143,10 @@ const formatCurrency = (value) => {
                 {{ type.count ?? 0 }}
               </td>
               <td class="py-3 text-right">
-                {{ type.total_length ?? 0 }}"
+                {{ formatLength(type.total_length) }}
               </td>
             </tr>
-            <tr v-if="(by_type ?? []).length === 0">
+            <tr v-if="(byType ?? []).length === 0">
               <td
                 colspan="3"
                 class="py-6 text-center text-sm text-text-secondary"

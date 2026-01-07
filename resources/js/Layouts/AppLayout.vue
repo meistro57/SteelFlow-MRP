@@ -19,6 +19,7 @@ const navigation = [
 
 const adminNavigation = [
     { name: 'Users', href: '/admin/users', icon: 'users' },
+    { name: 'System', href: '/admin/system', icon: 'cog' },
 ];
 </script>
 

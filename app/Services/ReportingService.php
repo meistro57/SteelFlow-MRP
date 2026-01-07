@@ -1,11 +1,13 @@
 <?php
+
 // app/Services/ReportingService.php
 
 namespace App\Services;
 
 use App\Models\Assembly;
 use App\Models\Project;
-use App\Models\StockItem;
+use Modules\Inventory\Models\StockItem;
+use Modules\Inventory\Models\Material;
 use Illuminate\Support\Facades\DB;
 
 class ReportingService
@@ -57,15 +59,31 @@ class ReportingService
     public function getInventoryReport(): array
     {
         return [
-            'total_items' => StockItem::where('status', '!=', 'used')->count(),
-            'valuation' => StockItem::where('status', '!=', 'used')
-                ->selectRaw('SUM(length * cost_per_unit) as total_value')
+            'totalItems' => (int) StockItem::where('status', '!=', 'used')->sum('quantity'),
+            'valuation' => (float) StockItem::where('status', '!=', 'used')
+                ->selectRaw('SUM(quantity * cost_per_unit) as total_value')
                 ->value('total_value'),
-            'by_type' => StockItem::where('status', '!=', 'used')
-                ->select('type', DB::raw('count(*) as count'), DB::raw('sum(length) as total_length'))
+            'byType' => StockItem::where('status', '!=', 'used')
+                ->select('type', DB::raw('SUM(quantity) as count'), DB::raw('SUM(quantity * length) as total_length_in'))
                 ->groupBy('type')
-                ->get(),
+                ->get()
+                ->map(function ($item) {
+                    $item->total_length = $item->total_length_in / 12; // Convert to feet for the report snapshot
+                    return $item;
+                }),
         ];
+    }
+
+    /**
+     * Get detailed inventory items for export.
+     */
+    public function getInventoryExportData(): \Illuminate\Support\Collection
+    {
+        return StockItem::with('reservedProject')
+            ->where('status', '!=', 'used')
+            ->orderBy('type')
+            ->orderBy('size')
+            ->get();
     }
 
     protected function calculateProductionProgress(): float

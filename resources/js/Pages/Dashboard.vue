@@ -2,15 +2,16 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-defineProps({
+// Props received from Laravel via Inertia
+const props = defineProps({
     metrics: Object,
 });
 
-// Sample data - replace with real props
-const activeProjects = 24;
-const totalWeight = 450200;
-const productionProgress = 84;
-const readyToShip = 8;
+// Use props for metrics with fallbacks
+const activeProjects = props.metrics?.active_projects ?? 0;
+const totalWeight = props.metrics?.total_weight_lbs ?? 0;
+const productionProgress = props.metrics?.production_completion_percentage ?? 0;
+const readyToShip = props.metrics?.ready_to_ship_pieces ?? 0;
 const repositoryUrl = 'https://github.com/SteelFlow-MRP/SteelFlow-MRP'; // Default repo link; update if hosted elsewhere.
 
 const recentActivity = [

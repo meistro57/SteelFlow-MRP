@@ -11,7 +11,15 @@ const appName = import.meta.env.VITE_APP_NAME || 'SteelFlow MRP';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    resolve: (name) => {
+        const parts = name.split('::');
+        if (parts.length > 1) {
+            const module = parts[0];
+            const page = parts[1];
+            return resolvePageComponent(`../../Modules/${module}/resources/assets/js/Pages/${page}.vue`, import.meta.glob('../../Modules/**/*.vue'));
+        }
+        return resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
+    },
     setup({ el, App, props, plugin }) {
         const pinia = createPinia();
 
