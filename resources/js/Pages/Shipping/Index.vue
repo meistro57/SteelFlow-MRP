@@ -51,13 +51,18 @@ const sortSymbol = (column) => {
     <template #header>
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-white">Shipping</h1>
+          <h1 class="text-3xl font-bold text-white">
+            Shipping
+          </h1>
           <p class="text-text-secondary mt-1 font-mono text-sm">
             Loads, carriers, and delivery tracking
           </p>
         </div>
         <div class="flex gap-3">
-          <button class="btn-secondary" type="button">
+          <button
+            class="btn-secondary"
+            type="button"
+          >
             <svg
               class="w-5 h-5 mr-2 inline-block"
               fill="none"
@@ -73,7 +78,10 @@ const sortSymbol = (column) => {
             </svg>
             Manage Loads
           </button>
-          <button class="btn-primary" type="button">
+          <button
+            class="btn-primary"
+            type="button"
+          >
             <svg
               class="w-5 h-5 mr-2 inline-block"
               fill="none"
@@ -96,7 +104,9 @@ const sortSymbol = (column) => {
     <!-- Overview Metrics -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
       <div class="card-industrial bg-steel-900 border-steel-700">
-        <div class="metric-label text-text-secondary">Total Loads</div>
+        <div class="metric-label text-text-secondary">
+          Total Loads
+        </div>
         <div class="text-3xl font-bold font-mono text-white mt-2">
           {{ stats.totalLoads || 0 }}
         </div>
@@ -106,27 +116,39 @@ const sortSymbol = (column) => {
       </div>
 
       <div class="card-industrial bg-steel-900 border-amber-900">
-        <div class="metric-label text-amber-300">Pending / Building</div>
+        <div class="metric-label text-amber-300">
+          Pending / Building
+        </div>
         <div class="text-3xl font-bold font-mono text-amber-300 mt-2">
           {{ stats.pendingLoads || 0 }}
         </div>
-        <div class="text-xs text-text-tertiary mt-1">Awaiting dispatch</div>
+        <div class="text-xs text-text-tertiary mt-1">
+          Awaiting dispatch
+        </div>
       </div>
 
       <div class="card-industrial bg-steel-900 border-blue-900">
-        <div class="metric-label text-blue-300">In Transit</div>
+        <div class="metric-label text-blue-300">
+          In Transit
+        </div>
         <div class="text-3xl font-bold font-mono text-blue-300 mt-2">
           {{ stats.inTransit || 0 }}
         </div>
-        <div class="text-xs text-text-tertiary mt-1">Rolling down the highway</div>
+        <div class="text-xs text-text-tertiary mt-1">
+          Rolling down the highway
+        </div>
       </div>
 
       <div class="card-industrial bg-steel-900 border-green-900">
-        <div class="metric-label text-green-300">Delivered</div>
+        <div class="metric-label text-green-300">
+          Delivered
+        </div>
         <div class="text-3xl font-bold font-mono text-green-300 mt-2">
           {{ stats.delivered || 0 }}
         </div>
-        <div class="text-xs text-text-tertiary mt-1">Signed and sealed</div>
+        <div class="text-xs text-text-tertiary mt-1">
+          Signed and sealed
+        </div>
       </div>
     </div>
 
@@ -135,8 +157,12 @@ const sortSymbol = (column) => {
       <div class="xl:col-span-2 card-industrial">
         <div class="flex items-center justify-between mb-4">
           <div>
-            <h2 class="text-xl font-bold text-white">Active Loads</h2>
-            <p class="text-sm text-text-tertiary">Sort by clicking a column header.</p>
+            <h2 class="text-xl font-bold text-white">
+              Active Loads
+            </h2>
+            <p class="text-sm text-text-tertiary">
+              Sort by clicking a column header.
+            </p>
           </div>
         </div>
 
@@ -152,7 +178,9 @@ const sortSymbol = (column) => {
                     Load # {{ sortSymbol('load_number') }}
                   </Link>
                 </th>
-                <th class="px-4 py-3">Project</th>
+                <th class="px-4 py-3">
+                  Project
+                </th>
                 <th class="px-4 py-3">
                   <Link
                     :href="route('shipping.index', { sort_by: 'destination', sort_direction: nextDirection('destination') })"
@@ -169,8 +197,12 @@ const sortSymbol = (column) => {
                     Ship Date {{ sortSymbol('ship_date') }}
                   </Link>
                 </th>
-                <th class="px-4 py-3">Status</th>
-                <th class="px-4 py-3 hidden lg:table-cell">Carrier</th>
+                <th class="px-4 py-3">
+                  Status
+                </th>
+                <th class="px-4 py-3 hidden lg:table-cell">
+                  Carrier
+                </th>
                 <th class="px-4 py-3 text-right hidden md:table-cell">
                   <Link
                     :href="route('shipping.index', { sort_by: 'pieces', sort_direction: nextDirection('pieces') })"
@@ -191,7 +223,10 @@ const sortSymbol = (column) => {
             </thead>
             <tbody class="divide-y divide-steel-800">
               <tr v-if="!loads.data.length">
-                <td class="px-4 py-6 text-text-secondary text-center" colspan="8">
+                <td
+                  class="px-4 py-6 text-text-secondary text-center"
+                  colspan="8"
+                >
                   No loads yet. Once you start building loads they'll appear here faster than a lorry on the M1.
                 </td>
               </tr>
@@ -264,40 +299,56 @@ const sortSymbol = (column) => {
 
       <div class="card-industrial space-y-4">
         <div>
-          <h2 class="text-xl font-bold text-white">Load Health</h2>
-          <p class="text-sm text-text-tertiary">Totals across all loads</p>
+          <h2 class="text-xl font-bold text-white">
+            Load Health
+          </h2>
+          <p class="text-sm text-text-tertiary">
+            Totals across all loads
+          </p>
         </div>
         <div class="bg-steel-800 border border-steel-700 rounded p-4">
           <div class="flex items-center justify-between">
             <div>
-              <div class="text-text-secondary">Total Pieces</div>
+              <div class="text-text-secondary">
+                Total Pieces
+              </div>
               <div class="text-2xl font-mono text-white">
                 {{ (stats.totalPieces?.toLocaleString?.() ?? stats.totalPieces) || 0 }}
               </div>
             </div>
-            <div class="text-xs text-text-tertiary">Across every load on file</div>
+            <div class="text-xs text-text-tertiary">
+              Across every load on file
+            </div>
           </div>
         </div>
         <div class="bg-steel-800 border border-steel-700 rounded p-4">
           <div class="flex items-center justify-between">
             <div>
-              <div class="text-text-secondary">Total Weight</div>
+              <div class="text-text-secondary">
+                Total Weight
+              </div>
               <div class="text-2xl font-mono text-white">
                 {{ (stats.totalWeightLbs?.toLocaleString?.(undefined, { maximumFractionDigits: 1 }) ?? stats.totalWeightLbs) || 0 }} lbs
               </div>
             </div>
-            <div class="text-xs text-text-tertiary">Reported weight in pounds</div>
+            <div class="text-xs text-text-tertiary">
+              Reported weight in pounds
+            </div>
           </div>
         </div>
         <div class="bg-steel-800 border border-steel-700 rounded p-4">
           <div class="flex items-center justify-between">
             <div>
-              <div class="text-text-secondary">Upcoming Ship Date</div>
+              <div class="text-text-secondary">
+                Upcoming Ship Date
+              </div>
               <div class="text-2xl font-mono text-white">
                 {{ formatDate(stats.nextShipDate) }}
               </div>
             </div>
-            <div class="text-xs text-text-tertiary">Earliest scheduled departure</div>
+            <div class="text-xs text-text-tertiary">
+              Earliest scheduled departure
+            </div>
           </div>
         </div>
       </div>

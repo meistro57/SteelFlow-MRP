@@ -59,7 +59,12 @@ const submit = () => {
             class="input"
             placeholder="Optional unique code"
           >
-          <div class="input-error" v-if="form.errors.code">{{ form.errors.code }}</div>
+          <div
+            v-if="form.errors.code"
+            class="input-error"
+          >
+            {{ form.errors.code }}
+          </div>
         </div>
         <div>
           <label class="input-label">Customer Name</label>
@@ -70,7 +75,12 @@ const submit = () => {
             required
             placeholder="ACME Fabrication"
           >
-          <div class="input-error" v-if="form.errors.name">{{ form.errors.name }}</div>
+          <div
+            v-if="form.errors.name"
+            class="input-error"
+          >
+            {{ form.errors.name }}
+          </div>
         </div>
         <div>
           <label class="input-label">Email</label>
@@ -80,7 +90,12 @@ const submit = () => {
             class="input"
             placeholder="orders@example.com"
           >
-          <div class="input-error" v-if="form.errors.email">{{ form.errors.email }}</div>
+          <div
+            v-if="form.errors.email"
+            class="input-error"
+          >
+            {{ form.errors.email }}
+          </div>
         </div>
         <div>
           <label class="input-label">Phone</label>
@@ -90,40 +105,105 @@ const submit = () => {
             class="input"
             placeholder="555-555-0100"
           >
-          <div class="input-error" v-if="form.errors.phone">{{ form.errors.phone }}</div>
+          <div
+            v-if="form.errors.phone"
+            class="input-error"
+          >
+            {{ form.errors.phone }}
+          </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="input-label">Address Line 1</label>
-          <input v-model="form.address_1" type="text" class="input" placeholder="123 Foundry Way">
-          <div class="input-error" v-if="form.errors.address_1">{{ form.errors.address_1 }}</div>
+          <input
+            v-model="form.address_1"
+            type="text"
+            class="input"
+            placeholder="123 Foundry Way"
+          >
+          <div
+            v-if="form.errors.address_1"
+            class="input-error"
+          >
+            {{ form.errors.address_1 }}
+          </div>
         </div>
         <div>
           <label class="input-label">Address Line 2</label>
-          <input v-model="form.address_2" type="text" class="input" placeholder="Suite 200">
-          <div class="input-error" v-if="form.errors.address_2">{{ form.errors.address_2 }}</div>
+          <input
+            v-model="form.address_2"
+            type="text"
+            class="input"
+            placeholder="Suite 200"
+          >
+          <div
+            v-if="form.errors.address_2"
+            class="input-error"
+          >
+            {{ form.errors.address_2 }}
+          </div>
         </div>
         <div>
           <label class="input-label">City</label>
-          <input v-model="form.city" type="text" class="input" placeholder="Pittsburgh">
-          <div class="input-error" v-if="form.errors.city">{{ form.errors.city }}</div>
+          <input
+            v-model="form.city"
+            type="text"
+            class="input"
+            placeholder="Pittsburgh"
+          >
+          <div
+            v-if="form.errors.city"
+            class="input-error"
+          >
+            {{ form.errors.city }}
+          </div>
         </div>
         <div>
           <label class="input-label">State/Province</label>
-          <input v-model="form.state" type="text" class="input" placeholder="PA">
-          <div class="input-error" v-if="form.errors.state">{{ form.errors.state }}</div>
+          <input
+            v-model="form.state"
+            type="text"
+            class="input"
+            placeholder="PA"
+          >
+          <div
+            v-if="form.errors.state"
+            class="input-error"
+          >
+            {{ form.errors.state }}
+          </div>
         </div>
         <div>
           <label class="input-label">Postal Code</label>
-          <input v-model="form.zip" type="text" class="input" placeholder="15222">
-          <div class="input-error" v-if="form.errors.zip">{{ form.errors.zip }}</div>
+          <input
+            v-model="form.zip"
+            type="text"
+            class="input"
+            placeholder="15222"
+          >
+          <div
+            v-if="form.errors.zip"
+            class="input-error"
+          >
+            {{ form.errors.zip }}
+          </div>
         </div>
         <div>
           <label class="input-label">Country</label>
-          <input v-model="form.country" type="text" class="input" placeholder="USA">
-          <div class="input-error" v-if="form.errors.country">{{ form.errors.country }}</div>
+          <input
+            v-model="form.country"
+            type="text"
+            class="input"
+            placeholder="USA"
+          >
+          <div
+            v-if="form.errors.country"
+            class="input-error"
+          >
+            {{ form.errors.country }}
+          </div>
         </div>
       </div>
 
@@ -134,8 +214,13 @@ const submit = () => {
           rows="4"
           class="input"
           placeholder="Special instructions, billing contact, or account notes"
-        ></textarea>
-        <div class="input-error" v-if="form.errors.notes">{{ form.errors.notes }}</div>
+        />
+        <div
+          v-if="form.errors.notes"
+          class="input-error"
+        >
+          {{ form.errors.notes }}
+        </div>
       </div>
 
       <div class="flex items-center space-x-3">
@@ -145,12 +230,25 @@ const submit = () => {
           type="checkbox"
           class="form-checkbox h-5 w-5 text-forge-400"
         >
-        <label for="is_active" class="text-steel-200">Customer is active</label>
-        <div class="input-error" v-if="form.errors.is_active">{{ form.errors.is_active }}</div>
+        <label
+          for="is_active"
+          class="text-steel-200"
+        >Customer is active</label>
+        <div
+          v-if="form.errors.is_active"
+          class="input-error"
+        >
+          {{ form.errors.is_active }}
+        </div>
       </div>
 
       <div class="flex justify-end space-x-3">
-        <Link href="/customers" class="btn-secondary">Cancel</Link>
+        <Link
+          href="/customers"
+          class="btn-secondary"
+        >
+          Cancel
+        </Link>
         <button
           type="submit"
           class="btn-primary"

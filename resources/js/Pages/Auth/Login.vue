@@ -116,11 +116,17 @@ const submit = () => {
           :href="route('login.microsoft')"
           class="w-full inline-flex justify-center items-center px-4 py-2 bg-[#00a1f1] border border-transparent rounded-md font-semibold text-white uppercase tracking-widest text-xs hover:bg-[#008bcf] transition duration-150"
         >
-          <svg class="w-4 h-4 mr-2" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><path fill="#f3f3f3" d="M0 0h11v11H0zM12 0h11v11H12zM0 12h11v11H0zM12 12h11v11H12z"/></svg>
+          <svg
+            class="w-4 h-4 mr-2"
+            viewBox="0 0 23 23"
+            xmlns="http://www.w3.org/2000/svg"
+          ><path
+            fill="#f3f3f3"
+            d="M0 0h11v11H0zM12 0h11v11H12zM0 12h11v11H0zM12 12h11v11H12z"
+          /></svg>
           Microsoft (SSO)
         </a>
       </div>
     </div>
   </div>
-
 </template>

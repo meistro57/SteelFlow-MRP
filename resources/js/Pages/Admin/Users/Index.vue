@@ -1,10 +1,10 @@
 <!-- resources/js/Pages/Admin/Users/Index.vue -->
 <script setup>
 import { ref } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
+defineProps({
     users: Array,
 });
 
@@ -66,7 +66,9 @@ const closeModal = () => {
     <template #header>
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold text-white">User Management</h1>
+          <h1 class="text-3xl font-bold text-white">
+            User Management
+          </h1>
           <p class="text-text-secondary mt-1 font-mono text-sm">
             Manage system access and roles
           </p>
@@ -98,10 +100,18 @@ const closeModal = () => {
         <table class="min-w-full divide-y divide-steel-700">
           <thead>
             <tr class="text-left text-xs uppercase tracking-wider text-text-tertiary font-mono">
-              <th class="px-6 py-4">Name</th>
-              <th class="px-6 py-4">Email</th>
-              <th class="px-6 py-4">Role</th>
-              <th class="px-6 py-4 text-right">Actions</th>
+              <th class="px-6 py-4">
+                Name
+              </th>
+              <th class="px-6 py-4">
+                Email
+              </th>
+              <th class="px-6 py-4">
+                Role
+              </th>
+              <th class="px-6 py-4 text-right">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-steel-800">
@@ -111,8 +121,12 @@ const closeModal = () => {
               class="hover:bg-steel-800/60 transition-colors"
             >
               <td class="px-6 py-4">
-                <div class="text-white font-semibold italic">{{ user.name }}</div>
-                <div class="text-xs text-text-tertiary">#{{ user.id.toString().padStart(3, '0') }}</div>
+                <div class="text-white font-semibold italic">
+                  {{ user.name }}
+                </div>
+                <div class="text-xs text-text-tertiary">
+                  #{{ user.id.toString().padStart(3, '0') }}
+                </div>
               </td>
               <td class="px-6 py-4 text-text-secondary">
                 {{ user.email }}
@@ -190,7 +204,9 @@ const closeModal = () => {
                       <div
                         v-if="form.errors.name"
                         class="text-red-400 text-xs mt-1"
-                      >{{ form.errors.name }}</div>
+                      >
+                        {{ form.errors.name }}
+                      </div>
                     </div>
 
                     <div>
@@ -204,7 +220,9 @@ const closeModal = () => {
                       <div
                         v-if="form.errors.email"
                         class="text-red-400 text-xs mt-1"
-                      >{{ form.errors.email }}</div>
+                      >
+                        {{ form.errors.email }}
+                      </div>
                     </div>
 
                     <div>
@@ -213,13 +231,19 @@ const closeModal = () => {
                         v-model="form.role"
                         class="w-full bg-steel-800 border-steel-700 text-white focus:border-forge-500 focus:ring-forge-500 rounded-sm"
                       >
-                        <option value="user">Standard User</option>
-                        <option value="admin">Administrator</option>
+                        <option value="user">
+                          Standard User
+                        </option>
+                        <option value="admin">
+                          Administrator
+                        </option>
                       </select>
                       <div
                         v-if="form.errors.role"
                         class="text-red-400 text-xs mt-1"
-                      >{{ form.errors.role }}</div>
+                      >
+                        {{ form.errors.role }}
+                      </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -247,11 +271,15 @@ const closeModal = () => {
                     <p
                       v-if="editingUser"
                       class="text-[10px] text-text-tertiary uppercase italic"
-                    >Leave credentials blank to maintain existing access code.</p>
+                    >
+                      Leave credentials blank to maintain existing access code.
+                    </p>
                     <div
                       v-if="form.errors.password"
                       class="text-red-400 text-xs mt-1"
-                    >{{ form.errors.password }}</div>
+                    >
+                      {{ form.errors.password }}
+                    </div>
                   </div>
                 </div>
               </div>

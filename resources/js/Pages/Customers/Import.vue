@@ -25,7 +25,12 @@ const submit = () => {
           Upload a CSV with customer details to bulk add or update records.
         </p>
       </div>
-      <Link href="/customers" class="btn-secondary">Back to Customers</Link>
+      <Link
+        href="/customers"
+        class="btn-secondary"
+      >
+        Back to Customers
+      </Link>
     </div>
 
     <form
@@ -38,10 +43,15 @@ const submit = () => {
           type="file"
           accept=".csv,text/csv"
           class="input"
-          @change="form.file = $event.target.files[0]"
           required
+          @change="form.file = $event.target.files[0]"
         >
-        <div class="input-error" v-if="form.errors.file">{{ form.errors.file }}</div>
+        <div
+          v-if="form.errors.file"
+          class="input-error"
+        >
+          {{ form.errors.file }}
+        </div>
         <p class="mt-2 text-xs text-steel-400 font-mono">
           Expected headers: code, name, address_1, address_2, city, state, zip, country, phone, email, notes, is_active.
           Rows with missing names will be skipped politely.
@@ -49,7 +59,12 @@ const submit = () => {
       </div>
 
       <div class="flex justify-end space-x-3">
-        <Link href="/customers" class="btn-secondary">Cancel</Link>
+        <Link
+          href="/customers"
+          class="btn-secondary"
+        >
+          Cancel
+        </Link>
         <button
           type="submit"
           class="btn-primary"

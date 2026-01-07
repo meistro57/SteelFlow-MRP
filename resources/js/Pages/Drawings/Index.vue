@@ -131,12 +131,24 @@ const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : '—'
         <table class="min-w-full divide-y divide-steel-800">
           <thead class="bg-steel-800">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Drawing</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Project</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Title</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">File</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Revised</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-steel-400 uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Drawing
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Project
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Title
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                File
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Revised
+              </th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody class="bg-steel-900 divide-y divide-steel-800">
@@ -158,7 +170,10 @@ const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : '—'
                 <div class="font-semibold text-white">
                   {{ drawing.project?.name || '—' }}
                 </div>
-                <div class="text-xs text-steel-400" v-if="drawing.project?.job_number">
+                <div
+                  v-if="drawing.project?.job_number"
+                  class="text-xs text-steel-400"
+                >
                   Job #{{ drawing.project.job_number }}
                 </div>
               </td>
@@ -206,7 +221,10 @@ const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : '—'
               </td>
             </tr>
             <tr v-if="drawings.data.length === 0">
-              <td class="px-6 py-4 text-center text-sm text-steel-400" colspan="6">
+              <td
+                class="px-6 py-4 text-center text-sm text-steel-400"
+                colspan="6"
+              >
                 No drawings found. Try adjusting filters or create a new record.
               </td>
             </tr>

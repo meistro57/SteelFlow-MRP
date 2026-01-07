@@ -71,11 +71,21 @@ const confirmDelete = (customer) => {
         <table class="min-w-full divide-y divide-steel-800">
           <thead class="bg-steel-800">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Code</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Name</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Contact</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-steel-400 uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Code
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Name
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Contact
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-steel-400 uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody class="bg-steel-900 divide-y divide-steel-800">
@@ -89,13 +99,23 @@ const confirmDelete = (customer) => {
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-white font-semibold">
                 {{ customer.name }}
-                <div class="text-xs text-steel-400" v-if="customer.city || customer.state">
+                <div
+                  v-if="customer.city || customer.state"
+                  class="text-xs text-steel-400"
+                >
                   {{ [customer.city, customer.state].filter(Boolean).join(', ') }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-steel-200">
-                <div v-if="customer.email">{{ customer.email }}</div>
-                <div v-if="customer.phone" class="text-steel-400">{{ customer.phone }}</div>
+                <div v-if="customer.email">
+                  {{ customer.email }}
+                </div>
+                <div
+                  v-if="customer.phone"
+                  class="text-steel-400"
+                >
+                  {{ customer.phone }}
+                </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
@@ -128,7 +148,10 @@ const confirmDelete = (customer) => {
               </td>
             </tr>
             <tr v-if="customers.data.length === 0">
-              <td class="px-6 py-4 text-center text-sm text-steel-400" colspan="5">
+              <td
+                class="px-6 py-4 text-center text-sm text-steel-400"
+                colspan="5"
+              >
                 No customers found. Try adjusting your search or import a list.
               </td>
             </tr>
