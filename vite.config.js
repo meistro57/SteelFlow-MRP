@@ -23,8 +23,7 @@ export default defineConfig({
         strictPort: true,
         cors: true,
         hmr: {
-            // CHANGE THIS: 'localhost' -> '10.0.0.177'
-            host: '10.0.0.177',
+            host: 'localhost',
         },
     },
     resolve: {
