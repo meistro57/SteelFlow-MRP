@@ -1,4 +1,5 @@
 <?php
+// app/Http/Controllers/ReportController.php
 
 namespace App\Http\Controllers;
 
@@ -14,9 +15,7 @@ class ReportController extends Controller
 
     public function index()
     {
-        return Inertia::render('Reports/Index', [
-            'metrics' => $this->reportingService->getDashboardMetrics(),
-        ]);
+        return Inertia::render('Reports/Index', $this->reportingService->getReportsOverview());
     }
 
     public function projectBom(Project $project)

@@ -8,6 +8,7 @@ defineProps({
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: 'chart' },
+    { name: 'Reports', href: '/reports', icon: 'chart' },
     { name: 'Projects', href: '/projects', icon: 'folder' },
     { name: 'Drawings', href: '/drawings', icon: 'document' },
     { name: 'Customers', href: '/customers', icon: 'users' },

@@ -1,4 +1,5 @@
 <?php
+// app/Services/ReportingService.php
 
 namespace App\Services;
 
@@ -9,6 +10,21 @@ use Illuminate\Support\Facades\DB;
 
 class ReportingService
 {
+    /**
+     * Get report module overview data.
+     */
+    public function getReportsOverview(): array
+    {
+        return [
+            'metrics' => $this->getDashboardMetrics(),
+            'inventorySnapshot' => $this->getInventoryReport(),
+            'projects' => Project::with('customer')
+                ->orderByDesc('updated_at')
+                ->limit(6)
+                ->get(),
+        ];
+    }
+
     /**
      * Get summary metrics for the main dashboard.
      */
