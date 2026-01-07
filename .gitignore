@@ -11,3 +11,7 @@
 docker-compose.override.yml
 user.ini
 /coverage
+storage/debugbar/
+
+# Laravel bootstrap cache
+bootstrap/cache/*.php
