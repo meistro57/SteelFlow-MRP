@@ -137,8 +137,14 @@ class CustomerController extends Controller
                 continue; // Skip empty lines quietly.
             }
 
+            if (count($header) !== count($row)) {
+                $skipped++;
+
+                continue;
+            }
+
             $data = array_combine($header, $row);
-            if ($data === false) {
+            if (! is_array($data)) {
                 $skipped++;
 
                 continue;

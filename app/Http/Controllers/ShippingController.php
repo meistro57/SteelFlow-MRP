@@ -63,8 +63,8 @@ class ShippingController extends Controller
             'pendingLoads' => Load::where('status', 'pending')->count(),
             'inTransit' => Load::where('status', 'in_transit')->count(),
             'delivered' => Load::where('status', 'delivered')->count(),
-            'totalPieces' => (int) (Load::sum('total_pieces') ?? 0),
-            'totalWeightLbs' => (float) (Load::sum('total_weight_lbs') ?? 0),
+            'totalPieces' => (int) Load::sum('total_pieces'),
+            'totalWeightLbs' => (float) Load::sum('total_weight_lbs'),
             'nextShipDate' => Load::whereNotNull('ship_date')->orderBy('ship_date')->value('ship_date'),
         ];
 

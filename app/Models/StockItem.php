@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property 'free'|'assigned'|'committed'|'used'|'available'|'reserved'|'checked_out'|'lost'|'damaged' $status
+ */
 class StockItem extends Model
 {
     use SoftDeletes;
