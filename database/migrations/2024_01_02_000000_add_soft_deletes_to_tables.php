@@ -12,6 +12,7 @@ return new class extends Migration
         $tables = [
             'projects',
             'assemblies',
+            'parts',
             'drawings',
             'purchase_orders', // <--- Make sure this one is here!
             'stock_items',

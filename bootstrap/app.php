@@ -16,7 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(
             prepend: [
                 \App\Http\Middleware\RequestContextMiddleware::class,
-                \Fruitcake\Cors\HandleCors::class,
             ],
             append: [
                 \App\Http\Middleware\HandleInertiaRequests::class,

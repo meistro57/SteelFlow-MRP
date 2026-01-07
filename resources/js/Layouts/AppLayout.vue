@@ -35,7 +35,7 @@ const adminNavigation = [
               href="/"
               class="flex items-center space-x-3 group"
             >
-              <div class="w-10 h-10 bg-forge-500 rounded flex items-center justify-center shadow-glow">
+              <div class="w-10 h-10 bg-forge-500 rounded flex items-center justify-center shadow-glow-forge">
                 <svg
                   class="w-6 h-6 text-white"
                   fill="none"
@@ -52,7 +52,7 @@ const adminNavigation = [
               </div>
               <div class="flex flex-col">
                 <span class="text-white font-bold text-xl tracking-tight">SteelFlow</span>
-                <span class="text-xs text-text-tertiary uppercase tracking-widest font-mono">MRP v0.1.0-alpha</span>
+                <span class="text-xs text-steel-500 uppercase tracking-widest font-mono">MRP v0.1.0-alpha</span>
               </div>
             </Link>
 
@@ -88,7 +88,7 @@ const adminNavigation = [
           <div class="flex items-center space-x-4">
             <!-- Search (placeholder) -->
             <button
-              class="p-2 text-text-secondary hover:text-white transition-colors rounded-sm hover:bg-steel-800"
+              class="p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
               title="Search"
             >
               <svg
@@ -108,7 +108,7 @@ const adminNavigation = [
 
             <!-- Notifications -->
             <button
-              class="p-2 text-text-secondary hover:text-white transition-colors rounded-sm hover:bg-steel-800 relative"
+              class="p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800 relative"
               title="Notifications"
             >
               <svg
@@ -133,7 +133,7 @@ const adminNavigation = [
                 <div class="text-sm font-medium text-white">
                   {{ $page.props.auth.user.name }}
                 </div>
-                <div class="text-xs text-text-tertiary font-mono">
+                <div class="text-xs text-steel-500 font-mono">
                   Role: {{ $page.props.auth.user.role }}
                 </div>
               </div>
@@ -170,7 +170,7 @@ const adminNavigation = [
     <!-- Footer -->
     <footer class="bg-steel-900 border-t border-steel-700 mt-16">
       <div class="max-w-full mx-auto px-6 py-6">
-        <div class="flex justify-between items-center text-sm text-text-tertiary">
+        <div class="flex justify-between items-center text-sm text-steel-500">
           <div class="font-mono">
             SteelFlow MRP © 2026 • Built for Steel Fabricators
           </div>

@@ -19,9 +19,12 @@ export default defineConfig({
     ],
     server: {
         host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        cors: true,
         hmr: {
             // CHANGE THIS: 'localhost' -> '10.0.0.177'
-            host: '10.0.0.177', 
+            host: '10.0.0.177',
         },
     },
     resolve: {
