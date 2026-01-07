@@ -161,9 +161,14 @@ else
 fi
 
 # Step 11: Run database migrations
-status "Running database migrations..."
-docker compose exec app php artisan migrate --force
-success "Database migrations completed"
+status "Checking if database migrations are pending..."
+if docker compose exec app php artisan migrate:status --pending >/dev/null 2>&1; then
+    status "Pending migrations found. Running migrations..."
+    docker compose exec app php artisan migrate
+    success "Database migrations completed."
+else
+    echo "   No pending database migrations. Skipping."
+fi
 
 # Step 12: Seed database (optional - only if empty)
 status "Checking if database needs seeding..."

@@ -9,6 +9,7 @@
         "build": "vite build",
         "preview": "vite preview",
         "lint": "eslint resources/js --ext .js,.vue",
+        "lint:check": "eslint resources/js --ext .js,.vue --quiet",
         "lint:fix": "eslint resources/js --ext .js,.vue --fix"
     },
     "devDependencies": {

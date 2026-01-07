@@ -1,4 +1,6 @@
-<?php // app/States/ProductionItem/Welded.php
+<?php
+
+// app/States/ProductionItem/Welded.php
 
 declare(strict_types=1);
 

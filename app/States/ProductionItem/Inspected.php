@@ -1,4 +1,6 @@
-<?php // app/States/ProductionItem/Inspected.php
+<?php
+
+// app/States/ProductionItem/Inspected.php
 
 declare(strict_types=1);
 

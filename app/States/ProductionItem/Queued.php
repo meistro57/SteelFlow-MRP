@@ -1,4 +1,6 @@
-<?php // app/States/ProductionItem/Queued.php
+<?php
+
+// app/States/ProductionItem/Queued.php
 
 declare(strict_types=1);
 

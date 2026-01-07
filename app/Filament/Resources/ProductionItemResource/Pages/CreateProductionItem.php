@@ -1,4 +1,6 @@
-<?php // app/Filament/Resources/ProductionItemResource/Pages/CreateProductionItem.php
+<?php
+
+// app/Filament/Resources/ProductionItemResource/Pages/CreateProductionItem.php
 
 declare(strict_types=1);
 

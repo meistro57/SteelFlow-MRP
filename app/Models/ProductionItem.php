@@ -1,4 +1,6 @@
-<?php // app/Models/ProductionItem.php
+<?php
+
+// app/Models/ProductionItem.php
 
 declare(strict_types=1);
 

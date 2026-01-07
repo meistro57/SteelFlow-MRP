@@ -1,4 +1,6 @@
-<?php // app/States/ProductionItem/Cut.php
+<?php
+
+// app/States/ProductionItem/Cut.php
 
 declare(strict_types=1);
 
