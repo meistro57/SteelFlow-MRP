@@ -2,6 +2,10 @@
 import { router, } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
+const props = defineProps({
+    phpInfo: String,
+});
+
 const clearCache = (type = 'all') => {
     router.post(route('admin.system.clear-cache'), { type }, {
         onSuccess: () => {
