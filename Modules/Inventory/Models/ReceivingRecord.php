@@ -2,6 +2,8 @@
 
 namespace Modules\Inventory\Models;
 
+use App\Models\PurchaseOrderLine;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
