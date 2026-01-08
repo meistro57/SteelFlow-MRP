@@ -57,6 +57,13 @@ class InventoryController extends Controller
         // Validate sort direction
         $sortDirection = in_array($sortDirection, ['asc', 'desc']) ? $sortDirection : 'desc';
 
+        // Calculate status counts before applying orderBy
+        $statusCounts = (clone $query)
+            ->selectRaw('status, SUM(quantity) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status')
+            ->toArray();
+
         // Map sortable columns
         $sortableColumns = [
             'stock_id' => 'stock_id',
@@ -72,14 +79,10 @@ class InventoryController extends Controller
         $sortColumn = $sortableColumns[$sortBy] ?? 'created_at';
         $query->orderBy($sortColumn, $sortDirection);
 
-        $statusCounts = (clone $query)
-            ->selectRaw('status, SUM(quantity) as total')
-            ->groupBy('status')
-            ->pluck('total', 'status')
-            ->toArray();
+        // Calculate total pieces before pagination
+        $totalPieces = (int) (clone $query)->sum('quantity');
 
         $stockItems = $query->paginate(20)->withQueryString();
-        $totalPieces = (int) (clone $query)->sum('quantity');
 
         return Inertia::render('Inventory::Index', [
             'stockItems' => $stockItems,

@@ -6,9 +6,12 @@ import fs from 'fs';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
-    // Default to localhost for everyone else. 
+    // Default to localhost for everyone else.
     // You will override this in your .env file.
     const hmrHost = env.VITE_HMR_HOST || 'localhost';
+    // Only use HTTPS for localhost (SSL cert is only valid for localhost)
+    const useHttps = hmrHost === 'localhost' && fs.existsSync('/etc/nginx/certs/localhost-key.pem') && fs.existsSync('/etc/nginx/certs/localhost.pem');
+    const protocol = useHttps ? 'https' : 'http';
 
     return {
         plugins: [
@@ -34,12 +37,12 @@ export default defineConfig(({ mode }) => {
             port: 5173,
             strictPort: true,
             cors: true,
-            origin: 'http://localhost:5173',
+            origin: `${protocol}://${hmrHost}:5173`,
             hmr: {
                 host: hmrHost,
             },
            // Only use HTTPS if the certs exist (prevents crash during build)
-            https: (fs.existsSync('/etc/nginx/certs/localhost-key.pem') && fs.existsSync('/etc/nginx/certs/localhost.pem')) ? {
+            https: useHttps ? {
                 key: fs.readFileSync('/etc/nginx/certs/localhost-key.pem'),
                 cert: fs.readFileSync('/etc/nginx/certs/localhost.pem'),
             } : false,
