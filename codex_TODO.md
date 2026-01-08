@@ -7,8 +7,8 @@ This file tracks the actionable TODOs required to deliver the SteelFlow MRP Feat
 ## TODO (Build Order)
 
 ### 1) Core Foundation (Modules + Core/Authz/AuditLog)
-- [ ] Scaffold modular architecture (domain modules) and a shared `Core` module for traits/enums/helpers/UI components.
-- [ ] Define status pipeline conventions and reusable status helpers in `Core`.
+- [x] Scaffold modular architecture (domain modules) and a shared `Core` module for traits/enums/helpers/UI components.
+- [x] Define status pipeline conventions and reusable status helpers in `Core`.
 - [ ] Establish audit-first data conventions (created_by/updated_by + immutable history hooks).
 - [ ] Build `Authz` module: roles, permissions, policy conventions, Filament integration.
 - [ ] Build `AuditLog` module: record timeline, immutable history, per-record audit views.
