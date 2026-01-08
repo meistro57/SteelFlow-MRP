@@ -1,0 +1,216 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\$item of method App\\\\Http\\\\Controllers\\\\LabelController\\:\\:stock\\(\\) has invalid type App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Http/Controllers/LabelController.php
+
+		-
+			message: "#^Class App\\\\Models\\\\StockItem not found\\.$#"
+			count: 1
+			path: app/Models/GasBottleInspection.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:belongsTo\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/GasBottleInspection.php
+
+		-
+			message: "#^Class App\\\\Models\\\\StockItem not found\\.$#"
+			count: 1
+			path: app/Models/GasBottleRental.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:belongsTo\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/GasBottleRental.php
+
+		-
+			message: "#^Class App\\\\Models\\\\StockItem not found\\.$#"
+			count: 1
+			path: app/Models/NestingBar.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:belongsTo\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/NestingBar.php
+
+		-
+			message: "#^Class App\\\\Models\\\\Material not found\\.$#"
+			count: 1
+			path: app/Models/Part.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:belongsTo\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/Part.php
+
+		-
+			message: "#^Class App\\\\Models\\\\Vendor not found\\.$#"
+			count: 1
+			path: app/Models/PurchaseOrder.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:belongsTo\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/PurchaseOrder.php
+
+		-
+			message: "#^Class App\\\\Models\\\\Material not found\\.$#"
+			count: 1
+			path: app/Models/PurchaseOrderLine.php
+
+		-
+			message: "#^Class App\\\\Models\\\\ReceivingRecord not found\\.$#"
+			count: 1
+			path: app/Models/PurchaseOrderLine.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:belongsTo\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/PurchaseOrderLine.php
+
+		-
+			message: "#^Parameter \\#1 \\$related of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:hasMany\\(\\) expects class\\-string\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, string given\\.$#"
+			count: 1
+			path: app/Models/PurchaseOrderLine.php
+
+		-
+			message: "#^Access to property \\$id on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 7
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Access to property \\$reserved_project_id on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Access to property \\$status on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 3
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Access to property \\$stock_area on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 4
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Access to property \\$type on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Call to method update\\(\\) on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 4
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Call to static method create\\(\\) on an unknown class App\\\\Models\\\\StockMovement\\.$#"
+			count: 4
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Parameter \\$bottle of method App\\\\Services\\\\GasBottleService\\:\\:assertBottleType\\(\\) has invalid type App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Parameter \\$bottle of method App\\\\Services\\\\GasBottleService\\:\\:reserveBottle\\(\\) has invalid type App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Parameter \\$bottle of method App\\\\Services\\\\GasBottleService\\:\\:scheduleInspection\\(\\) has invalid type App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Parameter \\$replacement of method App\\\\Services\\\\GasBottleService\\:\\:swapBottle\\(\\) has invalid type App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/GasBottleService.php
+
+		-
+			message: "#^Access to property \\$grade on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/LabelService.php
+
+		-
+			message: "#^Access to property \\$heat_number on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/LabelService.php
+
+		-
+			message: "#^Access to property \\$id on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/LabelService.php
+
+		-
+			message: "#^Access to property \\$length on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/LabelService.php
+
+		-
+			message: "#^Access to property \\$type on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/LabelService.php
+
+		-
+			message: "#^Parameter \\$item of method App\\\\Services\\\\LabelService\\:\\:generateStockZpl\\(\\) has invalid type App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/LabelService.php
+
+		-
+			message: "#^Call to method recordMovement\\(\\) on an unknown class App\\\\Services\\\\InventoryService\\.$#"
+			count: 3
+			path: app/Services/Nesting/NestingService.php
+
+		-
+			message: "#^Call to method update\\(\\) on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 2
+			path: app/Services/Nesting/NestingService.php
+
+		-
+			message: "#^Call to static method create\\(\\) on an unknown class App\\\\Models\\\\StockItem\\.$#"
+			count: 1
+			path: app/Services/Nesting/NestingService.php
+
+		-
+			message: "#^Parameter \\$inventoryService of method App\\\\Services\\\\Nesting\\\\NestingService\\:\\:__construct\\(\\) has invalid type App\\\\Services\\\\InventoryService\\.$#"
+			count: 1
+			path: app/Services/Nesting/NestingService.php
+
+		-
+			message: "#^Property App\\\\Services\\\\Nesting\\\\NestingService\\:\\:\\$inventoryService has unknown class App\\\\Services\\\\InventoryService as its type\\.$#"
+			count: 1
+			path: app/Services/Nesting/NestingService.php
+
+		-
+			message: "#^Access to property \\$unit_weight_kg on an unknown class App\\\\Models\\\\Material\\.$#"
+			count: 1
+			path: app/Services/Pricing/WeightCalculator.php
+
+		-
+			message: "#^Access to property \\$unit_weight_lbs on an unknown class App\\\\Models\\\\Material\\.$#"
+			count: 1
+			path: app/Services/Pricing/WeightCalculator.php
+
+		-
+			message: "#^Call to static method firstOrCreate\\(\\) on an unknown class App\\\\Models\\\\Grade\\.$#"
+			count: 1
+			path: app/Services/ReferenceDataService.php
+
+		-
+			message: "#^Call to static method where\\(\\) on an unknown class App\\\\Models\\\\Material\\.$#"
+			count: 1
+			path: app/Services/ReferenceDataService.php
+
+		-
+			message: "#^Access to an undefined property Modules\\\\Inventory\\\\Models\\\\StockItem\\:\\:\\$total_length\\.$#"
+			count: 1
+			path: app/Services/ReportingService.php
+
+		-
+			message: "#^Access to an undefined property Modules\\\\Inventory\\\\Models\\\\StockItem\\:\\:\\$total_length_in\\.$#"
+			count: 1
+			path: app/Services/ReportingService.php

@@ -23,7 +23,7 @@ class BOMExtensionService
         // Eager load all relationships needed to prevent N+1 queries
         $project->load(['assemblies.parts.material', 'assemblies.instances']);
 
-        DB::transaction(function () use ($project) {
+        DB::transaction(function () use ($project): void {
             foreach ($project->assemblies as $assembly) {
                 $this->extendAssembly($assembly);
             }
@@ -43,7 +43,7 @@ class BOMExtensionService
             $assembly->load('parts.material');
         }
 
-        DB::transaction(function () use ($assembly) {
+        DB::transaction(function () use ($assembly): void {
             $totalLbs = 0;
             $totalKg = 0;
 

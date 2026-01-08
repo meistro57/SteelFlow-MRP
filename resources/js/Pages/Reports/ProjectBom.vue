@@ -3,7 +3,7 @@
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
+defineProps({
     project: Object,
     assemblies: Array,
 });
@@ -11,6 +11,13 @@ const props = defineProps({
 const formatWeight = (value) => {
     if (value === null || value === undefined) return '-';
     return `${Number(value).toFixed(2)} lbs`;
+};
+
+const formatLength = (length) => {
+    if (!length) return '-';
+    const feet = Math.floor(length);
+    const inches = Math.round((length - feet) * 12);
+    return inches > 0 ? `${feet}' ${inches}"` : `${feet}'`;
 };
 </script>
 
@@ -28,6 +35,20 @@ const formatWeight = (value) => {
             </p>
           </div>
           <div class="flex items-center gap-3">
+            <a
+              :href="route('reports.bom.csv', project.id)"
+              target="_blank"
+              class="btn-secondary"
+            >
+              Export CSV
+            </a>
+            <a
+              :href="route('reports.bom.pdf', project.id)"
+              target="_blank"
+              class="btn-secondary"
+            >
+              Export PDF
+            </a>
             <button
               type="button"
               class="btn-secondary"
@@ -105,7 +126,7 @@ const formatWeight = (value) => {
                   {{ part.size_imperial ?? part.material?.size_imperial ?? 'N/A' }}
                 </td>
                 <td class="py-3 text-right">
-                  {{ part.length ?? '-' }}
+                  {{ formatLength(part.length) }}
                 </td>
                 <td class="py-3 text-right">
                   {{ formatWeight(part.weight_each_lbs) }}

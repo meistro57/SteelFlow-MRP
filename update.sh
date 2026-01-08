@@ -118,7 +118,7 @@ wait_for_container "steelflow-app"
 
 # Step 6: Wait for MySQL to be ready
 status "Waiting for MySQL to be ready..."
-until docker compose exec mysql mysqladmin ping -h"localhost" --silent; do
+until docker compose exec mysql mysqladmin ping -h"localhost" -p"${DB_PASSWORD:-secret}" --silent; do
     echo -n "."
     sleep 2
 done
@@ -162,12 +162,13 @@ fi
 
 # Step 11: Run database migrations
 status "Checking if database migrations are pending..."
-if docker compose exec app php artisan migrate:status --pending >/dev/null 2>&1; then
-    status "Pending migrations found. Running migrations..."
-    docker compose exec app php artisan migrate
-    success "Database migrations completed."
-else
+# Check if there are pending migrations
+if docker compose exec app php artisan migrate:status --pending | grep -q "No pending migrations" 2>/dev/null; then
     echo "   No pending database migrations. Skipping."
+else
+    status "Pending migrations found. Running migrations..."
+    docker compose exec app php artisan migrate --force
+    success "Database migrations completed."
 fi
 
 # Step 12: Seed database (optional - only if empty)

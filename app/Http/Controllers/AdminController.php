@@ -70,4 +70,31 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'User deleted successfully.');
     }
+
+    public function system()
+    {
+        return Inertia::render('Admin/System');
+    }
+
+    public function clearCache(Request $request)
+    {
+        $type = $request->input('type', 'all');
+
+        switch ($type) {
+            case 'route':
+                \Illuminate\Support\Facades\Artisan::call('route:clear');
+                break;
+            case 'config':
+                \Illuminate\Support\Facades\Artisan::call('config:clear');
+                break;
+            case 'view':
+                \Illuminate\Support\Facades\Artisan::call('view:clear');
+                break;
+            default:
+                \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+                break;
+        }
+
+        return redirect()->back()->with('success', 'System cache cleared successfully.');
+    }
 }

@@ -10,15 +10,15 @@ const props = defineProps({
 });
 
 const formatCurrency = (value) => {
-    if (!value && value !== 0) return '£0';
-    return new Intl.NumberFormat('en-GB', {
+    if (!value && value !== 0) return '$0';
+    return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'GBP',
+        currency: 'USD',
         maximumFractionDigits: 0,
     }).format(value);
 };
 
-const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valuation: 0, by_type: [] };
+const inventorySummary = () => props.inventorySnapshot ?? { totalItems: 0, valuation: 0, byType: [] };
 </script>
 
 <template>
@@ -111,7 +111,7 @@ const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valu
               Usable Stock Items
             </div>
             <div class="mt-3 text-2xl font-semibold text-white">
-              {{ inventorySummary().total_items ?? 0 }}
+              {{ inventorySummary().totalItems ?? 0 }}
             </div>
             <p class="mt-2 text-sm text-text-secondary">
               Items not yet marked as used.
@@ -136,7 +136,7 @@ const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valu
           </h4>
           <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div
-              v-for="type in (inventorySummary().by_type ?? []).slice(0, 3)"
+              v-for="type in (inventorySummary().byType ?? []).slice(0, 3)"
               :key="type.type"
               class="bg-steel-900/40 border border-steel-700 rounded-sm p-4"
             >
@@ -148,7 +148,7 @@ const inventorySummary = () => props.inventorySnapshot ?? { total_items: 0, valu
               </div>
             </div>
             <div
-              v-if="(inventorySummary().by_type ?? []).length === 0"
+              v-if="(inventorySummary().byType ?? []).length === 0"
               class="bg-steel-900/40 border border-steel-700 rounded-sm p-4 text-sm text-text-secondary"
             >
               No inventory data yet. Add stock to build the valuation report.
