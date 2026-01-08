@@ -38,6 +38,23 @@ function ensure_laravel_directories() {
     success "Laravel directories ready"
 }
 
+# Step 0: Ensure Laravel directory structure exists
+ensure_laravel_directories
+
+# NEW Step 0.5: Sync Environment for Vite
+status "Syncing Vite environment for current location..."
+# Detect current local IP
+DETECTED_IP=$(hostname -I | awk '{print $1}')
+TARGET_HOST=${DETECTED_IP:-localhost}
+
+# Force update the .env file (using sudo to handle the "unwritable" issue)
+if grep -q "VITE_HMR_HOST=" .env; then
+    sudo sed -i "s/^VITE_HMR_HOST=.*/VITE_HMR_HOST=$TARGET_HOST/" .env
+else
+    echo "VITE_HMR_HOST=$TARGET_HOST" | sudo tee -a .env > /dev/null
+fi
+success "Vite HMR host synced to $TARGET_HOST"
+
 # Function to wait for a container to be healthy
 function wait_for_container() {
     local container_name=$1

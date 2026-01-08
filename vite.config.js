@@ -32,15 +32,6 @@ export default defineConfig(({ mode }) => {
                 },
             }),
         ],
-        server: {
-            host: '0.0.0.0',
-            port: 5173,
-            strictPort: true,
-            cors: true,
-            origin: `${protocol}://${hmrHost}:5173`,
-            hmr: {
-                host: hmrHost,
-            },
            // Only use HTTPS if the certs exist (prevents crash during build)
             https: useHttps ? {
                 key: fs.readFileSync('/etc/nginx/certs/localhost-key.pem'),
