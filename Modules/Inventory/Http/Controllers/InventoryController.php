@@ -10,7 +10,7 @@ use Modules\Inventory\Http\Requests\StoreStockItemRequest;
 use Modules\Inventory\Http\Requests\UpdateStockItemRequest;
 use Modules\Inventory\Models\Grade;
 use Modules\Inventory\Models\Material;
-use Modules\Inventory\Models\Project;
+use App\Models\Project;
 use Modules\Inventory\Models\StockItem;
 
 class InventoryController extends Controller

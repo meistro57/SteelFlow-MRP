@@ -4,7 +4,7 @@ namespace Modules\Inventory\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class InventoryDatabaseSeeder extends Seeder
+class Inventory\\DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
