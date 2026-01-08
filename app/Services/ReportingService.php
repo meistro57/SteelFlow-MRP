@@ -6,9 +6,8 @@ namespace App\Services;
 
 use App\Models\Assembly;
 use App\Models\Project;
-use Modules\Inventory\Models\StockItem;
-use Modules\Inventory\Models\Material;
 use Illuminate\Support\Facades\DB;
+use Modules\Inventory\Models\StockItem;
 
 class ReportingService
 {
@@ -69,6 +68,7 @@ class ReportingService
                 ->get()
                 ->map(function ($item) {
                     $item->total_length = $item->total_length_in / 12; // Convert to feet for the report snapshot
+
                     return $item;
                 }),
         ];

@@ -7,12 +7,12 @@ namespace App\Services;
 use App\Models\Customer;
 use App\Models\GasBottleInspection;
 use App\Models\GasBottleRental;
-use App\Models\StockItem;
-use App\Models\StockMovement;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
+use Modules\Inventory\Models\StockItem;
+use Modules\Inventory\Models\StockMovement;
 use RuntimeException;
 
 class GasBottleService

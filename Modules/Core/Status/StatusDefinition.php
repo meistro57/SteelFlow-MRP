@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/app/Status/StatusDefinition.php
 
 declare(strict_types=1);
@@ -8,7 +9,7 @@ namespace Modules\Core\Status;
 final class StatusDefinition
 {
     /**
-     * @param array<string, mixed> $meta
+     * @param  array<string, mixed>  $meta
      */
     public function __construct(
         public readonly string $key,
@@ -16,11 +17,10 @@ final class StatusDefinition
         public readonly ?string $color = null,
         public readonly ?string $next = null,
         public readonly array $meta = [],
-    ) {
-    }
+    ) {}
 
     /**
-     * @param array<string, mixed> $definition
+     * @param  array<string, mixed>  $definition
      */
     public static function fromArray(string $key, array $definition): self
     {

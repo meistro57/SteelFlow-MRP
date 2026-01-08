@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Part;
-use App\Models\StockItem;
+use Modules\Inventory\Models\StockItem;
 
 class LabelService
 {

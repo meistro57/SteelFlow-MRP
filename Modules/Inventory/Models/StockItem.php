@@ -2,6 +2,7 @@
 
 namespace Modules\Inventory\Models;
 
+use App\Models\Project; // <--- ADD THIS LINE (Assuming Project is still in App\Models)
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property 'free'|'assigned'|'committed'|'used'|'available'|'reserved'|'checked_out'|'lost'|'damaged' $status
+ * @property float $total_length
+ * @property float $total_length_in
  */
 class StockItem extends Model
 {

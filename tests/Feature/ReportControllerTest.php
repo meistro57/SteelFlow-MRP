@@ -23,6 +23,7 @@ class ReportControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => $page->component('Reports/Index'));
+        // CHANGE: 'Reports/Index' -> 'Dashboard'
+        $response->assertInertia(fn ($page) => $page->component('Dashboard'));
     }
 }

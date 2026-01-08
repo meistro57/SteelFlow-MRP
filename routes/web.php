@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function (): void {
         Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
         Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
         Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
-        
+
         Route::get('/system', [AdminController::class, 'system'])->name('system');
         Route::post('/system/clear-cache', [AdminController::class, 'clearCache'])->name('system.clear-cache');
     });

@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/routes/web.php
 
 use Illuminate\Support\Facades\Route;

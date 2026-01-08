@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/app/Providers/RouteServiceProvider.php
 
 declare(strict_types=1);

@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/app/Status/StatusRegistry.php
 
 declare(strict_types=1);

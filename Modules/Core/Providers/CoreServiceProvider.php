@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/app/Providers/CoreServiceProvider.php
 
 declare(strict_types=1);

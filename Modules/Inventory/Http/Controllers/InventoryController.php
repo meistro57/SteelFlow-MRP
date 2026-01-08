@@ -2,15 +2,16 @@
 
 namespace Modules\Inventory\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
 use Modules\Inventory\Http\Requests\StoreStockItemRequest;
 use Modules\Inventory\Http\Requests\UpdateStockItemRequest;
 use Modules\Inventory\Models\Grade;
 use Modules\Inventory\Models\Material;
 use Modules\Inventory\Models\Project;
 use Modules\Inventory\Models\StockItem;
-use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class InventoryController extends Controller
 {

@@ -2,14 +2,15 @@
 
 namespace Tests\Feature;
 
-use App\Models\Grade;
-use App\Models\Material;
-use App\Models\PurchaseOrder;
-use App\Models\User;
-use App\Models\Vendor;
-use App\Services\InventoryService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
+use App\Models\PurchaseOrder;        // (In Modules)
+use App\Models\User;     // (In Modules)
+// (In Modules)
+use Illuminate\Foundation\Testing\RefreshDatabase;       // <--- CHANGE THIS (Found in Modules)
+use Illuminate\Support\Facades\Auth;              // <--- KEEP THIS (Not found in Modules)
+use Modules\Inventory\Models\Grade;
+use Modules\Inventory\Models\Material;
+use Modules\Inventory\Models\Vendor;
+use Modules\Inventory\Services\InventoryService;
 use Tests\TestCase;
 
 class InventoryServiceTest extends TestCase

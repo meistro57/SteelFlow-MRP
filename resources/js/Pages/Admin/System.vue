@@ -1,5 +1,5 @@
 <script setup>
-import { router, Head } from '@inertiajs/vue3';
+import { router, } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const clearCache = (type = 'all') => {

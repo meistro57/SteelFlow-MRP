@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Grade;
-use App\Models\Material;
+use Modules\Inventory\Models\Grade;
+use Modules\Inventory\Models\Material;
 
 class ReferenceDataService
 {

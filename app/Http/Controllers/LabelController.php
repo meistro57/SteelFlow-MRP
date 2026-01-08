@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Part;
-use App\Models\StockItem;
 use App\Services\LabelService;
+use Modules\Inventory\Models\StockItem;
 
 class LabelController extends Controller
 {

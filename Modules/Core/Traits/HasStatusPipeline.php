@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/app/Traits/HasStatusPipeline.php
 
 declare(strict_types=1);

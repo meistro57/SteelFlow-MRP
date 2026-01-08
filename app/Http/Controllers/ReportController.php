@@ -6,9 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Services\ReportingService;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Inertia\Inertia;
 
 class ReportController extends Controller
 {
@@ -45,17 +44,17 @@ class ReportController extends Controller
     public function inventoryCsv()
     {
         $items = $this->reportingService->getInventoryExportData();
-        $filename = "inventory_" . date('Y-m-d') . ".csv";
-        
+        $filename = 'inventory_'.date('Y-m-d').'.csv';
+
         $headers = [
-            "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename=$filename",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$filename",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
-        $callback = function() use($items): void {
+        $callback = function () use ($items): void {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['Stock ID', 'Type', 'Size', 'Grade', 'Length (ft)', 'Quantity', 'Status', 'Location', 'Heat Number', 'PO Number', 'Reserved Project', 'Unit Cost', 'Total Cost']);
 
@@ -73,7 +72,7 @@ class ReportController extends Controller
                     $item->po_number,
                     $item->reservedProject->job_number ?? '',
                     $item->cost_per_unit,
-                    $item->cost_per_unit * $item->quantity
+                    $item->cost_per_unit * $item->quantity,
                 ]);
             }
 
@@ -87,29 +86,29 @@ class ReportController extends Controller
     {
         $summary = $this->reportingService->getInventoryReport();
         $items = $this->reportingService->getInventoryExportData();
-        
+
         $pdf = Pdf::loadView('reports.inventory', [
             'summary' => $summary,
-            'items' => $items
+            'items' => $items,
         ]);
 
-        return $pdf->download('inventory_' . date('Y-m-d') . '.pdf');
+        return $pdf->download('inventory_'.date('Y-m-d').'.pdf');
     }
 
     public function projectBomCsv(Project $project)
     {
         $project->load('assemblies.parts');
-        $filename = "bom_" . $project->job_number . "_" . date('Y-m-d') . ".csv";
-        
+        $filename = 'bom_'.$project->job_number.'_'.date('Y-m-d').'.csv';
+
         $headers = [
-            "Content-type"        => "text/csv",
-            "Content-Disposition" => "attachment; filename=$filename",
-            "Pragma"              => "no-cache",
-            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
-            "Expires"             => "0"
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=$filename",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
-        $callback = function() use($project): void {
+        $callback = function () use ($project): void {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['Assembly Mark', 'Assembly Description', 'Assembly Qty', 'Part Mark', 'Part Qty', 'Material', 'Size', 'Length (ft)', 'Weight Each (lbs)', 'Total Weight (lbs)']);
 
@@ -125,7 +124,7 @@ class ReportController extends Controller
                         $part->size_imperial,
                         $this->formatLength($part->length),
                         $part->weight_each_lbs,
-                        $part->weight_each_lbs * $part->quantity * $assembly->quantity
+                        $part->weight_each_lbs * $part->quantity * $assembly->quantity,
                     ]);
                 }
             }
@@ -139,20 +138,26 @@ class ReportController extends Controller
     public function projectBomPdf(Project $project)
     {
         $project->load('assemblies.parts.material');
-        
+
         $pdf = Pdf::loadView('reports.bom', [
-            'project' => $project
+            'project' => $project,
         ]);
 
-        return $pdf->download('bom_' . $project->job_number . '_' . date('Y-m-d') . '.pdf');
+        return $pdf->download('bom_'.$project->job_number.'_'.date('Y-m-d').'.pdf');
     }
 
     private function formatLength($length)
     {
-        if (!$length) return '-';
+        if (! $length) {
+            return '-';
+        }
         $feet = floor($length);
         $inches = round(($length - $feet) * 12);
-        if ($inches == 12) { $feet++; $inches = 0; }
+        if ($inches == 12) {
+            $feet++;
+            $inches = 0;
+        }
+
         return $inches > 0 ? "{$feet}' {$inches}\"" : "{$feet}'";
     }
 }

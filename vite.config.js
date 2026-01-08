@@ -2,7 +2,7 @@ import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import fs from 'fs'; 
-import collectModuleAssets from './vite-module-loader.js'; 
+//import collectModuleAssets from './vite-module-loader.js'; 
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
                 input: [
                     'resources/css/app.css', 
                     'resources/js/app.js',
-                    ...collectModuleAssets(),
+                 //   ...collectModuleAssets(),
                 ],
                 refresh: true,
             }),
@@ -38,11 +38,11 @@ export default defineConfig(({ mode }) => {
             hmr: {
                 host: hmrHost,
             },
-            // --- NEW: Enable HTTPS using the same certs as Nginx ---
-            https: {
+           // Only use HTTPS if the certs exist (prevents crash during build)
+            https: (fs.existsSync('/etc/nginx/certs/localhost-key.pem') && fs.existsSync('/etc/nginx/certs/localhost.pem')) ? {
                 key: fs.readFileSync('/etc/nginx/certs/localhost-key.pem'),
                 cert: fs.readFileSync('/etc/nginx/certs/localhost.pem'),
-            },
+            } : false,
         },
         resolve: {
             alias: {

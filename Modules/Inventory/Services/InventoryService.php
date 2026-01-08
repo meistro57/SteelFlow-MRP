@@ -4,14 +4,14 @@
 
 namespace Modules\Inventory\Services;
 
-use Modules\Inventory\Models\PurchaseOrderLine;
-use Modules\Inventory\Models\ReceivingRecord;
-use Modules\Inventory\Models\StockItem;
-use Modules\Inventory\Models\StockMovement;
+use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Modules\Inventory\Models\ReceivingRecord;
+use Modules\Inventory\Models\StockItem;
+use Modules\Inventory\Models\StockMovement;
 
 class InventoryService
 {

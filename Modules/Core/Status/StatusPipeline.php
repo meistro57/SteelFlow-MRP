@@ -1,4 +1,5 @@
 <?php
+
 // Modules/Core/app/Status/StatusPipeline.php
 
 declare(strict_types=1);
@@ -15,7 +16,7 @@ final class StatusPipeline
     private array $definitions;
 
     /**
-     * @param array<string, StatusDefinition> $definitions
+     * @param  array<string, StatusDefinition>  $definitions
      */
     public function __construct(
         public readonly string $name,
@@ -25,7 +26,7 @@ final class StatusPipeline
     }
 
     /**
-     * @param array<string, array<string, mixed>> $definitions
+     * @param  array<string, array<string, mixed>>  $definitions
      */
     public static function fromConfig(string $name, array $definitions): self
     {

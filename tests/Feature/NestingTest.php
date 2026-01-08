@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\Nesting;
 use App\Models\NestingBar;
-use App\Models\StockItem;
 use App\Models\User;
-use App\Services\InventoryService;
 use App\Services\Nesting\NestingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Modules\Inventory\Models\StockItem;
+use Modules\Inventory\Services\InventoryService;
 use Tests\TestCase;
 
 class NestingTest extends TestCase

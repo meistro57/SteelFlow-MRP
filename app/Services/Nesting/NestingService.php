@@ -3,10 +3,10 @@
 namespace App\Services\Nesting;
 
 use App\Models\Nesting;
-use App\Models\StockItem;
-use App\Services\InventoryService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Modules\Inventory\Models\StockItem;
+use Modules\Inventory\Services\InventoryService;
 
 class NestingService
 {
