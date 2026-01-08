@@ -152,7 +152,7 @@ repair_system() {
 
     # Install PHP dependencies
     echo "Installing/updating PHP dependencies..."
-    docker compose exec app composer install --no-dev --optimize-autoloader
+    docker compose exec app composer install --optimize-autoloader
     if [ $? -ne 0 ]; then
         echo "❌ Failed to install PHP dependencies"
         return 1

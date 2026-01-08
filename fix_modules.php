@@ -1,6 +1,6 @@
 <?php
 
-$dir = new RecursiveDirectoryIterator(__DIR__ . '/Modules/Inventory');
+$dir = new RecursiveDirectoryIterator(__DIR__.'/Modules/Inventory');
 $iterator = new RecursiveIteratorIterator($dir);
 
 $replacements = [
@@ -39,7 +39,7 @@ foreach ($iterator as $file) {
         }
         if ($content !== $original) {
             file_put_contents($file->getPathname(), $content);
-            echo "Fixed: " . $file->getPathname() . "\n";
+            echo 'Fixed: '.$file->getPathname()."\n";
         }
     }
 }

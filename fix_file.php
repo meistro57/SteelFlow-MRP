@@ -1,4 +1,5 @@
 <?php
+
 $file = 'Modules/Inventory/Http/Controllers/InventoryController.php';
 $content = file_get_contents($file);
 $content = str_replace('ModulesInventoryHttpControllers', 'Modules\Inventory\Http\Controllers', $content);
