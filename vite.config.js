@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
         plugins: [
             laravel({
                 input: [
-                    'resources/css/app.css', 
+                    'resources/css/app.css',
                     'resources/js/app.js',
                     'Modules/Inventory/resources/assets/js/app.js',
                  //   ...collectModuleAssets(),
@@ -33,6 +33,15 @@ export default defineConfig(({ mode }) => {
                 },
             }),
         ],
+        server: {
+            host: '0.0.0.0', // Listen on all interfaces for remote access
+            port: 5173,
+            strictPort: true,
+            hmr: {
+                host: hmrHost,
+                protocol: protocol,
+            },
+        },
            // Only use HTTPS if the certs exist (prevents crash during build)
             https: useHttps ? {
                 key: fs.readFileSync('/etc/nginx/certs/localhost-key.pem'),
