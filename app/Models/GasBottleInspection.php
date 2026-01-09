@@ -6,10 +6,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Traits\HasAuditFields;
 use Modules\Inventory\Models\StockItem;
 
 class GasBottleInspection extends Model
 {
+    use HasAuditFields;
+
     protected $fillable = [
         'stock_item_id',
         'scheduled_for',
@@ -17,6 +20,7 @@ class GasBottleInspection extends Model
         'outcome',
         'notes',
         'created_by',
+        'updated_by',
     ];
 
     public function stockItem(): BelongsTo
