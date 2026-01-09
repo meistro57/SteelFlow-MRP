@@ -20,6 +20,5 @@ class ModelAuditEvent
         public readonly ?int $actorId,
         public readonly array $changes,
         public readonly array $original,
-    ) {
-    }
+    ) {}
 }
