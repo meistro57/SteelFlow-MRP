@@ -28,13 +28,13 @@ To replace obsolete legacy systems with a high-performance, web-native platform 
 
 ## 📊 Current Status
 
-**Development Stage:** Foundation Complete, Feature Implementation In Progress
+**Development Stage:** Core Platform Built, Feature Implementation In Progress
 
-SteelFlow MRP has a **solid foundation** with complete database architecture (14 migrations, 29 models) and comprehensive backend services. The project is currently in **active development** with focus on building out the user interface and controllers to connect the backend logic to the frontend.
+SteelFlow MRP has a **solid foundation** with a complete database architecture (21 migrations, 27 models) and a growing service layer. The project is currently in **active development** with UI and controller work focused on connecting the core workflows end-to-end.
 
 - ✅ **Infrastructure:** Docker environment, authentication, database schema
-- ✅ **Backend Services:** Import parsers, nesting engines, inventory management, reporting
-- 🔄 **Controllers & UI:** Partially implemented - core modules need frontend interfaces
+- ✅ **Core Services:** BOM, inventory, nesting, production, shipping, reporting services in place
+- 🔄 **Controllers & UI:** 11 controllers and 21 Inertia/Vue pages covering projects, drawings, customers, production, shipping, and reports
 - 📅 **Estimating Module:** Planned for Phase 8
 
 See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed status.
@@ -70,8 +70,8 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 
 ### **Phase 1: Foundation** ✅ Complete
 - [x] Dockerized Development Environment (Docker Compose v2)
-- [x] Database Schema Foundation (14 migrations)
-- [x] Project & Master Data Models (29 models)
+- [x] Database Schema Foundation (21 migrations)
+- [x] Project & Master Data Models (27 models)
 - [x] Base Environment Configuration
 - [x] Microsoft 365 OAuth Integration
 - [x] Composer and NPM Configuration
@@ -82,7 +82,8 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [x] Services: BOMExtensionService, ReferenceDataService
 - [x] Import Services (KISS/XSR parsers)
 - [x] DrawingController & UI
-- [ ] Full BOM Management Interface
+- [x] ProjectController & UI
+- [ ] Assembly/Part Management Interface
 - [ ] Weight & Pricing UI Integration
 - [ ] KISS/XSR Import UI
 
@@ -109,17 +110,17 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [x] Models: ProductionBatch, WorkArea, TimeEntry, PartWorkArea
 - [x] Services: Production services
 - [x] ProductionController
-- [x] Basic Production Pages
+- [x] Production Dashboard + Scan Pages
 - [x] LabelService (ZPL generation)
 - [ ] Complete Barcode Tracking App
 - [ ] Work Area Routing Interface
 - [ ] Labor Time Clocking UI
 
-### **Phase 6: Shipping & Logistics** 📋 Backend Only
+### **Phase 6: Shipping & Logistics** 🔄 In Progress
 - [x] Database Schema (migrations complete)
 - [x] Models: Load, LoadItem, ShippingDocument
 - [x] Services: ShippingService
-- [ ] Shipping Controllers & UI
+- [x] ShippingController + Dashboard UI
 - [ ] Load Builder Interface
 - [ ] BOL & Packing List Generation
 - [ ] Delivery Confirmation System
@@ -128,10 +129,10 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [x] ReportController
 - [x] Services: ReportingService
 - [x] Dashboard Page (basic)
-- [ ] BOM Reports
+- [x] BOM Reports (project BOM)
 - [ ] Purchasing Reports
 - [ ] Production Metrics Dashboard
-- [ ] Inventory Reports
+- [x] Inventory Reports
 - [ ] Shipping Reports
 
 ### **Phase 8: Estimating Module** 📅 Planned
@@ -142,7 +143,7 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [ ] Proposal & Quote Generation (PDF)
 - [ ] Bid-to-Project Conversion Logic
 
-**Legend:** ✅ Complete | 🔄 In Progress | 📋 Backend Only | 📅 Planned
+**Legend:** ✅ Complete | 🔄 In Progress | 📅 Planned
 
 ---
 
