@@ -60,6 +60,41 @@ docker compose exec app php artisan test --filter=ProjectTest
 docker compose exec app php artisan test --coverage
 ```
 
+### Filament Admin Panel
+```bash
+# Access the admin panel
+# URL: http://localhost/admin (or your configured domain)
+
+# Default admin credentials (from seeder)
+# Email: admin@steelflow.local
+# Password: password
+
+# Create new Filament resources
+php artisan make:filament-resource ModelName
+
+# Create new Filament pages
+php artisan make:filament-page PageName
+
+# Create new Filament widgets
+php artisan make:filament-widget WidgetName
+
+# Build Filament assets
+npm run build
+php artisan filament:assets
+```
+
+**Filament Configuration:**
+- Panel Provider: `app/Providers/Filament/AdminPanelProvider.php`
+- Resources: `app/Filament/Resources/`
+- Pages: `app/Filament/Pages/`
+- Widgets: `app/Filament/Widgets/`
+- Custom Theme: `resources/css/filament/admin/theme.css`
+
+**Access Control:**
+- Users with `role = 'admin'`, `'manager'`, or `'supervisor'` can access the admin panel
+- Implement in User model via `canAccessPanel()` method
+- Uses FilamentUser interface
+
 ## Architecture Overview
 
 ### Inertia.js Data Flow
