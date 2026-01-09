@@ -8,7 +8,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductionItemResource\Pages;
 use App\Models\ProductionItem;
-use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
@@ -18,15 +17,14 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Throwable;
-use UnitEnum;
 
 class ProductionItemResource extends Resource
 {
     protected static ?string $model = ProductionItem::class;
 
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Production';
+    protected static string|\UnitEnum|null $navigationGroup = 'Production';
 
     protected static ?int $navigationSort = 1;
 

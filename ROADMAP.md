@@ -8,21 +8,21 @@ This document tracks the current implementation status and development prioritie
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Database Schema | Complete | 14 migrations, 29 models |
-| Backend Services | Complete | All core services implemented |
+| Database Schema | Complete | 21 migrations, 27 models |
+| Backend Services | In Progress | Core services implemented; wiring and UI integration ongoing |
 | Authentication | Complete | Laravel Sanctum + Azure OAuth |
-| Controllers | Partial | 6 of ~20 planned controllers |
-| Frontend Pages | Partial | 4 main pages implemented |
+| Controllers | In Progress | 11 controllers implemented for web UI |
+| Frontend Pages | In Progress | 21 Inertia/Vue pages (projects, drawings, customers, production, shipping, reports) |
 | UI Components | Partial | Core components built |
-| API Endpoints | Minimal | Focus has been on web UI |
+| API Endpoints | Minimal | No dedicated API routes yet |
 
 ---
 
 ## Phase 1: Foundation - Complete
 
 - [x] Dockerized development environment (Docker Compose v2)
-- [x] Database schema foundation (14 migrations)
-- [x] Core data models (29 Eloquent models)
+- [x] Database schema foundation (21 migrations)
+- [x] Core data models (27 Eloquent models)
 - [x] Authentication system (Laravel Sanctum + Azure OAuth)
 - [x] Build configuration (Composer, NPM, Vite)
 - [x] Development tools (Laravel Horizon, Scout, Meilisearch ready)
@@ -30,9 +30,9 @@ This document tracks the current implementation status and development prioritie
 
 ---
 
-## Phase 2-7: Backend Services - Complete
+## Phase 2-7: Backend Services - In Progress
 
-All core backend services have been implemented:
+Core backend services are implemented; UI and workflow wiring is ongoing:
 
 | Service | Status | Description |
 |---------|--------|-------------|
@@ -59,19 +59,19 @@ These are the critical gaps that need to be addressed:
 
 | Module | Status | Description |
 |--------|--------|-------------|
-| **BOM Management** | Needed | Project/Assembly/Part CRUD interfaces |
+| **BOM Management** | Partial | Project & drawing CRUD exist; assembly/part CRUD needed |
 | **Procurement** | Needed | Purchase Orders, Material Receiving |
-| **Inventory** | Partial | Stock list with sorting/filtering, manual entry |
+| **Inventory** | Needed | Stock list with sorting/filtering, manual entry |
 | **Nesting** | Needed | Linear/plate nesting visualization |
-| **Production** | Partial | Dashboard, barcode scanner operational |
+| **Production** | Partial | Dashboard, barcode scanner operational; routing/time entry pending |
 
 ### Medium Priority - Feature Completion
 
 | Feature | Status | Description |
 |---------|--------|-------------|
 | Import UI | Needed | KISS/XSR file upload and preview |
-| Shipping UI | Needed | Load builder, BOL generation |
-| Advanced Reports | Needed | BOM, purchasing, production reports |
+| Shipping UI | Partial | Dashboard live; load builder + BOL generation pending |
+| Advanced Reports | Partial | Inventory + BOM reports live; purchasing/production reports pending |
 | Dashboard Widgets | Partial | Real-time metrics, project overview |
 | Gas Cylinder Tracking | Planned | Database schema, tracking logic, rental billing |
 | Service Call Dispatch | Planned | Mobile app, scheduling, field tracking |
@@ -112,9 +112,9 @@ See [docs/ESTIMATING_PLAN.md](docs/ESTIMATING_PLAN.md) for detailed planning.
 ### Immediate (Next Sprint)
 
 1. **BOM Management Interface**
-   - ProjectController with CRUD operations
    - AssemblyController with part management
-   - Vue pages for project/assembly/part views
+   - Vue pages for assembly/part views
+   - Tie project view to assembly/part workflows
 
 2. **Procurement Module**
    - PurchaseOrderController
@@ -169,20 +169,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to this pr
 
 ## Recent Updates
 
-### January 5, 2026
+### January 9, 2026
 
-**Inventory Module Enhancements:**
-- Added comprehensive sorting for all major columns (Stock ID, Type, Grade, Length, Qty, Status, Location)
-- Implemented multi-filter system (Status, Location, Grade)
-- Added visual sort indicators with ascending/descending arrows
-- Pagination now preserves all active filters and sorting parameters
-- Made `material_id` nullable in database to support manual stock entry
-
-**Production Module:**
-- Created Production Dashboard page with metrics and quick actions
-- Added route for `/production` to fix 404 error
-- Integrated barcode scanner link from main dashboard
-- Production page now displays active batch status and shop efficiency metrics
+**Status Review:**
+- Project and drawing CRUD UIs are available
+- Production dashboard and barcode scan pages are live
+- Shipping dashboard has load metrics and sortable lists
+- Inventory and project BOM reports are available
 
 ---
 
