@@ -86,6 +86,16 @@ mkdir -p bootstrap/cache
 [ -f bootstrap/cache/.gitkeep ] || touch bootstrap/cache/.gitkeep 2>/dev/null || true
 success "Laravel directories ready"
 
+# Step 2.5: Generate SSL certificates
+status "Generating self-signed SSL certificates..."
+if [ -f "scripts/generate-ssl-certs.sh" ]; then
+    chmod +x scripts/generate-ssl-certs.sh
+    ./scripts/generate-ssl-certs.sh
+    success "SSL certificates generated"
+else
+    warning "SSL certificate generation script not found - skipping"
+fi
+
 # Step 3: Build and launch Docker containers
 status "Building and launching Docker containers..."
 docker compose up -d --build
@@ -162,12 +172,18 @@ echo "✨ Installation Complete! ✨"
 echo ""
 echo "📊 Application URLs:"
 echo "   🌐 SteelFlow MRP:  http://localhost"
+echo "   🔒 SteelFlow MRP (HTTPS): https://localhost"
 echo "   🔧 phpMyAdmin:     http://localhost:8080"
 echo "   🔍 Meilisearch:    http://localhost:7700"
 echo ""
 echo "🔐 Default Login Credentials:"
 echo "   📧 Email:    admin@steelflow.local"
 echo "   🔑 Password: password"
+echo ""
+echo "🌐 Network Access:"
+echo "   The application accepts connections on ANY IP address."
+echo "   Access via LAN: https://YOUR_IP_ADDRESS"
+echo "   (Browser will show SSL warning for self-signed cert - this is normal)"
 echo ""
 echo "🛠️  Useful Commands:"
 echo "   • View logs:        docker compose logs -f"

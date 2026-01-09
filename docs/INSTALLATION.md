@@ -56,13 +56,14 @@ The install script will:
 1. Verify Docker is installed and running
 2. Create `.env` from template (if not exists)
 3. Ensure Laravel directory structure exists
-4. Build and start all Docker containers
-5. Wait for containers to be healthy
-6. Install PHP dependencies via Composer (inside container)
-7. Install Node.js dependencies and build assets (inside container)
-8. Generate application key
-9. Run database migrations and seed initial data
-10. Set proper file permissions
+4. **Generate self-signed SSL certificates for HTTPS**
+5. Build and start all Docker containers
+6. Wait for containers to be healthy
+7. Install PHP dependencies via Composer (inside container)
+8. Install Node.js dependencies and build assets (inside container)
+9. Generate application key
+10. Run database migrations and seed initial data
+11. Set proper file permissions
 
 ### Option 2: Manual Installation
 
@@ -111,12 +112,23 @@ After installation, the following services will be running:
 
 ### Accessing Services
 
-- **Application**: http://localhost
+- **Application (HTTP)**: http://localhost
+- **Application (HTTPS)**: https://localhost
 - **Meilisearch**: http://localhost:7700 (Search dashboard)
 - **phpMyAdmin**: http://localhost:8080
   - Server: `mysql`
   - Username: `steelflow` (or `root`)
   - Password: `secret` (default from .env)
+
+### Accessing from Other Devices
+
+The application is configured to accept connections on **any IP address**, making it accessible from:
+
+- `https://localhost` (local machine)
+- `https://192.168.x.x` (your LAN IP - find with `ip addr` or `ifconfig`)
+- Any other network interface on your machine
+
+**Note:** Browsers will show a security warning for self-signed certificates. This is expected and safe for development. Click "Advanced" → "Proceed" to continue.
 
 ---
 
@@ -141,6 +153,68 @@ SteelFlow MRP includes optimized PHP settings in `docker/php.ini`:
 - **OPcache**: Enabled for production performance with 256M cache
 
 These settings are automatically applied when the Docker container builds.
+
+---
+
+## SSL/HTTPS Configuration
+
+SteelFlow MRP includes **automatic SSL/HTTPS setup** with self-signed certificates that work on any IP address.
+
+### Automatic SSL Setup
+
+SSL certificates are automatically generated during installation and include:
+
+- `localhost` and wildcard `*.localhost`
+- `steelflow.local` and wildcard `*.steelflow.local`
+- IPv4 loopback: `127.0.0.1`
+- IPv6 loopback: `::1`
+- All detected LAN IP addresses (e.g., `192.168.x.x`, `10.x.x.x`)
+
+The certificates use **Subject Alternative Names (SAN)** to support multiple IPs and hostnames, ensuring the application works on any network interface without being bound to a specific IP.
+
+### Manual SSL Certificate Regeneration
+
+Regenerate certificates if your IP addresses change:
+
+```bash
+chmod +x scripts/generate-ssl-certs.sh
+./scripts/generate-ssl-certs.sh
+docker compose restart web
+```
+
+### Using Trusted Certificates (Optional)
+
+For a better development experience without browser warnings, use [mkcert](https://github.com/FiloSottile/mkcert):
+
+```bash
+# Install mkcert (example for macOS)
+brew install mkcert
+mkcert -install
+
+# Generate trusted certificate
+cd docker/certs
+mkcert -cert-file localhost.pem -key-file localhost-key.pem \
+  localhost 127.0.0.1 ::1 YOUR_LAN_IP
+
+# Restart web server
+docker compose restart web
+```
+
+### Forcing HTTPS
+
+To redirect all HTTP traffic to HTTPS, uncomment this line in `docker/nginx.conf`:
+
+```nginx
+# return 301 https://$host$request_uri;
+```
+
+Then restart the web container:
+
+```bash
+docker compose restart web
+```
+
+For detailed SSL configuration options, see [`docker/certs/README.md`](../docker/certs/README.md).
 
 ---
 
@@ -381,25 +455,106 @@ docker compose exec app php artisan migrate:fresh --seed
 
 ## Production Deployment
 
-For production deployments, consider:
+For production deployments, follow these best practices:
 
-1. **Environment Variables**:
-   - Set `APP_ENV=production`
-   - Set `APP_DEBUG=false`
-   - Use strong passwords for DB and Redis
+### 1. Environment Variables
 
-2. **Caching**:
-   ```bash
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
+Update `.env` for production:
 
-3. **Queue Worker**: Configure a process manager (Supervisor) for queue workers
+```bash
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
 
-4. **SSL/HTTPS**: Configure SSL certificates in Nginx
+# Use strong, random passwords
+DB_PASSWORD=<strong-random-password>
+REDIS_PASSWORD=<strong-random-password>
+```
 
-5. **Backups**: Set up automated database backups
+### 2. SSL/HTTPS Configuration
+
+**Important:** Self-signed certificates are for development only!
+
+For production, use certificates from a trusted Certificate Authority:
+
+#### Option A: Let's Encrypt (Free, Automated)
+
+```bash
+# Install Certbot
+sudo apt install certbot python3-certbot-nginx
+
+# Generate certificate
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+
+# Auto-renewal is configured automatically
+```
+
+Update `docker/nginx.conf` with Let's Encrypt certificate paths:
+
+```nginx
+ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+```
+
+#### Option B: Commercial Certificate
+
+1. Purchase SSL certificate from a trusted CA
+2. Place certificate files in `docker/certs/`
+3. Update `docker/nginx.conf` with certificate paths
+4. Force HTTPS by uncommenting the redirect line in nginx config
+
+### 3. Performance Optimization
+
+Cache Laravel configuration for better performance:
+
+```bash
+docker compose exec app php artisan config:cache
+docker compose exec app php artisan route:cache
+docker compose exec app php artisan view:cache
+docker compose exec app php artisan event:cache
+```
+
+### 4. Queue Workers
+
+Configure a process manager (Supervisor) for queue workers:
+
+```ini
+[program:steelflow-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=docker compose exec app php artisan queue:work redis --sleep=3 --tries=3
+autostart=true
+autorestart=true
+numprocs=2
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/www/storage/logs/worker.log
+```
+
+### 5. Database Backups
+
+Set up automated database backups:
+
+```bash
+# Example daily backup script
+#!/bin/bash
+docker compose exec mysql mysqldump -u steelflow -p steelflow > backup-$(date +%Y%m%d).sql
+```
+
+### 6. Security Hardening
+
+- Enable firewall (UFW, iptables)
+- Restrict database access to localhost only
+- Use environment-specific `.env` files
+- Enable rate limiting in nginx
+- Keep Docker images and dependencies updated
+
+### 7. Monitoring
+
+Consider implementing:
+- Application monitoring (e.g., Laravel Telescope)
+- Server monitoring (e.g., Prometheus, Grafana)
+- Error tracking (e.g., Sentry)
+- Uptime monitoring
 
 ---
 

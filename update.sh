@@ -115,6 +115,16 @@ else
     warning "Not a git repository - skipping git pull"
 fi
 
+# Step 1.5: Regenerate SSL certificates (in case IP addresses changed)
+status "Regenerating SSL certificates for current network configuration..."
+if [ -f "scripts/generate-ssl-certs.sh" ]; then
+    chmod +x scripts/generate-ssl-certs.sh
+    ./scripts/generate-ssl-certs.sh
+    success "SSL certificates regenerated"
+else
+    warning "SSL certificate generation script not found - skipping"
+fi
+
 # Step 2: Stop existing containers
 status "Stopping existing containers..."
 docker compose down
@@ -234,7 +244,14 @@ echo "✨ Update Complete! ✨"
 echo ""
 echo "📊 Application URLs:"
 echo "   🌐 SteelFlow MRP:  http://localhost"
+echo "   🔒 SteelFlow MRP (HTTPS): https://localhost"
 echo "   🔧 phpMyAdmin:     http://localhost:8080"
+echo "   🔍 Meilisearch:    http://localhost:7700"
+echo ""
+echo "🌐 Network Access:"
+echo "   The application accepts connections on ANY IP address."
+echo "   Access via LAN: https://YOUR_IP_ADDRESS"
+echo "   (Browser will show SSL warning for self-signed cert - this is normal)"
 echo ""
 echo "🔐 Default Login Credentials:"
 echo "   📧 Email:    admin@steelflow.local"
