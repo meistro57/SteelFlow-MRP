@@ -21,7 +21,7 @@ class AdminUserSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'email_verified_at' => now(),
-            ]
+            ],
         );
 
         $this->command->info('Admin user created successfully!');
