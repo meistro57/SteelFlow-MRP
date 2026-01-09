@@ -60,6 +60,7 @@ export default defineConfig(({ mode }) => {
                 input: [
                     'resources/css/app.css',
                     'resources/js/app.js',
+                    'resources/css/filament/admin/theme.css',
                     'Modules/Inventory/resources/assets/js/app.js',
                  //   ...collectModuleAssets(),
                 ],
