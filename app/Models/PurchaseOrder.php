@@ -11,8 +11,8 @@ use Modules\Inventory\Models\Vendor;
 
 class PurchaseOrder extends Model
 {
-    use SoftDeletes;
     use HasAuditFields;
+    use SoftDeletes;
 
     protected $fillable = [
         'po_number',
