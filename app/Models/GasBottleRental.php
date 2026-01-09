@@ -6,10 +6,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Traits\HasAuditFields;
 use Modules\Inventory\Models\StockItem;
 
 class GasBottleRental extends Model
 {
+    use HasAuditFields;
+
     protected $fillable = [
         'stock_item_id',
         'customer_id',
@@ -25,6 +28,7 @@ class GasBottleRental extends Model
         'rental_rate_period',
         'notes',
         'created_by',
+        'updated_by',
     ];
 
     public function stockItem(): BelongsTo

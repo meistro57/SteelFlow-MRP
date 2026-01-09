@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\Traits\HasAuditFields;
 use Modules\Inventory\Models\Vendor;
 
 class PurchaseOrder extends Model
 {
     use SoftDeletes;
+    use HasAuditFields;
 
     protected $fillable = [
         'po_number',
@@ -26,6 +28,7 @@ class PurchaseOrder extends Model
         'total',
         'notes',
         'created_by',
+        'updated_by',
     ];
 
     public function vendor(): BelongsTo

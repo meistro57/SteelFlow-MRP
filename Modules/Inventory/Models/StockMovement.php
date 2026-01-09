@@ -5,9 +5,12 @@ namespace Modules\Inventory\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Traits\HasAuditFields;
 
 class StockMovement extends Model
 {
+    use HasAuditFields;
+
     protected $fillable = [
         'stock_item_id',
         'movement_type',
@@ -20,6 +23,7 @@ class StockMovement extends Model
         'reference_id',
         'notes',
         'created_by',
+        'updated_by',
     ];
 
     public function stockItem(): BelongsTo
