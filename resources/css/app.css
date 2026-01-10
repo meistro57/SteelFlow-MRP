@@ -547,4 +547,105 @@
   .gradient-text-weld {
     @apply bg-gradient-weld bg-clip-text text-transparent;
   }
+
+  /* Layout Density Utilities */
+  /* Compact: Maximum information density for power users */
+  [data-density="compact"] .card,
+  [data-density="compact"] .card-elevated,
+  [data-density="compact"] .card-glow {
+    @apply p-4;
+  }
+
+  [data-density="compact"] .btn,
+  [data-density="compact"] .btn-primary,
+  [data-density="compact"] .btn-secondary,
+  [data-density="compact"] .btn-ghost,
+  [data-density="compact"] .btn-danger,
+  [data-density="compact"] .btn-weld {
+    @apply px-4 py-2 text-xs;
+  }
+
+  [data-density="compact"] .input,
+  [data-density="compact"] .select,
+  [data-density="compact"] .textarea {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  [data-density="compact"] .table-industrial th {
+    @apply px-4 py-2 text-xs;
+  }
+
+  [data-density="compact"] .table-industrial td {
+    @apply px-4 py-2 text-xs;
+  }
+
+  [data-density="compact"] .metric-card {
+    @apply p-4 min-h-[140px];
+  }
+
+  [data-density="compact"] .metric-label {
+    @apply text-xs mb-2;
+  }
+
+  [data-density="compact"] .metric-value {
+    @apply text-2xl;
+  }
+
+  /* Comfortable: Default balanced layout */
+  [data-density="comfortable"] .card,
+  [data-density="comfortable"] .card-elevated,
+  [data-density="comfortable"] .card-glow {
+    @apply p-6;
+  }
+
+  /* Spacious: Large touch targets for tablets */
+  [data-density="spacious"] .card,
+  [data-density="spacious"] .card-elevated,
+  [data-density="spacious"] .card-glow {
+    @apply p-8;
+  }
+
+  [data-density="spacious"] .btn,
+  [data-density="spacious"] .btn-primary,
+  [data-density="spacious"] .btn-secondary,
+  [data-density="spacious"] .btn-ghost,
+  [data-density="spacious"] .btn-danger,
+  [data-density="spacious"] .btn-weld {
+    @apply px-8 py-4 text-base;
+  }
+
+  [data-density="spacious"] .input,
+  [data-density="spacious"] .select,
+  [data-density="spacious"] .textarea {
+    @apply px-5 py-3.5 text-base;
+  }
+
+  [data-density="spacious"] .table-industrial th {
+    @apply px-8 py-5 text-sm;
+  }
+
+  [data-density="spacious"] .table-industrial td {
+    @apply px-8 py-5 text-base;
+  }
+
+  [data-density="spacious"] .metric-card {
+    @apply p-8 min-h-[220px];
+  }
+
+  [data-density="spacious"] .metric-label {
+    @apply text-base mb-4;
+  }
+
+  [data-density="spacious"] .metric-value {
+    @apply text-5xl;
+  }
+
+  /* Sidebar Collapsed State */
+  [data-sidebar="collapsed"] .sidebar {
+    @apply w-16;
+  }
+
+  [data-sidebar="collapsed"] .sidebar-content {
+    @apply hidden;
+  }
 }

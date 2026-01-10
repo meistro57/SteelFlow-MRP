@@ -75,8 +75,10 @@
 - [ ] Add unit + feature tests for services and controllers.
 
 ## UI/Experience Enhancements
-- [ ] **GUI Manager**: layout density toggle (compact/spacious).
-- [ ] **GUI Manager**: sidebar collapse control.
+- [x] **GUI Manager**: layout density toggle (compact/comfortable/spacious).
+- [x] **GUI Manager**: sidebar collapse control.
+- [x] **Settings Page**: created comprehensive settings interface with theme, density, and sidebar controls.
+- [x] **Auto-persistence**: all settings saved automatically to user account and persist across sessions.
 - [ ] **GUI Manager**: configurable accent colours.
 - [ ] **User Preferences**: saved dashboard layouts and filters.
 - [ ] **Mobile Responsiveness**: tablet/mobile UI polish.
