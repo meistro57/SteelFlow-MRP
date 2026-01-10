@@ -6,11 +6,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PartResource\Pages;
 use App\Models\Part;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;

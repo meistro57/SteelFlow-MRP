@@ -6,10 +6,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\WorkAreaResource\Pages;
 use App\Models\WorkArea;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
