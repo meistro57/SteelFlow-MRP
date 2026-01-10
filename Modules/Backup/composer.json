@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/backup",
+    "description": "Backup module for SteelFlow MRP",
+    "authors": [
+        {
+            "name": "SteelFlow Team",
+            "email": "team@steelflow.local"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Backup\\": "",
+            "Modules\\Backup\\Database\\Factories\\": "database/factories/",
+            "Modules\\Backup\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Backup\\Tests\\": "tests/"
+        }
+    }
+}

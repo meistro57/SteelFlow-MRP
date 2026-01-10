@@ -52,12 +52,12 @@
   - [x] Added ItemsRelationManager for load building.
   - [x] Implemented Ship/Deliver actions in LoadResource.
 
-## Backup Module (Planned)
-- [ ] Create Backup module and enable it in `modules_statuses.json`.
-- [ ] Add core services: BackupService, DatabaseBackupService, ExportService, RestoreService, StorageService.
-- [ ] Add models: Backup, BackupSchedule, DataExport.
-- [ ] Add migrations for backups, backup_schedules, data_exports.
-- [ ] Implement artisan commands for backup/create/verify/cleanup.
+## Backup Module (In Progress)
+- [x] Create Backup module and enable it in `modules_statuses.json`.
+- [x] Add core services: BackupService, DatabaseBackupService, ExportService, RestoreService, StorageService.
+- [x] Add models: Backup, BackupSchedule, DataExport.
+- [x] Add migrations for backups, backup_schedules, data_exports.
+- [x] Implement artisan commands for backup/create/verify/cleanup/restore.
 - [ ] Build UI: backups list/detail, schedules, exports, restore flow.
 - [ ] Add notifications for backup completion/failure.
 - [ ] Implement optional cloud storage sync (S3/Azure).
