@@ -1,12 +1,14 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
+
+@config '../../tailwind.config.js';
 
 @layer base {
   /* Industrial Base Styles */
   body {
     @apply bg-steel-950 text-steel-300 font-sans antialiased;
-    @apply bg-texture-grid bg-grid;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 
   /* All numbers should be tabular */
@@ -37,7 +39,13 @@
   }
 
   .btn-primary {
-    @apply btn bg-forge-600 text-white border-none;
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-forge-600 text-white border-none;
     @apply hover:bg-forge-700 hover:-translate-y-0.5;
     @apply active:bg-forge-800 active:translate-y-0;
     @apply shadow-glow-forge hover:shadow-glow-forge-lg;
@@ -45,27 +53,51 @@
   }
 
   .btn-secondary {
-    @apply btn bg-steel-700 text-steel-300;
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-steel-700 text-steel-300;
     @apply border border-steel-600;
     @apply hover:bg-steel-600 hover:text-steel-200;
     @apply focus:ring-weld-500;
   }
 
   .btn-ghost {
-    @apply btn bg-transparent text-steel-400;
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-transparent text-steel-400;
     @apply hover:bg-steel-800 hover:text-steel-300;
     @apply focus:ring-steel-600;
   }
 
   .btn-danger {
-    @apply btn bg-red-600 text-white;
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-red-600 text-white;
     @apply hover:bg-red-700;
     @apply shadow-[0_0_20px_rgba(239,68,68,0.25)];
     @apply focus:ring-red-500;
   }
 
   .btn-weld {
-    @apply btn bg-weld-600 text-white;
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-weld-600 text-white;
     @apply hover:bg-weld-700;
     @apply shadow-glow-weld hover:shadow-glow-weld-lg;
     @apply focus:ring-weld-500;
@@ -88,7 +120,10 @@
   }
 
   .card-glow {
-    @apply card-elevated;
+    @apply bg-steel-800 rounded-industrial;
+    @apply border border-steel-600;
+    @apply shadow-industrial-lg;
+    @apply p-6;
     @apply shadow-industrial-xl;
     @apply hover:shadow-glow-forge transition-shadow duration-300;
   }
@@ -96,7 +131,11 @@
   /* === METRIC CARDS === */
   
   .metric-card {
-    @apply card-elevated relative overflow-hidden;
+    @apply bg-steel-800 rounded-industrial;
+    @apply border border-steel-600;
+    @apply shadow-industrial-lg;
+    @apply p-6;
+    @apply relative overflow-hidden;
     @apply min-h-[180px] flex flex-col justify-between;
   }
 
@@ -125,11 +164,13 @@
   }
 
   .metric-trend-up {
-    @apply metric-trend text-green-400;
+    @apply text-sm font-medium mt-2;
+    @apply text-green-400;
   }
 
   .metric-trend-down {
-    @apply metric-trend text-red-400;
+    @apply text-sm font-medium mt-2;
+    @apply text-red-400;
   }
 
   /* === STATUS BADGES === */
@@ -142,31 +183,49 @@
   }
 
   .badge-free {
-    @apply badge bg-green-500/15 border-green-500 text-green-400;
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-green-500/15 border-green-500 text-green-400;
     @apply shadow-[0_0_8px_rgba(16,185,129,0.3)];
   }
 
   .badge-assigned {
-    @apply badge bg-blue-500/15 border-blue-500 text-blue-400;
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-blue-500/15 border-blue-500 text-blue-400;
     @apply shadow-[0_0_8px_rgba(59,130,246,0.3)];
   }
 
   .badge-in-progress {
-    @apply badge bg-orange-500/15 border-forge-500 text-forge-400;
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-orange-500/15 border-forge-500 text-forge-400;
     @apply shadow-glow-forge animate-pulse-glow;
   }
 
   .badge-complete {
-    @apply badge bg-green-500/15 border-green-500 text-green-400;
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-green-500/15 border-green-500 text-green-400;
   }
 
   .badge-warning {
-    @apply badge bg-safety-500/15 border-safety-400 text-safety-400;
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-safety-500/15 border-safety-400 text-safety-400;
     @apply animate-pulse-glow;
   }
 
   .badge-error {
-    @apply badge bg-red-500/15 border-red-500 text-red-400;
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-red-500/15 border-red-500 text-red-400;
   }
 
   /* === FORM INPUTS === */
@@ -183,17 +242,39 @@
   }
 
   .input-error {
-    @apply input border-red-500;
-    @apply focus:border-red-500 focus:ring-red-500/20;
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-red-500;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-red-500;
+    @apply focus:ring-2 focus:ring-red-500/20;
+    @apply focus:shadow-glow-weld;
   }
 
   .select {
-    @apply input cursor-pointer;
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-steel-700;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-weld-500;
+    @apply focus:ring-2 focus:ring-weld-500/20;
+    @apply focus:shadow-glow-weld;
+    @apply cursor-pointer;
     @apply bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjNzE3MTdhIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[right_1rem_center] bg-no-repeat pr-10;
   }
 
   .textarea {
-    @apply input resize-y min-h-[100px];
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-steel-700;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-weld-500;
+    @apply focus:ring-2 focus:ring-weld-500/20;
+    @apply focus:shadow-glow-weld;
+    @apply resize-y min-h-[100px];
   }
 
   .checkbox {
@@ -203,7 +284,10 @@
   }
 
   .radio {
-    @apply checkbox rounded-full;
+    @apply w-5 h-5 rounded border-steel-600 bg-steel-800;
+    @apply text-forge-600 focus:ring-forge-500 focus:ring-offset-steel-950;
+    @apply cursor-pointer;
+    @apply rounded-full;
   }
 
   /* === TABLES === */
@@ -270,7 +354,11 @@
   }
 
   .nav-link-active {
-    @apply nav-link text-forge-500;
+    @apply px-4 py-2 text-sm font-semibold uppercase tracking-industrial;
+    @apply text-steel-400 transition-all duration-200;
+    @apply hover:text-steel-300;
+    @apply relative;
+    @apply text-forge-500;
   }
 
   .nav-link-active::after {
@@ -303,7 +391,8 @@
   }
 
   .divider-glow {
-    @apply divider border-forge-600/30;
+    @apply border-t border-steel-700 my-6;
+    @apply border-forge-600/30;
     box-shadow: 0 1px 3px rgba(255, 107, 53, 0.2);
   }
 
@@ -362,19 +451,23 @@
   }
 
   .alert-info {
-    @apply alert bg-weld-500/10 border-weld-500 text-weld-400;
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-weld-500/10 border-weld-500 text-weld-400;
   }
 
   .alert-warning {
-    @apply alert bg-safety-500/10 border-safety-500 text-safety-400;
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-safety-500/10 border-safety-500 text-safety-400;
   }
 
   .alert-error {
-    @apply alert bg-red-500/10 border-red-500 text-red-400;
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-red-500/10 border-red-500 text-red-400;
   }
 
   .alert-success {
-    @apply alert bg-green-500/10 border-green-500 text-green-400;
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-green-500/10 border-green-500 text-green-400;
   }
 
   /* === UTILITY CLASSES === */
@@ -414,11 +507,27 @@
   }
 
   .brushed-steel {
-    @apply bg-texture-brushed;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px
+    );
   }
 
   .diamond-plate {
-    @apply bg-texture-diamond bg-diamond;
+    background-image: radial-gradient(
+        circle at 25% 25%,
+        rgba(255, 255, 255, 0.03) 2%,
+        transparent 0%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        rgba(255, 255, 255, 0.03) 2%,
+        transparent 0%
+      );
+    background-size: 16px 16px;
   }
 }
 

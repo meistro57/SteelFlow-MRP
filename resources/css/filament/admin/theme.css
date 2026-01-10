@@ -1,5 +1,5 @@
-@import '/vendor/filament/filament/resources/css/theme.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-@config 'tailwind.config.js';
+@config '../../../../tailwind.config.js';
 
 /* Custom theme for SteelFlow MRP Admin Panel */
