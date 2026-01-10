@@ -83,12 +83,20 @@ export default defineConfig(({ mode }) => {
                 host: hmrHost,
                 protocol: protocol,
             },
+            cors: {
+                origin: '*', // Allow all origins for development
+                credentials: true,
+            },
+            headers: {
+                // Allow Private Network Access from public domains
+                'Access-Control-Allow-Private-Network': 'true',
+            },
         },
-           // Only use HTTPS if the certs exist (prevents crash during build)
-            https: useHttps ? {
-                key: fs.readFileSync('/etc/nginx/certs/localhost-key.pem'),
-                cert: fs.readFileSync('/etc/nginx/certs/localhost.pem'),
-            } : false,
+        // Only use HTTPS if the certs exist (prevents crash during build)
+        https: useHttps ? {
+            key: fs.readFileSync('/etc/nginx/certs/localhost-key.pem'),
+            cert: fs.readFileSync('/etc/nginx/certs/localhost.pem'),
+        } : false,
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, 'resources/js'),
