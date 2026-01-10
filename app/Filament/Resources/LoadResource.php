@@ -6,6 +6,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LoadResource\Pages;
 use App\Models\Load;
+use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -14,7 +16,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 
 class LoadResource extends Resource
@@ -40,13 +41,13 @@ class LoadResource extends Resource
                         ->required(),
                     Select::make('status')
                         ->options([
-                            'not_started' => 'Not Started',
-                            'in_progress' => 'In Progress',
+                            'open' => 'Open',
                             'ready' => 'Ready to Ship',
-                            'shipped' => 'Shipped',
+                            'in_transit' => 'In Transit (Shipped)',
                             'delivered' => 'Delivered',
+                            'cancelled' => 'Cancelled',
                         ])
-                        ->default('not_started')
+                        ->default('open')
                         ->required(),
                     TextInput::make('bol_number')->label('BOL #'),
                 ])->columns(2),
@@ -87,11 +88,11 @@ class LoadResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->options([
-                    'not_started' => 'Not Started',
-                    'in_progress' => 'In Progress',
+                    'open' => 'Open',
                     'ready' => 'Ready to Ship',
-                    'shipped' => 'Shipped',
+                    'in_transit' => 'In Transit (Shipped)',
                     'delivered' => 'Delivered',
+                    'cancelled' => 'Cancelled',
                 ]),
                 Tables\Filters\SelectFilter::make('project')->relationship('project', 'name'),
             ])
@@ -101,21 +102,21 @@ class LoadResource extends Resource
                     ->icon('heroicon-o-paper-airplane')
                     ->color('success')
                     ->visible(fn (Load $record) => $record->status === 'ready')
-                    ->action(fn (Load $record) => $record->update(['status' => 'shipped', 'shipped_at' => now()])),
+                    ->action(fn (Load $record) => $record->update(['status' => 'in_transit', 'shipped_at' => now()])),
 
                 Action::make('deliver')
                     ->label('Confirm Delivery')
                     ->icon('heroicon-o-check-badge')
                     ->color('primary')
-                    ->visible(fn (Load $record) => $record->status === 'shipped')
+                    ->visible(fn (Load $record) => $record->status === 'in_transit')
                     ->action(fn (Load $record) => $record->update(['status' => 'delivered', 'delivered_at' => now()])),
 
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');

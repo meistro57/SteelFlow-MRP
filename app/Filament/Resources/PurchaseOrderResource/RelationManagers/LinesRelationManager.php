@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 
+use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Modules\Inventory\Services\InventoryService;
 
@@ -69,7 +70,7 @@ class LinesRelationManager extends RelationManager
                     ->money('USD'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Actions\CreateAction::make(),
             ])
             ->actions([
                 Action::make('receive')
@@ -95,12 +96,12 @@ class LinesRelationManager extends RelationManager
                     ->action(function ($record, array $data): void {
                         app(InventoryService::class)->receiveLine($record, $data);
                     }),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

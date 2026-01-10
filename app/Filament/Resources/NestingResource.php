@@ -10,10 +10,10 @@ use App\Services\Nesting\NestingService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 
 class NestingResource extends Resource
@@ -119,14 +119,14 @@ class NestingResource extends Resource
                     ->relationship('project', 'name'),
             ])
             ->actions([
-                Action::make('approve')
+                Actions\Action::make('approve')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('info')
                     ->visible(fn (Nesting $record) => $record->status === 'draft')
                     ->action(fn (Nesting $record) => app(NestingService::class)->approve($record)),
 
-                Action::make('confirm')
+                Actions\Action::make('confirm')
                     ->label('Confirm Cut')
                     ->icon('heroicon-o-scissors')
                     ->color('success')
@@ -134,12 +134,12 @@ class NestingResource extends Resource
                     ->requiresConfirmation()
                     ->action(fn (Nesting $record) => app(NestingService::class)->confirm($record)),
 
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');

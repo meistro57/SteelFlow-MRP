@@ -8,6 +8,7 @@ use App\Filament\Resources\DepartmentResource\Pages;
 use App\Models\Department;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
@@ -48,8 +49,8 @@ class DepartmentResource extends Resource
                 Tables\Columns\TextColumn::make('work_areas_count')->counts('workAreas')->label('Work Areas'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->defaultSort('name');
     }
