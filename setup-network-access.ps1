@@ -1,3 +1,4 @@
+# setup-network-access.ps1
 # Setup network access for SteelFlow MRP from other devices
 # Run this in PowerShell as Administrator
 
@@ -8,6 +9,59 @@ Write-Host "WSL IP: $wslIp" -ForegroundColor Green
 # Get Windows IP
 $windowsIp = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias 'Wi-Fi','Ethernet' | Where-Object {$_.IPAddress -like '192.168.*' -or $_.IPAddress -like '10.*'}).IPAddress | Select-Object -First 1
 Write-Host "Windows IP: $windowsIp" -ForegroundColor Green
+
+# Update local .env for mobile access (APP_URL + Vite HMR host)
+$projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$envPath = Join-Path $projectRoot ".env"
+
+function Set-EnvValue {
+    param (
+        [string]$Path,
+        [string]$Key,
+        [string]$Value
+    )
+
+    if (-not (Test-Path $Path)) {
+        return $false
+    }
+
+    $lines = Get-Content $Path
+    $pattern = "^\s*$Key="
+    $updated = $false
+
+    $lines = $lines | ForEach-Object {
+        if ($_ -match $pattern) {
+            $updated = $true
+            "$Key=$Value"
+        } else {
+            $_
+        }
+    }
+
+    if (-not $updated) {
+        $lines += "$Key=$Value"
+    }
+
+    Set-Content -Path $Path -Value $lines
+    return $true
+}
+
+if ($windowsIp) {
+    if (Test-Path $envPath) {
+        $appUrl = "http://$windowsIp"
+        $viteDevServerUrl = "http://$windowsIp:5173"
+
+        Write-Host "`nUpdating .env for mobile access..." -ForegroundColor Yellow
+        Set-EnvValue -Path $envPath -Key "APP_URL" -Value $appUrl | Out-Null
+        Set-EnvValue -Path $envPath -Key "VITE_HMR_HOST" -Value $windowsIp | Out-Null
+        Set-EnvValue -Path $envPath -Key "VITE_DEV_SERVER_URL" -Value $viteDevServerUrl | Out-Null
+        Write-Host "Updated APP_URL, VITE_HMR_HOST, and VITE_DEV_SERVER_URL in .env" -ForegroundColor Green
+    } else {
+        Write-Host "`nNo .env found at $envPath. Skipping APP_URL/Vite updates." -ForegroundColor Yellow
+    }
+} else {
+    Write-Host "`nUnable to detect Windows IP. Skipping .env updates." -ForegroundColor Red
+}
 
 # Remove existing port proxies
 Write-Host "`nRemoving existing port forwarding rules..." -ForegroundColor Yellow
