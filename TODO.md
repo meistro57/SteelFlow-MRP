@@ -52,14 +52,25 @@
   - [x] Added ItemsRelationManager for load building.
   - [x] Implemented Ship/Deliver actions in LoadResource.
 
-## Backup Module (In Progress)
+## Backup Module
 - [x] Create Backup module and enable it in `modules_statuses.json`.
 - [x] Add core services: BackupService, DatabaseBackupService, ExportService, RestoreService, StorageService.
 - [x] Add models: Backup, BackupSchedule, DataExport.
 - [x] Add migrations for backups, backup_schedules, data_exports.
 - [x] Implement artisan commands for backup/create/verify/cleanup/restore.
-- [ ] Build UI: backups list/detail, schedules, exports, restore flow.
-- [ ] Add notifications for backup completion/failure.
+- [x] Build UI: backups list/detail, schedules, exports, restore flow.
+  - [x] Created BackupResource with list/create/view/edit pages
+  - [x] Created BackupScheduleResource with list/create/view/edit pages and Backups relation manager
+  - [x] Created DataExportResource with list/create/view/edit pages
+  - [x] Added restore action to BackupResource
+  - [x] Added download actions for backups and exports
+  - [x] Added quick-create actions in table headers
+- [x] Add notifications for backup completion/failure.
+  - [x] Created BackupCompleted and BackupFailed events
+  - [x] Created DataExportCompleted and DataExportFailed events
+  - [x] Created notification listeners for all events
+  - [x] Integrated event dispatching in BackupService and ExportService
+  - [x] Registered events and listeners in EventServiceProvider
 - [ ] Implement optional cloud storage sync (S3/Azure).
 - [ ] Add unit + feature tests for services and controllers.
 

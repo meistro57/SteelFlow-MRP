@@ -11,7 +11,20 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [];
+    protected $listen = [
+        \Modules\Backup\Events\BackupCompleted::class => [
+            \Modules\Backup\Listeners\SendBackupCompletedNotification::class,
+        ],
+        \Modules\Backup\Events\BackupFailed::class => [
+            \Modules\Backup\Listeners\SendBackupFailedNotification::class,
+        ],
+        \Modules\Backup\Events\DataExportCompleted::class => [
+            \Modules\Backup\Listeners\SendDataExportCompletedNotification::class,
+        ],
+        \Modules\Backup\Events\DataExportFailed::class => [
+            \Modules\Backup\Listeners\SendDataExportFailedNotification::class,
+        ],
+    ];
 
     /**
      * Indicates if events should be discovered.
