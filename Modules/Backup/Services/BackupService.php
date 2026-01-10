@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Modules\Backup\Events\BackupCompleted;
+use Modules\Backup\Events\BackupFailed;
 use Modules\Backup\Models\Backup;
 
 class BackupService
@@ -70,6 +72,9 @@ class BackupService
                         'size' => $size,
                     ]);
 
+                    // Dispatch backup completed event
+                    BackupCompleted::dispatch($backup);
+
                     return $backup;
                 } catch (\Throwable $exception) {
                     // Mark backup as failed
@@ -78,6 +83,9 @@ class BackupService
                         'error_message' => $exception->getMessage(),
                         'completed_at' => now(),
                     ]);
+
+                    // Dispatch backup failed event
+                    BackupFailed::dispatch($backup, $exception->getMessage());
 
                     throw $exception;
                 }

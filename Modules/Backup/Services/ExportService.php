@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Modules\Backup\Events\DataExportCompleted;
+use Modules\Backup\Events\DataExportFailed;
 use Modules\Backup\Models\DataExport;
 
 class ExportService
@@ -17,7 +19,7 @@ class ExportService
     /**
      * Export data to a file.
      */
-    public function export(string $type, array $options = []): DataExport
+    public function export(string $type, string $format = 'csv', array $options = []): DataExport
     {
         $operationId = Str::uuid()->toString();
 
@@ -28,12 +30,12 @@ class ExportService
         ]);
 
         try {
-            return DB::transaction(function () use ($type, $options, $operationId) {
+            return DB::transaction(function () use ($type, $format, $options, $operationId) {
                 // Create export record
                 $export = DataExport::create([
                     'name' => $options['name'] ?? $this->generateExportName($type),
                     'type' => $type,
-                    'format' => $options['format'] ?? 'csv',
+                    'format' => $format,
                     'status' => 'in_progress',
                     'filters' => $options['filters'] ?? null,
                     'started_at' => now(),
@@ -69,6 +71,9 @@ class ExportService
                         'row_count' => $rowCount,
                     ]);
 
+                    // Dispatch export completed event
+                    DataExportCompleted::dispatch($export);
+
                     return $export;
                 } catch (\Throwable $exception) {
                     // Mark export as failed
@@ -77,6 +82,9 @@ class ExportService
                         'error_message' => $exception->getMessage(),
                         'completed_at' => now(),
                     ]);
+
+                    // Dispatch export failed event
+                    DataExportFailed::dispatch($export, $exception->getMessage());
 
                     throw $exception;
                 }
