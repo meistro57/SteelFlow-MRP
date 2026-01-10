@@ -125,10 +125,9 @@ class FabPartResource extends Resource
                         ->addActionLabel('Add Material')
                         ->reorderable(false)
                         ->collapsible()
-                        ->itemLabel(fn (array $state): ?string =>
-                            $state['raw_material_id']
+                        ->itemLabel(fn (array $state): ?string => $state['raw_material_id']
                                 ? RawMaterial::find($state['raw_material_id'])?->display_name
-                                : null
+                                : null,
                         ),
                 ])
                 ->collapsible(),

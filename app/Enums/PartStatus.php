@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum PartStatus: string implements HasLabel, HasColor
+enum PartStatus: string implements HasColor, HasLabel
 {
     case Pending = 'pending';
     case Nested = 'nested';

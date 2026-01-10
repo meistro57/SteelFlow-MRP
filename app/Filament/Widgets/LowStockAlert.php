@@ -21,7 +21,7 @@ class LowStockAlert extends BaseWidget
             ->query(
                 RawMaterial::query()
                     ->where('quantity_on_hand', '<', 5)
-                    ->orderBy('quantity_on_hand')
+                    ->orderBy('quantity_on_hand'),
             )
             ->columns([
                 Tables\Columns\TextColumn::make('material_type')
