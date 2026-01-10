@@ -143,7 +143,7 @@ class BackupService
     /**
      * Clean up old backups based on retention policy.
      */
-    public function cleanupOldBackups(int $retentionDays = null): int
+    public function cleanupOldBackups(?int $retentionDays = null): int
     {
         $retentionDays = $retentionDays ?? config('backup.database.retention_days', 30);
         $cutoffDate = now()->subDays($retentionDays);

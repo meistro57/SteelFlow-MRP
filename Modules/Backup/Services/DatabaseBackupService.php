@@ -2,7 +2,6 @@
 
 namespace Modules\Backup\Services;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use Modules\Backup\Models\Backup;
@@ -140,7 +139,7 @@ class DatabaseBackupService
             $port,
             escapeshellarg($username),
             escapeshellarg($password),
-            escapeshellarg($database)
+            escapeshellarg($database),
         );
 
         // Add compression if enabled
@@ -173,7 +172,7 @@ class DatabaseBackupService
                 $port,
                 escapeshellarg($username),
                 escapeshellarg($password),
-                escapeshellarg($database)
+                escapeshellarg($database),
             );
         } else {
             $command = sprintf(
@@ -183,7 +182,7 @@ class DatabaseBackupService
                 escapeshellarg($username),
                 escapeshellarg($password),
                 escapeshellarg($database),
-                escapeshellarg($path)
+                escapeshellarg($path),
             );
         }
 

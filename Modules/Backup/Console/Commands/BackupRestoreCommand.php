@@ -49,7 +49,7 @@ class BackupRestoreCommand extends Command
                 $backup->type,
                 $backup->created_at->format('Y-m-d H:i:s'),
                 $backup->formatted_size,
-            ]]
+            ]],
         );
 
         if (! $force) {
@@ -72,11 +72,10 @@ class BackupRestoreCommand extends Command
                 $this->warn('Please verify your application is functioning correctly.');
 
                 return self::SUCCESS;
-            } else {
-                $this->error('Restore failed!');
-
-                return self::FAILURE;
             }
+            $this->error('Restore failed!');
+
+            return self::FAILURE;
         } catch (\Throwable $exception) {
             $this->error("Restore failed: {$exception->getMessage()}");
             $this->warn('Check logs for safety backup information.');

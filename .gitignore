@@ -18,3 +18,4 @@ docker/certs/
 
 # Laravel bootstrap cache
 bootstrap/cache/*.php
+error.md

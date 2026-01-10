@@ -44,7 +44,7 @@ class StorageService
     /**
      * Upload backup to cloud storage.
      */
-    public function uploadToCloud(string $localPath, string $cloudPath = null): string
+    public function uploadToCloud(string $localPath, ?string $cloudPath = null): string
     {
         if (! config('backup.cloud.enabled', false)) {
             throw new \RuntimeException('Cloud storage is not enabled');

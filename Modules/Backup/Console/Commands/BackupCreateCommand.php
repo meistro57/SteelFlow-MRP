@@ -40,7 +40,7 @@ class BackupCreateCommand extends Command
             ]);
 
             if ($backup->isCompleted()) {
-                $this->info("Backup created successfully!");
+                $this->info('Backup created successfully!');
                 $this->table(
                     ['ID', 'Name', 'Type', 'Size', 'Path'],
                     [[
@@ -49,7 +49,7 @@ class BackupCreateCommand extends Command
                         $backup->type,
                         $backup->formatted_size,
                         $backup->path,
-                    ]]
+                    ]],
                 );
 
                 // Upload to cloud if requested
@@ -61,11 +61,10 @@ class BackupCreateCommand extends Command
                 }
 
                 return self::SUCCESS;
-            } else {
-                $this->error("Backup failed: {$backup->error_message}");
-
-                return self::FAILURE;
             }
+            $this->error("Backup failed: {$backup->error_message}");
+
+            return self::FAILURE;
         } catch (\Throwable $exception) {
             $this->error("Backup failed: {$exception->getMessage()}");
 

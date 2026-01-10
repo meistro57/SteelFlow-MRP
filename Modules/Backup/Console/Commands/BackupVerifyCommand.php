@@ -25,9 +25,9 @@ class BackupVerifyCommand extends Command
 
         if ($backupId) {
             return $this->verifySingle($backupId);
-        } else {
-            return $this->verifyAll();
         }
+
+        return $this->verifyAll();
     }
 
     protected function verifySingle(int $backupId): int
@@ -49,11 +49,10 @@ class BackupVerifyCommand extends Command
                 $this->info('Backup verification passed!');
 
                 return self::SUCCESS;
-            } else {
-                $this->error('Backup verification failed!');
-
-                return self::FAILURE;
             }
+            $this->error('Backup verification failed!');
+
+            return self::FAILURE;
         } catch (\Throwable $exception) {
             $this->error("Verification failed: {$exception->getMessage()}");
 
