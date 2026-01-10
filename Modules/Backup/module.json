@@ -1,0 +1,11 @@
+{
+    "name": "Backup",
+    "alias": "backup",
+    "description": "Automated database backup, data export, and restore services for SteelFlow MRP.",
+    "keywords": ["backup", "restore", "export", "database", "storage"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Backup\\Providers\\BackupServiceProvider"
+    ],
+    "files": []
+}

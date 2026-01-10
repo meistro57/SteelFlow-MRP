@@ -1,4 +1,5 @@
 {
     "Core": true,
-    "Inventory": true
+    "Inventory": true,
+    "Backup": true
 }
