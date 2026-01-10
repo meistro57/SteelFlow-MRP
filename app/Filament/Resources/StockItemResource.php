@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StockItemResource\Pages;
-use Modules\Inventory\Models\StockItem;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Modules\Inventory\Models\StockItem;
 
 class StockItemResource extends Resource
 {

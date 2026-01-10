@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Table;
-
-use Modules\Inventory\Services\InventoryService;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
+use Modules\Inventory\Services\InventoryService;
 
 class LinesRelationManager extends RelationManager
 {

@@ -13,8 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
 
 class NestingResource extends Resource
 {
@@ -125,7 +125,7 @@ class NestingResource extends Resource
                     ->color('info')
                     ->visible(fn (Nesting $record) => $record->status === 'draft')
                     ->action(fn (Nesting $record) => app(NestingService::class)->approve($record)),
-                
+
                 Action::make('confirm')
                     ->label('Confirm Cut')
                     ->icon('heroicon-o-scissors')

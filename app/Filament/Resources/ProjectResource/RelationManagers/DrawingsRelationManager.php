@@ -48,7 +48,7 @@ class DrawingsRelationManager extends RelationManager
                 Tables\Columns\IconColumn::make('has_file')
                     ->label('File')
                     ->boolean()
-                    ->getStateUsing(fn ($record) => !empty($record->file_path)),
+                    ->getStateUsing(fn ($record) => ! empty($record->file_path)),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

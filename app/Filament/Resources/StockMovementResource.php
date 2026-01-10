@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StockMovementResource\Pages;
-use Modules\Inventory\Models\StockMovement;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Modules\Inventory\Models\StockMovement;
 
 class StockMovementResource extends Resource
 {

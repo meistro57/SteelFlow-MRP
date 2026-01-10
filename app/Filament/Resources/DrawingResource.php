@@ -81,7 +81,7 @@ class DrawingResource extends Resource
                 Tables\Columns\IconColumn::make('has_file')
                     ->label('File')
                     ->boolean()
-                    ->getStateUsing(fn (Drawing $record) => !empty($record->file_path)),
+                    ->getStateUsing(fn (Drawing $record) => ! empty($record->file_path)),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('project')
