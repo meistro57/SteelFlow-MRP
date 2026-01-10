@@ -103,7 +103,10 @@ class FilamentMrpSeeder extends Seeder
 
     private function createPartsForJob(FabJob $job, array $materials): void
     {
-        $partsData = match ($job->status) {
+        /** @var JobStatus $status */
+        $status = $job->status;
+
+        $partsData = match ($status) {
             JobStatus::InProgress => [
                 ['mark' => 'B1', 'desc' => 'Main Beam - Grid A', 'qty' => 4, 'grade' => 'A992', 'weight' => 520, 'status' => PartStatus::Fabrication, 'material' => 'W12x40'],
                 ['mark' => 'B2', 'desc' => 'Secondary Beam', 'qty' => 8, 'grade' => 'A992', 'weight' => 260, 'status' => PartStatus::Cutting, 'material' => 'W10x26'],

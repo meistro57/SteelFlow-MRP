@@ -9,10 +9,10 @@ use App\Filament\Resources\FabPartResource\Pages;
 use App\Models\FabPart;
 use App\Models\RawMaterial;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -195,8 +195,8 @@ class FabPartResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('updateStatus')
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\Action::make('updateStatus')
                     ->label('Update Status')
                     ->icon('heroicon-o-arrow-path')
                     ->form([
@@ -207,12 +207,12 @@ class FabPartResource extends Resource
                     ->action(fn (FabPart $record, array $data) => $record->update(['status' => $data['status']])),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
+                    \Filament\Actions\ForceDeleteBulkAction::make(),
+                    \Filament\Actions\RestoreBulkAction::make(),
                 ]),
-                Tables\Actions\BulkAction::make('bulkUpdateStatus')
+                \Filament\Actions\BulkAction::make('bulkUpdateStatus')
                     ->label('Update Status')
                     ->icon('heroicon-o-arrow-path')
                     ->form([
@@ -226,11 +226,11 @@ class FabPartResource extends Resource
                         }
                     })
                     ->deselectRecordsAfterCompletion(),
-                Tables\Actions\ExportBulkAction::make()
+                \Filament\Actions\ExportBulkAction::make()
                     ->exporter(\App\Filament\Exports\FabPartExporter::class),
             ])
             ->headerActions([
-                Tables\Actions\ExportAction::make()
+                \Filament\Actions\ExportAction::make()
                     ->exporter(\App\Filament\Exports\FabPartExporter::class),
             ])
             ->defaultSort('created_at', 'desc');
@@ -252,7 +252,7 @@ class FabPartResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', PartStatus::Pending)->count() ?: null;
+        return (string) (static::getModel()::where('status', PartStatus::Pending)->count() ?: '');
     }
 
     public static function getNavigationBadgeColor(): ?string

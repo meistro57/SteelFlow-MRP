@@ -7,10 +7,10 @@ namespace App\Filament\Resources;
 use App\Enums\MaterialType;
 use App\Filament\Resources\RawMaterialResource\Pages;
 use App\Models\RawMaterial;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -150,8 +150,8 @@ class RawMaterialResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('adjustQuantity')
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\Action::make('adjustQuantity')
                     ->label('Adjust Qty')
                     ->icon('heroicon-o-plus-minus')
                     ->form([
@@ -167,10 +167,10 @@ class RawMaterialResource extends Resource
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
+                    \Filament\Actions\ForceDeleteBulkAction::make(),
+                    \Filament\Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->defaultSort('size_description');

@@ -293,6 +293,56 @@ generate_ide_helpers() {
     echo -e "${GREEN}IDE helpers generated.${NC}"
 }
 
+# Function to run frontend build
+run_frontend_build() {
+    echo -e "${BLUE}Building frontend assets (npm run build)...${NC}"
+    npm run build
+    local status=$?
+    if [ $status -ne 0 ]; then
+        echo -e "${RED}Frontend build failed!${NC}"
+        return $status
+    fi
+    echo -e "${BLUE}Publishing Filament assets...${NC}"
+    docker compose exec app php artisan filament:assets
+    echo -e "${GREEN}Frontend build and Filament assets published.${NC}"
+    return 0
+}
+
+# Function to re-index search (Meilisearch)
+reindex_search() {
+    echo -e "${BLUE}Re-indexing all searchable models...${NC}"
+    # Standard models that use Scout
+    local models=("Project" "FabJob" "FabPart" "RawMaterial")
+    for model in "${models[@]}"; do
+        echo -e "${CYAN}Indexing $model...${NC}"
+        docker compose exec app php artisan scout:import "App\\Models\\$model"
+    done
+    echo -e "${GREEN}Search indexing complete.${NC}"
+}
+
+# Function to show project statistics
+show_project_stats() {
+    echo -e "${BLUE}=== PROJECT STATISTICS ===${NC}"
+    echo -e "${WHITE}Backend:${NC}"
+    echo -ne "  Models:      " && find app/Models -name "*.php" | wc -l
+    echo -ne "  Controllers: " && find app/Http/Controllers -name "*.php" | wc -l
+    echo -ne "  Services:    " && find app/Services -name "*.php" | wc -l
+    echo -ne "  Migrations:  " && find database/migrations -name "*.php" | wc -l
+    echo -ne "  Tests:       " && find tests -name "*.php" | wc -l
+    echo -e "\n${WHITE}Frontend:${NC}"
+    echo -ne "  Components:  " && find resources/js/Components -name "*.vue" 2>/dev/null | wc -l || echo 0
+    echo -ne "  Pages:       " && find resources/js/Pages -name "*.vue" 2>/dev/null | wc -l || echo 0
+    echo -e "\n${WHITE}Lines of Code (PHP):${NC}"
+    find app -name "*.php" | xargs wc -l | tail -n 1
+    echo -e "${BLUE}=== END STATISTICS ===${NC}"
+}
+
+# Function to run CAD Importer specific tests
+run_cad_tests() {
+    echo -e "${BLUE}Running CAD Importer (KISS/XSR) tests...${NC}"
+    docker compose exec app php artisan test --filter=ImportTest
+}
+
 # Main menu function
 main_menu() {
     while true; do
@@ -316,14 +366,16 @@ main_menu() {
         echo -e "${BROWN}│${NC}  ${CYAN}[2]${NC} Check Health          ${CYAN}[7]${NC} Rebuild Docker (No-Cache)           ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[3]${NC} Repair Issues         ${CYAN}[8]${NC} Tail Application Logs               ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[4]${NC} Laravel Tinker        ${CYAN}[9]${NC} Generate IDE Helpers                ${BROWN}│${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[5]${NC} Seed Database                                               ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[5]${NC} Seed Database         ${CYAN}[16]${NC} Project Statistics                 ${BROWN}│${NC}"
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
         echo -e "${BROWN}│${NC} ${WHITE}TESTING & QUALITY${NC}                                                   ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[10]${NC} Run All Tests        ${CYAN}[13]${NC} Backend Quality Checks             ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[11]${NC} Tests w/ AutoFix     ${CYAN}[14]${NC} Frontend Linting Check             ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[12]${NC} Backend PHPUnit      ${CYAN}[15]${NC} Auto-Fix Frontend Lint             ${BROWN}│${NC}"
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[0]${NC} ${YELLOW}Exit Workbench${NC}                                                 ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC} ${WHITE}ASSETS & SEARCH${NC}                                                     ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[17]${NC} Build Frontend Assets  ${CYAN}[19]${NC} Run CAD Importer Tests           ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[18]${NC} Re-index Search        ${CYAN}[0]${NC} ${YELLOW}Exit Workbench${NC}                   ${BROWN}│${NC}"
         echo -e "${BROWN}└─────────────────────────────────────────────────────────────────────┘${NC}"
         echo -e "${RED}██████${ORANGE}██████${YELLOW}██████${GREEN}██████${BLUE}██████${MAGENTA}██████${NC}"
         
@@ -346,6 +398,10 @@ main_menu() {
             13) run_backend_quality_checks ;;
             14) run_frontend_lint_check ;;
             15) run_frontend_lint_fix ;;
+            16) show_project_stats ;;
+            17) run_frontend_build ;;
+            18) reindex_search ;;
+            19) run_cad_tests ;;
             0) echo "Exiting."; exit 0 ;;
             *) echo -e "${RED}Invalid option: $choice${NC}" ;;
         esac
@@ -410,6 +466,22 @@ if [ $# -gt 0 ]; then
             generate_ide_helpers
             exit $?
             ;;
+        "stats")
+            show_project_stats
+            exit $?
+            ;;
+        "build")
+            run_frontend_build
+            exit $?
+            ;;
+        "reindex")
+            reindex_search
+            exit $?
+            ;;
+        "cad-tests")
+            run_cad_tests
+            exit $?
+            ;;
         "reset-db")
             # For non-interactive reset-db, we skip the prompt if a force flag is provided
             if [ "$2" == "--force" ]; then
@@ -437,6 +509,10 @@ if [ $# -gt 0 ]; then
             echo "  logs              - Tail application logs"
             echo "  seed              - Run database seeders"
             echo "  ide-helpers       - Generate IDE helper files"
+            echo "  stats             - Show project statistics"
+            echo "  build             - Build frontend assets"
+            echo "  reindex           - Re-index search"
+            echo "  cad-tests         - Run CAD importer tests"
             echo "  reset-db [--force]- Reset database"
             echo "  help              - Show this help message"
             exit 0

@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property \Carbon\Carbon|null $due_date
+ * @property JobStatus $status
+ */
 class FabJob extends Model
 {
     use SoftDeletes;
@@ -39,6 +43,6 @@ class FabJob extends Model
 
     public function getTotalWeightAttribute(): float
     {
-        return $this->parts()->sum(\DB::raw('weight_each * quantity')) ?? 0;
+        return (float) $this->parts()->sum(\DB::raw('weight_each * quantity'));
     }
 }

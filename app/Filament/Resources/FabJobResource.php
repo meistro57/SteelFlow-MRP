@@ -8,11 +8,11 @@ use App\Enums\JobStatus;
 use App\Filament\Resources\FabJobResource\Pages;
 use App\Models\FabJob;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -109,20 +109,20 @@ class FabJobResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                \Filament\Actions\ViewAction::make(),
+                \Filament\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
+                    \Filament\Actions\ForceDeleteBulkAction::make(),
+                    \Filament\Actions\RestoreBulkAction::make(),
                 ]),
-                Tables\Actions\ExportBulkAction::make()
+                \Filament\Actions\ExportBulkAction::make()
                     ->exporter(\App\Filament\Exports\FabJobExporter::class),
             ])
             ->headerActions([
-                Tables\Actions\ExportAction::make()
+                \Filament\Actions\ExportAction::make()
                     ->exporter(\App\Filament\Exports\FabJobExporter::class),
             ])
             ->defaultSort('created_at', 'desc');
@@ -147,6 +147,6 @@ class FabJobResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', JobStatus::InProgress)->count() ?: null;
+        return (string) (static::getModel()::where('status', JobStatus::InProgress)->count() ?: '');
     }
 }

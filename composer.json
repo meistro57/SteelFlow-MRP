@@ -10,6 +10,7 @@
         "filament/filament": "^4.4",
         "guzzlehttp/guzzle": "^7.8",
         "inertiajs/inertia-laravel": "^1.0",
+        "khill/lavacharts": "^1.0",
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.24",
         "laravel/sanctum": "^4.0",

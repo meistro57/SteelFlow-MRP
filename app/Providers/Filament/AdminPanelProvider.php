@@ -38,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarWidth('16rem')
             ->navigationGroups([
                 'Production',
+                'Procurement',
                 'Inventory',
                 'Projects',
                 'Reports',

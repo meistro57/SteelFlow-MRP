@@ -16,19 +16,41 @@
 - **Inventory** (enabled)
 
 ## Immediate Hygiene (Module System)
-- [ ] Fix Inventory module autoload path mismatch in `Modules/Inventory/composer.json` (PSR-4 root should be `"Modules\\Inventory\\": ""`).
-- [ ] Add missing `Modules/Core/composer.json` with proper PSR-4 autoload.
-- [ ] Complete metadata in all `module.json` files (descriptions, keywords).
-- [ ] Update `config/modules.php` to set `app_folder` to an empty string.
-- [ ] Run `composer dump-autoload` after the above changes.
+- [x] Fix Inventory module autoload path mismatch in `Modules/Inventory/composer.json` (PSR-4 root should be `"Modules\\Inventory\\": ""`).
+- [x] Add missing `Modules/Core/composer.json` with proper PSR-4 autoload.
+- [x] Complete metadata in all `module.json` files (descriptions, keywords).
+- [x] Update `config/modules.php` to set `app_folder` to an empty string.
+- [x] Run `composer dump-autoload` after the above changes.
 
 ## Near-Term Delivery (Roadmap Priorities)
-- [ ] **BOM Management UI**: assembly/part CRUD flows and wiring to existing project/drawing views.
-- [ ] **Procurement**: PurchaseOrder controller/UI + vendor management + material receiving workflow.
-- [ ] **Inventory Dashboard**: stock list, filter/sort, movement history, multi-location support.
-- [ ] **Nesting Interface**: linear/plate visualisation, cut lists, remnant management.
-- [ ] **Production Tracking**: barcode scanning completion, routing interface, time entry UI.
-- [ ] **Shipping**: load builder UI, BOL/packing list generation, delivery confirmation.
+- [x] **BOM Management UI**: assembly/part CRUD flows and wiring to existing project/drawing views.
+  - [x] Added CustomerResource to Filament.
+  - [x] Added ProjectResource to Filament (with Assemblies and Drawings relation managers).
+  - [x] Added AssemblyResource to Filament (with Parts relation manager).
+  - [x] Added PartResource to Filament.
+  - [x] Added DrawingResource to Filament (with Assemblies relation manager).
+- [x] **Procurement**: PurchaseOrder controller/UI + vendor management + material receiving workflow.
+  - [x] Added VendorResource to Filament.
+  - [x] Added PurchaseOrderResource to Filament (with Lines relation manager).
+  - [x] Implement material receiving action on PO lines (via InventoryService).
+- [x] **Inventory Dashboard**: stock list, filter/sort, movement history, multi-location support.
+  - [x] Refactored StockItemResource into Filament.
+  - [x] Added StockMovementResource for global audit history.
+  - [x] Integrated MovementsRelationManager into StockItem view.
+  - [x] Added multi-location filtering to stock list.
+- [x] **Nesting Interface**: linear/plate visualisation, cut lists, remnant management.
+  - [x] Added NestingResource to Filament.
+  - [x] Implemented Approve/Confirm actions in NestingResource.
+  - [x] Added BarsRelationManager for linear material tracking.
+- [x] **Production Tracking**: barcode scanning completion, routing interface, time entry UI.
+  - [x] Refactored ProductionItemResource.
+  - [x] Added DepartmentResource and WorkAreaResource.
+  - [x] Added TimeEntryResource for labor tracking.
+  - [x] Added ProductionBatchResource for work order management.
+- [x] **Shipping**: load builder UI, BOL/packing list generation, delivery confirmation.
+  - [x] Added LoadResource to Filament.
+  - [x] Added ItemsRelationManager for load building.
+  - [x] Implemented Ship/Deliver actions in LoadResource.
 
 ## Backup Module (Planned)
 - [ ] Create Backup module and enable it in `modules_statuses.json`.
