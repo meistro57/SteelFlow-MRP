@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/labels/stock/{item}', [LabelController::class, 'stock'])->name('labels.stock');
 
     // Settings Routes
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     // Report Routes
