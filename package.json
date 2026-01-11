@@ -8,9 +8,9 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "lint": "eslint resources/js --ext .js,.vue",
-        "lint:check": "eslint resources/js --ext .js,.vue --quiet",
-        "lint:fix": "eslint resources/js --ext .js,.vue --fix"
+        "lint": "eslint resources/js Modules/*/resources/assets/js --ext .js,.vue",
+        "lint:check": "eslint resources/js Modules/*/resources/assets/js --ext .js,.vue --quiet",
+        "lint:fix": "eslint resources/js Modules/*/resources/assets/js --ext .js,.vue --fix"
     },
     "devDependencies": {
         "@headlessui/vue": "^1.7.19",
