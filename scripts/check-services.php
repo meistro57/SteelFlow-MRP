@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-
 require dirname(__DIR__).'/vendor/autoload.php';
 $app = require_once dirname(__DIR__).'/bootstrap/app.php';
 
@@ -19,15 +17,16 @@ $services = [
 $failed = false;
 foreach ($services as $name => $class) {
     try {
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             echo "[MISSING] $name ($class does not exist)\n";
             $failed = true;
+
             continue;
         }
         app($class);
         echo "[OK] $name resolved\n";
     } catch (\Exception $e) {
-        echo "[FAIL] $name could not be resolved: " . $e->getMessage() . "\n";
+        echo "[FAIL] $name could not be resolved: ".$e->getMessage()."\n";
         $failed = true;
     }
 }

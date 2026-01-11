@@ -28,8 +28,9 @@ class ImportUpfCommand extends Command
     {
         $file = $this->argument('file');
 
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             $this->error("File not found: {$file}");
+
             return Command::FAILURE;
         }
 
@@ -43,21 +44,21 @@ class ImportUpfCommand extends Command
                 ['Material Types', $stats['types']],
                 ['Material Grades', $stats['grades']],
                 ['UPF Prices', $stats['prices']],
-            ]
+            ],
         );
 
-        if (!empty($stats['errors'])) {
-            $this->warn("Completed with " . count($stats['errors']) . " errors.");
+        if (! empty($stats['errors'])) {
+            $this->warn('Completed with '.count($stats['errors']).' errors.');
             if ($this->confirm('Do you want to see the errors?')) {
                 foreach (array_slice($stats['errors'], 0, 20) as $error) {
                     $this->error($error);
                 }
                 if (count($stats['errors']) > 20) {
-                    $this->info("... and " . (count($stats['errors']) - 20) . " more.");
+                    $this->info('... and '.(count($stats['errors']) - 20).' more.');
                 }
             }
         } else {
-            $this->success("Import completed successfully!");
+            $this->info('Import completed successfully!');
         }
 
         return Command::SUCCESS;

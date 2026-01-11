@@ -2,10 +2,10 @@
 
 namespace Modules\UPF\Services;
 
+use Illuminate\Support\Facades\DB;
 use Modules\UPF\Models\UpfPrice;
 use Modules\UPF\Models\UpfStockItem;
 use Modules\UPF\Models\UpfStockMovement;
-use Illuminate\Support\Facades\DB;
 
 class StockService
 {
@@ -15,13 +15,16 @@ class StockService
             $price = UpfPrice::findOrFail($upfPriceId);
             $stockItem = UpfStockItem::firstOrCreate(
                 ['upf_price_id' => $upfPriceId, 'location' => $location],
-                ['type' => $price->type, 'size' => $price->size, 'grade_name' => $price->grade_name, 'uom' => $price->price_unit ?? 'LB']
+                ['type' => $price->type, 'size' => $price->size, 'grade_name' => $price->grade_name, 'uom' => $price->price_unit ?? 'LB'],
             );
 
             $quantityBefore = (float) $stockItem->quantity_on_hand;
-            if ($type === 'RECEIPT') $stockItem->increment('quantity_on_hand', $quantity);
-            else if ($type === 'ISSUE') $stockItem->decrement('quantity_on_hand', $quantity);
-            
+            if ($type === 'RECEIPT') {
+                $stockItem->increment('quantity_on_hand', $quantity);
+            } elseif ($type === 'ISSUE') {
+                $stockItem->decrement('quantity_on_hand', $quantity);
+            }
+
             UpfStockMovement::create([
                 'upf_stock_item_id' => $stockItem->id,
                 'transaction_type' => $type,
@@ -35,7 +38,7 @@ class StockService
                 'from_location' => $location,
                 'to_location' => $location,
                 'user_id' => auth()->id(),
-                'notes' => $notes
+                'notes' => $notes,
             ]);
         });
     }

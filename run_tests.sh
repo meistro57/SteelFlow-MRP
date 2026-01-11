@@ -17,8 +17,9 @@ NC='\033[0m' # No Color
 
 # Function to run backend PHPUnit tests
 run_backend_tests() {
-    echo -e "${BLUE}Running backend PHPUnit tests...${NC}"
-    docker compose exec app php artisan test
+    local args="$@"
+    echo -e "${BLUE}Running backend PHPUnit tests ${args}...${NC}"
+    docker compose exec app php artisan test $args
     local status=$?
     if [ $status -ne 0 ]; then
         echo -e "${RED}Backend PHPUnit tests failed!${NC}"
@@ -31,10 +32,10 @@ run_backend_tests() {
 # Function to run backend code quality checks
 run_backend_quality_checks() {
     echo -e "${BLUE}Running backend code quality checks (Laravel Pint)...${NC}"
-    docker compose exec app composer lint
+    docker compose exec app composer lint:check
     local lint_status=$?
     if [ $lint_status -ne 0 ]; then
-        echo -e "${RED}Backend linting failed!${NC}"
+        echo -e "${RED}Backend linting failed! Run 'composer lint' to fix.${NC}"
     else
         echo -e "${GREEN}Backend linting passed.${NC}"
     fi
@@ -54,10 +55,10 @@ run_backend_quality_checks() {
 # Function to run frontend linting check
 run_frontend_lint_check() {
     echo -e "${BLUE}Running frontend linting check (ESLint)...${NC}"
-    npm run lint:check
+    npm run lint
     local status=$?
     if [ $status -ne 0 ]; then
-        echo -e "${RED}Frontend linting check failed! Run with 'fix' command or option 9 to auto-fix.${NC}"
+        echo -e "${RED}Frontend linting check failed! Run with 'fix' command or option 15 to auto-fix.${NC}"
         return $status
     fi
     echo -e "${GREEN}Frontend linting check passed.${NC}"
@@ -82,6 +83,7 @@ check_system_health() {
     echo -e "${BLUE}=== SYSTEM HEALTH CHECK ===${NC}"
     local status_ok=true
 
+    # 1. Environment File
     if [ -f ".env" ]; then
         echo -e "${GREEN}✅ .env file exists${NC}"
     else
@@ -89,40 +91,70 @@ check_system_health() {
         status_ok=false
     fi
 
+    # 2. Docker Status
     if ! docker info >/dev/null 2>&1; then
-        echo -e "${RED}❌ Docker not running${NC}"
+        echo -e "${RED}❌ Docker daemon not running${NC}"
         status_ok=false
     else
-        echo -e "${GREEN}✅ Docker running${NC}"
+        echo -e "${GREEN}✅ Docker daemon running${NC}"
     fi
 
+    # 3. Container Status
     if ! docker compose ps | grep -q "app"; then
         echo -e "${RED}❌ Docker containers not running${NC}"
         status_ok=false
     else
         echo -e "${GREEN}✅ Docker containers running${NC}"
+        
+        # 4. PHP/Artisan Accessibility
+        if ! docker compose exec -T app php artisan --version >/dev/null 2>&1; then
+            echo -e "${RED}❌ Laravel/artisan not accessible inside container${NC}"
+            status_ok=false
+        else
+            echo -e "${GREEN}✅ Laravel accessible${NC}"
+            
+            # 5. Database Connectivity
+            if docker compose exec -T app php artisan db:show >/dev/null 2>&1; then
+                echo -e "${GREEN}✅ Database connection successful${NC}"
+            else
+                echo -e "${RED}❌ Database connection failed${NC}"
+                status_ok=false
+            fi
+
+            # 6. Redis Connectivity
+            if docker compose exec -T app php artisan tinker --execute="echo Illuminate\\Support\\Facades\\Redis::ping();" 2>/dev/null | grep -q "PONG"; then
+                echo -e "${GREEN}✅ Redis connection successful${NC}"
+            else
+                echo -e "${YELLOW}⚠️ Redis connection failed (checks failed or Redis not used)${NC}"
+            fi
+            
+            # 7. Meilisearch Connectivity
+            if docker compose exec -T app php artisan tinker --execute="echo json_encode(app(Laravel\\Scout\\EngineManager::class)->engine()->getMeilisearchClient()->isHealthy());" 2>/dev/null | grep -q "true"; then
+                echo -e "${GREEN}✅ Meilisearch connection successful${NC}"
+            else
+                echo -e "${YELLOW}⚠️ Meilisearch connection failed${NC}"
+            fi
+
+            # 8. Unrun Migrations
+            local pending=$(docker compose exec -T app php artisan migrate:status --pending 2>/dev/null | grep -c "No" || echo 0)
+            if [ "$pending" -gt 0 ]; then
+                echo -e "${YELLOW}⚠️ $pending pending migrations found${NC}"
+            else
+                echo -e "${GREEN}✅ All migrations up to date${NC}"
+            fi
+        fi
     fi
 
-    if docker compose exec -T app composer install --dry-run 2>&1 | grep -E -q "Nothing to (modify|install, update or remove)"; then
-        echo -e "${GREEN}✅ PHP dependencies up to date${NC}"
-    else
-        echo -e "${YELLOW}⚠️ PHP dependencies may need update${NC}"
-        # status_ok=false # Don't fail health check just for this
-    fi
-
+    # 9. Node Modules
     if [ -d "node_modules" ]; then
-        echo -e "${GREEN}✅ Node.js modules directory exists${NC}"
+        echo -e "${GREEN}✅ Node.js modules installed${NC}"
     else
-        echo -e "${RED}❌ Node.js dependencies not installed${NC}"
+        echo -e "${RED}❌ Node.js dependencies not installed (node_modules missing)${NC}"
         status_ok=false
     fi
 
-    if ! docker compose exec -T app php artisan --version >/dev/null 2>&1; then
-        echo -e "${RED}❌ Laravel/artisan not accessible${NC}"
-        status_ok=false
-    else
-        echo -e "${GREEN}✅ Laravel accessible${NC}"
-    fi
+    echo -e "\n${WHITE}Artisan About Summary:${NC}"
+    docker compose exec -T app php artisan about --only=environment,drivers --json 2>/dev/null | sed 's/[{}]//g; s/"//g; s/,/\n/g' || echo -e "${YELLOW}Could not fetch artisan about summary.${NC}"
 
     echo -e "${BLUE}=== END HEALTH CHECK ===${NC}"
     $status_ok && return 0 || return 1
@@ -142,6 +174,7 @@ repair_system() {
     if ! docker compose ps | grep -q "app"; then
         echo -e "${YELLOW}Starting Docker containers...${NC}"
         docker compose up -d
+        echo -e "${CYAN}Waiting for services to initialize...${NC}"
         sleep 8
     fi
 
@@ -165,17 +198,28 @@ repair_system() {
 
     # 7. Node Dependencies
     echo -e "${YELLOW}Updating Node.js dependencies...${NC}"
-    npm install
+    if [ -f "package-lock.json" ]; then
+        npm ci
+    else
+        npm install
+    fi
 
-    # 8. Optimized Caches
-    echo -e "${YELLOW}Clearing and refreshing application caches...${NC}"
+    # 8. Clear Caches
+    clear_caches
+
+    echo -e "${GREEN}=== REPAIR COMPLETE ===${NC}"
+    return 0
+}
+
+# Function to clear all application caches
+clear_caches() {
+    echo -e "${YELLOW}Clearing application caches...${NC}"
     docker compose exec app php artisan cache:clear
     docker compose exec app php artisan config:clear
     docker compose exec app php artisan route:clear
     docker compose exec app php artisan view:clear
-
-    echo -e "${GREEN}=== REPAIR COMPLETE ===${NC}"
-    return 0
+    docker compose exec app php artisan filament:clear-cached-components 2>/dev/null
+    echo -e "${GREEN}Caches cleared.${NC}"
 }
 
 # Function to rebuild docker environment
@@ -311,11 +355,29 @@ run_frontend_build() {
 # Function to re-index search (Meilisearch)
 reindex_search() {
     echo -e "${BLUE}Re-indexing all searchable models...${NC}"
-    # Standard models that use Scout
-    local models=("Project" "FabJob" "FabPart" "RawMaterial")
-    for model in "${models[@]}"; do
-        echo -e "${CYAN}Indexing $model...${NC}"
-        docker compose exec app php artisan scout:import "App\\Models\\$model"
+    
+    # Use git grep if available for speed, otherwise standard grep
+    local search_cmd="grep -r"
+    [ -d ".git" ] && search_cmd="git grep"
+    
+    # Find all models that use Searchable trait
+    local files=$($search_cmd -l "use Searchable" -- "*.php" | grep -v "vendor/")
+    
+    if [ -z "$files" ]; then
+        echo -e "${YELLOW}No Searchable models found.${NC}"
+        return
+    fi
+
+    for file in $files; do
+        # Extract namespace and class from the file
+        local namespace=$(grep "^namespace " "$file" | head -n 1 | sed 's/namespace //; s/;//')
+        local class=$(grep "^class " "$file" | head -n 1 | awk '{print $2}')
+        local full_class="${namespace}\\${class}"
+        
+        if [[ -n "$full_class" ]]; then
+            echo -e "${CYAN}Indexing $full_class...${NC}"
+            docker compose exec app php artisan scout:import "$full_class"
+        fi
     done
     echo -e "${GREEN}Search indexing complete.${NC}"
 }
@@ -323,23 +385,46 @@ reindex_search() {
 # Function to show project statistics
 show_project_stats() {
     echo -e "${BLUE}=== PROJECT STATISTICS ===${NC}"
-    echo -e "${WHITE}Backend:${NC}"
-    echo -ne "  Models:      " && find app/Models -name "*.php" | wc -l
-    echo -ne "  Controllers: " && find app/Http/Controllers -name "*.php" | wc -l
-    echo -ne "  Services:    " && find app/Services -name "*.php" | wc -l
-    echo -ne "  Migrations:  " && find database/migrations -name "*.php" | wc -l
-    echo -ne "  Tests:       " && find tests -name "*.php" | wc -l
-    echo -e "\n${WHITE}Frontend:${NC}"
+    
+    echo -e "${WHITE}Core Backend (app/):${NC}"
+    echo -ne "  Models:      " && find app/Models -name "*.php" 2>/dev/null | wc -l
+    echo -ne "  Controllers: " && find app/Http/Controllers -name "*.php" 2>/dev/null | wc -l
+    echo -ne "  Services:    " && find app/Services -name "*.php" 2>/dev/null | wc -l
+    
+    if [ -d "Modules" ]; then
+        echo -e "\n${WHITE}Modules (Modules/):${NC}"
+        find Modules -maxdepth 1 -type d -not -path Modules | while read mod; do
+            modname=$(basename $mod)
+            echo -ne "  $modname: "
+            find $mod -name "*.php" 2>/dev/null | wc -l
+        done
+    fi
+
+    echo -e "\n${WHITE}Database:${NC}"
+    echo -ne "  Migrations:  " && find database/migrations Modules/*/Database/Migrations -name "*.php" 2>/dev/null | wc -l
+    echo -ne "  Seeders:     " && find database/seeders Modules/*/Database/Seeders -name "*.php" 2>/dev/null | wc -l
+    
+    echo -e "\n${WHITE}Frontend (resources/js/):${NC}"
     echo -ne "  Components:  " && find resources/js/Components -name "*.vue" 2>/dev/null | wc -l || echo 0
     echo -ne "  Pages:       " && find resources/js/Pages -name "*.vue" 2>/dev/null | wc -l || echo 0
-    echo -e "\n${WHITE}Lines of Code (PHP):${NC}"
-    find app -name "*.php" | xargs wc -l | tail -n 1
+    
+    echo -e "\n${WHITE}Automation & Quality:${NC}"
+    echo -ne "  Tests:       " && find tests Modules/*/Tests -name "*.php" 2>/dev/null | wc -l
+    
+    echo -e "\n${WHITE}Lines of Code (Core PHP):${NC}"
+    find app -name "*.php" -print0 | xargs -0 wc -l 2>/dev/null | tail -n 1
+    
+    if [ -d "Modules" ]; then
+        echo -e "${WHITE}Lines of Code (Modules PHP):${NC}"
+        find Modules -name "*.php" -print0 | xargs -0 wc -l 2>/dev/null | tail -n 1
+    fi
+    
     echo -e "${BLUE}=== END STATISTICS ===${NC}"
 }
 
 # Function to run CAD Importer specific tests
 run_cad_tests() {
-    echo -e "${BLUE}Running CAD Importer (KISS/XSR) tests...${NC}"
+    echo -e "${BLUE}Running CAD Importer (KISS/XSR/UPF) tests...${NC}"
     docker compose exec app php artisan test --filter=ImportTest
 }
 
@@ -359,23 +444,24 @@ main_menu() {
         
         # Menu Box
         echo -e "${BROWN}┌─────────────────────────────────────────────────────────────────────┐${NC}"
-        echo -e "${BROWN}│${NC}  ${WHITE}SteelFlow MRP${NC} ${BROWN}─${NC} ${YELLOW}Workbench v1.0${NC}                             ${WHITE}${now}${NC} ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${WHITE}SteelFlow MRP${NC} ${BROWN}─${NC} ${YELLOW}Workbench v1.1${NC}                             ${WHITE}${now}${NC} ${BROWN}│${NC}"
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
         echo -e "${BROWN}│${NC} ${WHITE}SYSTEM & ENVIRONMENT${NC}                                                ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[1]${NC} Full Diagnostics      ${CYAN}[6]${NC} ${RED}Reset Database (WIPE)${NC}                ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[2]${NC} Check Health          ${CYAN}[7]${NC} Rebuild Docker (No-Cache)           ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[3]${NC} Repair Issues         ${CYAN}[8]${NC} Tail Application Logs               ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[4]${NC} Laravel Tinker        ${CYAN}[9]${NC} Generate IDE Helpers                ${BROWN}│${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[5]${NC} Seed Database         ${CYAN}[16]${NC} Project Statistics                 ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[5]${NC} Seed Database         ${CYAN}[20]${NC} Clear All Caches                   ${BROWN}│${NC}"
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
         echo -e "${BROWN}│${NC} ${WHITE}TESTING & QUALITY${NC}                                                   ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[10]${NC} Run All Tests        ${CYAN}[13]${NC} Backend Quality Checks             ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[11]${NC} Tests w/ AutoFix     ${CYAN}[14]${NC} Frontend Linting Check             ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[12]${NC} Backend PHPUnit      ${CYAN}[15]${NC} Auto-Fix Frontend Lint             ${BROWN}│${NC}"
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
-        echo -e "${BROWN}│${NC} ${WHITE}ASSETS & SEARCH${NC}                                                     ${BROWN}│${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[17]${NC} Build Frontend Assets  ${CYAN}[19]${NC} Run CAD Importer Tests           ${BROWN}│${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[18]${NC} Re-index Search        ${CYAN}[0]${NC} ${YELLOW}Exit Workbench${NC}                   ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC} ${WHITE}ASSETS & DATA${NC}                                                       ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[16]${NC} Project Statistics   ${CYAN}[18]${NC} Re-index Search                    ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[17]${NC} Build Assets         ${CYAN}[19]${NC} Run CAD/UPF Importer Tests         ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}                                   ${CYAN}[0]${NC} ${YELLOW}Exit Workbench${NC}                   ${BROWN}│${NC}"
         echo -e "${BROWN}└─────────────────────────────────────────────────────────────────────┘${NC}"
         echo -e "${RED}██████${ORANGE}██████${YELLOW}██████${GREEN}██████${BLUE}██████${MAGENTA}██████${NC}"
         
@@ -394,7 +480,11 @@ main_menu() {
             9) generate_ide_helpers ;;
             10) run_backend_tests; run_backend_quality_checks; run_frontend_lint_check ;;
             11) run_tests_with_autorepair ;;
-            12) run_backend_tests ;;
+            12) 
+                echo -ne "${WHITE}Extra arguments (optional):${NC} "
+                read -r extra_args
+                run_backend_tests $extra_args 
+                ;;
             13) run_backend_quality_checks ;;
             14) run_frontend_lint_check ;;
             15) run_frontend_lint_fix ;;
@@ -402,12 +492,13 @@ main_menu() {
             17) run_frontend_build ;;
             18) reindex_search ;;
             19) run_cad_tests ;;
+            20) clear_caches ;;
             0) echo "Exiting."; exit 0 ;;
             *) echo -e "${RED}Invalid option: $choice${NC}" ;;
         esac
         
         echo -ne "\n${YELLOW}Press enter to return to menu...${NC}"
-        read
+        read -r
     done
 }
 
@@ -419,7 +510,8 @@ if [ $# -gt 0 ]; then
             exit $?
             ;;
         "backend")
-            run_backend_tests
+            shift
+            run_backend_tests "$@"
             exit $?
             ;;
         "quality")
@@ -482,8 +574,11 @@ if [ $# -gt 0 ]; then
             run_cad_tests
             exit $?
             ;;
+        "clear")
+            clear_caches
+            exit $?
+            ;;
         "reset-db")
-            # For non-interactive reset-db, we skip the prompt if a force flag is provided
             if [ "$2" == "--force" ]; then
                 docker compose exec app php artisan migrate:fresh --seed
                 exit $?
@@ -497,11 +592,11 @@ if [ $# -gt 0 ]; then
             echo ""
             echo "Commands:"
             echo "  test              - Run all tests"
-            echo "  backend           - Run PHPUnit tests"
+            echo "  backend [args]    - Run PHPUnit tests"
             echo "  quality           - Run backend quality checks"
             echo "  lint              - Run frontend linting"
             echo "  fix               - Run frontend linting fix"
-            echo "  autorepair        - Run tests with automatic repair on failure"
+            echo "  autorepair        - Run tests with automatic repair"
             echo "  rebuild           - Rebuild Docker containers"
             echo "  health            - Check system health"
             echo "  repair            - Repair system issues"
@@ -513,6 +608,7 @@ if [ $# -gt 0 ]; then
             echo "  build             - Build frontend assets"
             echo "  reindex           - Re-index search"
             echo "  cad-tests         - Run CAD importer tests"
+            echo "  clear             - Clear application caches"
             echo "  reset-db [--force]- Reset database"
             echo "  help              - Show this help message"
             exit 0

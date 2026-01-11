@@ -3,9 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UpfPriceResource\Pages;
-use Modules\UPF\Models\UpfPrice;
-use Modules\UPF\Models\MaterialType;
-use Modules\UPF\Models\MaterialGrade;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -14,6 +11,9 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Modules\UPF\Models\MaterialGrade;
+use Modules\UPF\Models\MaterialType;
+use Modules\UPF\Models\UpfPrice;
 
 class UpfPriceResource extends Resource
 {
@@ -36,17 +36,22 @@ class UpfPriceResource extends Resource
                         ->relationship('materialType', 'type')
                         ->required()
                         ->live()
-                        ->afterStateUpdated(fn ($state, callable $set) => 
-                            $set('type', MaterialType::find($state)?->type)
-                        ),
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $model = MaterialType::find($state);
+                            if ($model instanceof MaterialType) {
+                                $set('type', $model->type);
+                            }
+                        }),
                     Select::make('material_grade_id')
-                        ->relationship('materialGrade', 'grade_name', fn($query, $get) => 
-                            $query->where('material_type_id', $get('material_type_id'))
+                        ->relationship('materialGrade', 'grade_name', fn ($query, $get) => $query->where('material_type_id', $get('material_type_id')),
                         )
                         ->live()
-                        ->afterStateUpdated(fn ($state, callable $set) => 
-                            $set('grade_name', MaterialGrade::find($state)?->grade_name)
-                        ),
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $model = MaterialGrade::find($state);
+                            if ($model instanceof MaterialGrade) {
+                                $set('grade_name', $model->grade_name);
+                            }
+                        }),
                     TextInput::make('type')->disabled()->dehydrated(true),
                     TextInput::make('grade_name')->disabled()->dehydrated(true),
                     TextInput::make('size')
@@ -117,15 +122,15 @@ class UpfPriceResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
-                    ->options(fn() => MaterialType::pluck('type', 'type')->toArray()),
+                    ->options(fn () => MaterialType::pluck('type', 'type')->toArray()),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('filekey', 'asc');

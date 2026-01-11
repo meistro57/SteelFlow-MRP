@@ -2,11 +2,11 @@
 
 namespace Modules\UPF\Tests\Unit;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\UPF\Models\MaterialType;
 use Modules\UPF\Models\UpfPrice;
 use Modules\UPF\Services\PricingService;
+use Tests\TestCase;
 
 class PricingServiceTest extends TestCase
 {
@@ -34,7 +34,7 @@ class PricingServiceTest extends TestCase
             'price_unit' => 'LB',
             'pkey' => 'U1',
             'filekey' => 1,
-            'orderkey' => 1
+            'orderkey' => 1,
         ]);
 
         $cost = $this->service->calculateCost('PLATE', '1/2', null, 1, 0, 100);
@@ -55,7 +55,7 @@ class PricingServiceTest extends TestCase
             'price_unit' => 'EA',
             'pkey' => 'U2',
             'filekey' => 2,
-            'orderkey' => 2
+            'orderkey' => 2,
         ]);
 
         $cost = $this->service->calculateCost('BOLT', '3/4 X 2', null, 10, 0, 0);
@@ -77,7 +77,7 @@ class PricingServiceTest extends TestCase
             'minimum_charge' => 25.00,
             'pkey' => 'U1',
             'filekey' => 1,
-            'orderkey' => 1
+            'orderkey' => 1,
         ]);
 
         $cost = $this->service->calculateCost('PLATE', '1/2', null, 1, 0, 10);

@@ -2,16 +2,15 @@
 
 namespace Modules\UPF\Services;
 
-use Modules\UPF\Models\MaterialType;
-use Modules\UPF\Models\MaterialGrade;
-use Modules\UPF\Models\UpfPrice;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Modules\UPF\Models\MaterialGrade;
+use Modules\UPF\Models\MaterialType;
+use Modules\UPF\Models\UpfPrice;
 
 class FabTrolImporter
 {
     public function __construct(
-        protected KeyGenerationService $keyGen
+        protected KeyGenerationService $keyGen,
     ) {}
 
     /**
@@ -20,17 +19,19 @@ class FabTrolImporter
     public function importUPF(string $csvPath): array
     {
         $stats = ['types' => 0, 'grades' => 0, 'prices' => 0, 'errors' => []];
-        
-        if (!file_exists($csvPath)) {
+
+        if (! file_exists($csvPath)) {
             $stats['errors'][] = "File not found: $csvPath";
+
             return $stats;
         }
 
         $handle = fopen($csvPath, 'r');
         $header = fgetcsv($handle);
 
-        if (!$header) {
-            $stats['errors'][] = "Empty or invalid CSV file";
+        if (! $header) {
+            $stats['errors'][] = 'Empty or invalid CSV file';
+
             return $stats;
         }
 
@@ -45,14 +46,17 @@ class FabTrolImporter
                     // Check if row has same columns as header
                     if (count($header) !== count($row)) {
                         $stats['errors'][] = "Row {$rowNum}: Column count mismatch";
+
                         continue;
                     }
 
                     $data = array_combine($header, $row);
-                    
+
                     // 1. Process Type
                     $type = trim($data['TYPE'] ?? $data['TYPE_NAME'] ?? '');
-                    if (!$type) continue;
+                    if (! $type) {
+                        continue;
+                    }
 
                     $materialType = MaterialType::firstOrCreate(
                         ['type' => $type],
@@ -60,8 +64,8 @@ class FabTrolImporter
                             'title' => $data['TYPEDESC'] ?? $data['DESCRIPTION'] ?? $type,
                             'description' => $data['TYPEDESC'] ?? $data['DESCRIPTION'] ?? '',
                             'pkey' => $this->keyGen->generatePKey('MAT'),
-                            'is_active' => true
-                        ]
+                            'is_active' => true,
+                        ],
                     );
                     $stats['types']++;
 
@@ -74,8 +78,8 @@ class FabTrolImporter
                             [
                                 'type' => $type,
                                 'pkey' => $this->keyGen->generatePKey('GRD'),
-                                'is_active' => true
-                            ]
+                                'is_active' => true,
+                            ],
                         );
                         $stats['grades']++;
                     }
@@ -95,18 +99,19 @@ class FabTrolImporter
                                 'price_unit' => $data['PUNIT'] ?? $data['UNIT'] ?? 'LB',
                                 'nominal_thickness' => (float) ($data['THICK'] ?? $data['THICKNESS'] ?? 0),
                                 'weight_per_foot' => (float) ($data['WTFT'] ?? $data['WEIGHT_FT'] ?? 0),
-                                'is_active' => true
-                            ]
+                                'is_active' => true,
+                            ],
                         );
                         $stats['prices']++;
                     }
                 } catch (\Exception $e) {
-                    $stats['errors'][] = "Row {$rowNum}: " . $e->getMessage();
+                    $stats['errors'][] = "Row {$rowNum}: ".$e->getMessage();
                 }
             }
         });
 
         fclose($handle);
+
         return $stats;
     }
 }

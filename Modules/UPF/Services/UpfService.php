@@ -3,13 +3,13 @@
 namespace Modules\UPF\Services;
 
 use Illuminate\Support\Facades\DB;
-use Modules\UPF\Models\MaterialType;
-use Modules\UPF\Models\MaterialGrade;
-use Modules\UPF\Models\UpfPrice;
-use Modules\UPF\Models\LaborRate;
 use Modules\UPF\Models\AutoHandling;
-use Modules\UPF\Models\UpfStockItem;
+use Modules\UPF\Models\LaborRate;
+use Modules\UPF\Models\MaterialGrade;
+use Modules\UPF\Models\MaterialType;
+use Modules\UPF\Models\UpfPrice;
 use Modules\UPF\Models\UpfPurchaseOrderItem;
+use Modules\UPF\Models\UpfStockItem;
 
 class UpfService
 {

@@ -2,12 +2,37 @@
 
 namespace Modules\UPF\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $upf_price_id
+ * @property string $type
+ * @property string $size
+ * @property string $grade_name
+ * @property string|null $location
+ * @property string|null $bin_location
+ * @property float $quantity_on_hand
+ * @property float $quantity_available
+ * @property float $quantity_allocated
+ * @property float $quantity_on_order
+ * @property string $uom
+ * @property float $unit_cost
+ * @property float $total_value
+ * @property string $cost_method
+ * @property \Illuminate\Support\Carbon|null $last_received_date
+ * @property \Illuminate\Support\Carbon|null $last_issued_date
+ * @property int|null $turnover_days
+ * @property bool $is_active
+ * @property bool $allow_negative
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Modules\UPF\Models\UpfPrice $upfPrice
+ */
 class UpfStockItem extends Model
 {
     use SoftDeletes;

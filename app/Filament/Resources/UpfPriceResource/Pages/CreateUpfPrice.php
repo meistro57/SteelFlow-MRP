@@ -13,19 +13,19 @@ class CreateUpfPrice extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $keyGen = app(KeyGenerationService::class);
-        
+
         if (empty($data['pkey'])) {
             $data['pkey'] = $keyGen->generatePKey('UPF');
         }
-        
+
         if (empty($data['filekey'])) {
             $data['filekey'] = $keyGen->getNextFileKey();
         }
-        
+
         if (empty($data['orderkey'])) {
             $data['orderkey'] = $keyGen->getNextOrderKey();
         }
-        
+
         return $data;
     }
 }

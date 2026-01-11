@@ -22,7 +22,7 @@ return new class extends Migration
         Schema::table('purchase_order_lines', function (Blueprint $table) {
             $table->foreignId('upf_price_id')->after('material_id')->nullable()->constrained('upf_prices')->onDelete('set null');
         });
-        
+
         Schema::table('nesting_bars', function (Blueprint $table) {
             $table->foreignId('upf_price_id')->after('stock_item_id')->nullable()->constrained('upf_prices')->onDelete('set null');
         });

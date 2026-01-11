@@ -2,9 +2,9 @@
 
 namespace Modules\UPF\Services;
 
-use Modules\UPF\Models\SystemConfig;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Modules\UPF\Models\SystemConfig;
 
 class KeyGenerationService
 {
@@ -12,6 +12,7 @@ class KeyGenerationService
     {
         $timestamp = now()->format('YmdHis');
         $random = strtoupper(Str::random(8));
+
         return $prefix ? "{$prefix}_{$timestamp}_{$random}" : "{$timestamp}_{$random}";
     }
 
@@ -19,12 +20,12 @@ class KeyGenerationService
     {
         for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
             $pkey = $this->generatePKey($prefix);
-            if (!DB::table($table)->where('pkey', $pkey)->exists()) {
+            if (! DB::table($table)->where('pkey', $pkey)->exists()) {
                 return $pkey;
             }
             usleep(10000);
         }
-        throw new \RuntimeException("Unable to generate unique PKEY");
+        throw new \RuntimeException('Unable to generate unique PKEY');
     }
 
     public function getNextFileKey(): int
@@ -33,6 +34,7 @@ class KeyGenerationService
             $config = SystemConfig::lockForUpdate()->firstOrCreate([], ['next_filekey' => 1, 'next_orderkey' => 1]);
             $nextKey = $config->next_filekey;
             $config->increment('next_filekey');
+
             return $nextKey;
         });
     }
@@ -43,6 +45,7 @@ class KeyGenerationService
             $config = SystemConfig::lockForUpdate()->firstOrCreate([], ['next_filekey' => 1, 'next_orderkey' => 1]);
             $nextKey = $config->next_orderkey;
             $config->increment('next_orderkey');
+
             return $nextKey;
         });
     }

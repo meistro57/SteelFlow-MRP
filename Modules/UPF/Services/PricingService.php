@@ -10,12 +10,17 @@ class PricingService
     {
         $priceRecord = UpfPrice::where('type', $type)
             ->where('size', $size)
-            ->where(function($query) use ($grade) {
-                if ($grade) $query->where('grade_name', $grade);
-                else $query->whereNull('grade_name');
+            ->where(function ($query) use ($grade) {
+                if ($grade) {
+                    $query->where('grade_name', $grade);
+                } else {
+                    $query->whereNull('grade_name');
+                }
             })->first();
 
-        if (!$priceRecord) return 0.0;
+        if (! $priceRecord) {
+            return 0.0;
+        }
 
         $unitPrice = (float) $priceRecord->unit_price;
         $baseCost = match (strtoupper($priceRecord->price_unit)) {

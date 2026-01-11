@@ -15,7 +15,7 @@ class CreateMaterialGrade extends CreateRecord
         if (empty($data['pkey'])) {
             $data['pkey'] = app(KeyGenerationService::class)->generatePKey('GRD');
         }
-        
+
         return $data;
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Modules\UPF\Tests\Unit;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\UPF\Models\MaterialType;
 use Modules\UPF\Models\UpfPrice;
 use Modules\UPF\Services\UpfService;
+use Tests\TestCase;
 
 class UpfServiceTest extends TestCase
 {
@@ -27,12 +27,12 @@ class UpfServiceTest extends TestCase
     {
         $oldType = 'PLATE';
         $newType = 'PL';
-        
+
         $type = MaterialType::create([
             'type' => $oldType,
             'title' => 'Plate',
             'pkey' => 'MAT_1',
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         $price = UpfPrice::create([
@@ -41,7 +41,7 @@ class UpfServiceTest extends TestCase
             'size' => '1/2 X 12',
             'pkey' => 'UPF_1',
             'filekey' => 1,
-            'orderkey' => 1
+            'orderkey' => 1,
         ]);
 
         $this->service->renameType($oldType, $newType);
@@ -58,12 +58,12 @@ class UpfServiceTest extends TestCase
     {
         $sourceType = 'PLATE';
         $targetType = 'PLATE_HEAVY';
-        
+
         $type = MaterialType::create([
             'type' => $sourceType,
             'title' => 'Source Type',
             'pkey' => 'MAT_1',
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         UpfPrice::create([
@@ -72,14 +72,14 @@ class UpfServiceTest extends TestCase
             'size' => '1 X 12',
             'pkey' => 'UPF_SOURCE',
             'filekey' => 100,
-            'orderkey' => 100
+            'orderkey' => 100,
         ]);
 
         $this->service->copyType($sourceType, $targetType);
 
         $this->assertDatabaseHas('material_types', ['type' => $targetType]);
         $this->assertDatabaseHas('upf_prices', ['type' => $targetType, 'size' => '1 X 12']);
-        
+
         $sourcePrice = UpfPrice::where('type', $sourceType)->first();
         $targetPrice = UpfPrice::where('type', $targetType)->first();
 

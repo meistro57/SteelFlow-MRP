@@ -7,6 +7,43 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $material_type_id
+ * @property int|null $material_grade_id
+ * @property string $type
+ * @property string $size
+ * @property string $grade_name
+ * @property string|null $pkey
+ * @property int $filekey
+ * @property int $orderkey
+ * @property string|null $size_description
+ * @property float|null $nominal_thickness
+ * @property float|null $nominal_width
+ * @property float|null $nominal_length
+ * @property float|null $weight_per_foot
+ * @property float|null $weight_per_unit
+ * @property float $unit_price
+ * @property string $price_unit
+ * @property float|null $minimum_charge
+ * @property string|null $vendor_part_number
+ * @property string|null $preferred_vendor
+ * @property float|null $lead_time_days
+ * @property float|null $min_stock_level
+ * @property float|null $max_stock_level
+ * @property float|null $reorder_point
+ * @property bool $is_active
+ * @property bool $is_stocked
+ * @property bool $allow_fabrication
+ * @property array|null $specifications
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Modules\UPF\Models\MaterialType $materialType
+ * @property-read \Modules\UPF\Models\MaterialGrade|null $materialGrade
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\UPF\Models\UpfStockItem> $upfStockItems
+ */
 class UpfPrice extends Model
 {
     use SoftDeletes;

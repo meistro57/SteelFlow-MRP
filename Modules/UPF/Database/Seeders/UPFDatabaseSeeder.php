@@ -3,8 +3,8 @@
 namespace Modules\UPF\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\UPF\Models\MaterialType;
 use Modules\UPF\Models\MaterialGrade;
+use Modules\UPF\Models\MaterialType;
 use Modules\UPF\Models\UpfPrice;
 use Modules\UPF\Services\KeyGenerationService;
 
@@ -32,8 +32,8 @@ class UPFDatabaseSeeder extends Seeder
                     'title' => $info['title'],
                     'description' => $info['desc'],
                     'pkey' => $keyGen->generatePKey('MAT'),
-                    'is_active' => true
-                ]
+                    'is_active' => true,
+                ],
             );
 
             // 2. Standard Grades per Type
@@ -52,8 +52,8 @@ class UPFDatabaseSeeder extends Seeder
                     [
                         'type' => $code,
                         'pkey' => $keyGen->generatePKey('GRD'),
-                        'is_active' => true
-                    ]
+                        'is_active' => true,
+                    ],
                 );
 
                 // 3. Standard Sizes & Prices
@@ -94,8 +94,8 @@ class UPFDatabaseSeeder extends Seeder
                     'nominal_thickness' => $sInfo['thick'] ?? 0,
                     'weight_per_foot' => $sInfo['wt'],
                     'is_active' => true,
-                    'is_stocked' => true
-                ]
+                    'is_stocked' => true,
+                ],
             );
         }
     }

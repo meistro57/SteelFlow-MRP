@@ -7,6 +7,7 @@ parameters:
         - config
         - database
         - routes
+        - Modules
 
     level: 5
 
@@ -22,3 +23,4 @@ parameters:
 
     excludePaths:
         - app/Console/Kernel.php
+        - Modules/Backup/tests/Unit/BackupServiceTest.php

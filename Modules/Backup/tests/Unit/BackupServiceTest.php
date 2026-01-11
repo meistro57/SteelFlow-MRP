@@ -16,8 +16,10 @@ class BackupServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** @var DatabaseBackupService&\Mockery\MockInterface */
     protected $databaseBackupMock;
 
+    /** @var StorageService&\Mockery\MockInterface */
     protected $storageMock;
 
     protected $backupService;

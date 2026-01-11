@@ -3,8 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AutoHandlingResource\Pages;
-use Modules\UPF\Models\AutoHandling;
-use Modules\UPF\Models\MaterialType;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -13,6 +11,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Modules\UPF\Models\AutoHandling;
+use Modules\UPF\Models\MaterialType;
 
 class AutoHandlingResource extends Resource
 {
@@ -33,9 +33,12 @@ class AutoHandlingResource extends Resource
                         ->relationship('materialType', 'type')
                         ->required()
                         ->live()
-                        ->afterStateUpdated(fn ($state, callable $set) => 
-                            $set('type', MaterialType::find($state)?->type)
-                        ),
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $model = MaterialType::find($state);
+                            if ($model instanceof MaterialType) {
+                                $set('type', $model->type);
+                            }
+                        }),
                     TextInput::make('type')->disabled()->dehydrated(true),
                     TextInput::make('handling_code')
                         ->required()
@@ -65,12 +68,12 @@ class AutoHandlingResource extends Resource
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
