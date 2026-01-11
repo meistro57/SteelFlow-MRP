@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * 
  * @property-read \App\Models\FabJob $fabJob
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BomItem> $bomItems
  * @property-read float $total_weight

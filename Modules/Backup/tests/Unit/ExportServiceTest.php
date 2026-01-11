@@ -4,7 +4,6 @@ namespace Modules\Backup\Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\DB;
 use Mockery;
 use Modules\Backup\Events\DataExportCompleted;
 use Modules\Backup\Models\DataExport;
@@ -17,6 +16,7 @@ class ExportServiceTest extends TestCase
     use RefreshDatabase;
 
     protected $storageMock;
+
     protected $exportService;
 
     protected function setUp(): void

@@ -27,7 +27,6 @@ use Modules\Inventory\Models\ReceivingRecord;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * 
  * @property-read \App\Models\PurchaseOrder $purchaseOrder
  * @property-read \Modules\Inventory\Models\Material|null $material
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\ReceivingRecord> $receivingRecords

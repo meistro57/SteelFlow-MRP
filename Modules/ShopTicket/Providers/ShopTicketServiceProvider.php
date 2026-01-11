@@ -36,7 +36,7 @@ class ShopTicketServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->mergeConfigFrom(
-            module_path($this->name, 'config/config.php'), $this->nameLower
+            module_path($this->name, 'config/config.php'), $this->nameLower,
         );
     }
 }

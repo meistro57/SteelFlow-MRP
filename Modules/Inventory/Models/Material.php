@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property float $sort_order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
  * @property-read \Modules\Inventory\Models\Grade $grade
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Part> $parts
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\StockItem> $stockItems

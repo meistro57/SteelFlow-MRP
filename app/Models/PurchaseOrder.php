@@ -28,7 +28,6 @@ use Modules\Inventory\Models\Vendor;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * 
  * @property-read \Modules\Inventory\Models\Vendor $vendor
  * @property-read \App\Models\Project|null $project
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PurchaseOrderLine> $lines

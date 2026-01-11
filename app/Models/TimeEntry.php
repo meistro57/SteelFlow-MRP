@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $notes
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
  * @property-read \App\Models\Employee $employee
  * @property-read \App\Models\Project|null $project
  * @property-read \App\Models\PartWorkArea|null $partWorkArea

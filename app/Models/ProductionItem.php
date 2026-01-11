@@ -17,7 +17,6 @@ use Spatie\ModelStates\HasStates;
  * @property \App\States\ProductionItem\ProductionItemState $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * 
  * @property-read string $display_status
  */
 class ProductionItem extends Model

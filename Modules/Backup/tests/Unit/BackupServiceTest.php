@@ -17,7 +17,9 @@ class BackupServiceTest extends TestCase
     use RefreshDatabase;
 
     protected $databaseBackupMock;
+
     protected $storageMock;
+
     protected $backupService;
 
     protected function setUp(): void
@@ -26,10 +28,10 @@ class BackupServiceTest extends TestCase
 
         $this->databaseBackupMock = Mockery::mock(DatabaseBackupService::class);
         $this->storageMock = Mockery::mock(StorageService::class);
-        
+
         $this->backupService = new BackupService(
             $this->databaseBackupMock,
-            $this->storageMock
+            $this->storageMock,
         );
     }
 
@@ -88,7 +90,7 @@ class BackupServiceTest extends TestCase
             'type' => 'database',
             'status' => 'completed',
             'path' => 'backups/test.sql',
-            'size' => 100
+            'size' => 100,
         ]);
 
         $this->storageMock->shouldReceive('delete')
@@ -108,7 +110,7 @@ class BackupServiceTest extends TestCase
             'type' => 'database',
             'status' => 'completed',
             'path' => 'backups/test.sql',
-            'size' => 100
+            'size' => 100,
         ]);
 
         $this->storageMock->shouldReceive('exists')

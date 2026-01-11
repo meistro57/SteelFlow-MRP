@@ -31,13 +31,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * 
  * @property-read \Modules\Inventory\Models\Material $material
  * @property-read \App\Models\Project|null $reservedProject
  * @property-read \Modules\Inventory\Models\StockItem|null $parentStock
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\StockItem> $remnants
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\StockMovement> $movements
- * 
  * @property-read float|null $total_length_in
  * @property float|null $total_length
  */
