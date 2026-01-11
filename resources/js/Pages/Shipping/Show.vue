@@ -2,7 +2,7 @@
 import { Link, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
+defineProps({
     load: { type: Object, required: true },
 });
 

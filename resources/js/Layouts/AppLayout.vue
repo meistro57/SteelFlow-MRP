@@ -285,9 +285,6 @@ onMounted(() => {
         </div>
       </div>
     </nav>
-        </div>
-      </div>
-    </nav>
 
     <!-- Page Header (if provided) -->
     <header

@@ -103,7 +103,7 @@ check_system_health() {
         echo -e "${GREEN}✅ Docker containers running${NC}"
     fi
 
-    if docker compose exec -T app composer install --dry-run 2>&1 | grep -q "Nothing to modify"; then
+    if docker compose exec -T app composer install --dry-run 2>&1 | grep -E -q "Nothing to (modify|install, update or remove)"; then
         echo -e "${GREEN}✅ PHP dependencies up to date${NC}"
     else
         echo -e "${YELLOW}⚠️ PHP dependencies may need update${NC}"
@@ -352,8 +352,8 @@ main_menu() {
         # SteelFlow Fuji Logo
         echo -e "            ${ORANGE}◢◣${NC}"
         echo -e "           ${ORANGE}◢██◣${NC}"
-        echo -e "          ${ORANGE}◢█◤  ◥█◣${NC}"
-        echo -e "         ${ORANGE}◢█◤    ◥█◣${NC}"
+        echo -e "          ${ORANGE}◢█◤◥█◣${NC}"
+        echo -e "         ${ORANGE}◢█◤  ◥█◣${NC}"
         echo -e "      ${WHITE}S T E E L F L O W${NC}"
         echo -e ""
         
