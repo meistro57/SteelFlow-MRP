@@ -138,8 +138,20 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | Model | Description | Key Fields |
 |-------|-------------|------------|
 | `Nesting` | Cutting layouts | type (linear/plate), efficiency, kerf_allowance |
-| `NestingBar` | Bars/plates in nesting | nesting_id, stock_item_id, length, remnant_length |
+| `NestingBar` | Bars/plates in nesting | nesting_id, stock_item_id, upf_price_id, length, remnant_length |
 | `NestingPart` | Parts on bars | nesting_bar_id, part_instance_id, position, length |
+
+#### Legacy & UPF (Universal Product File)
+| Model | Description | Key Fields |
+|-------|-------------|------------|
+| `MaterialType` | Base material sections | type, title, description, pkey |
+| `MaterialGrade` | Grade definitions | material_type_id, grade_name, pkey |
+| `UpfPrice` | **MASTER PRICE TABLE** | type, size, grade_name, unit_price, weight_per_foot, filekey |
+| `LaborRate` | Operation rates | operation_code, rate_per_hour, setup_time_minutes |
+| `AutoHandling` | Handling costs | handling_code, cost_per_ton, minimum_charge |
+| `UpfStockItem` | Legacy stock tracking | upf_price_id, location, quantity_on_hand |
+| `UpfPurchaseOrder` | Legacy PO headers | po_number, vendor_name, total_amount |
+| `SystemConfig` | Sequence management | next_filekey, next_orderkey, last_pkey |
 
 #### Production & Shop Floor
 | Model | Description | Key Fields |
@@ -173,6 +185,7 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `InventoryService` | Stock movements (receive, assign, commit, use, return, adjust) |
 | `KissImporter` | Parse KISS CAD format files |
 | `XsrImporter` | Parse XSR CAD format files |
+| `FabTrolImporter` | Parse FabTrol UPF CSV files |
 | `LabelService` | Generate ZPL code for Zebra printers |
 | `NestingService` | Nesting workflow and stock allocation |
 | `ProductionService` | Shop floor execution and status tracking |
@@ -180,6 +193,10 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `ReferenceDataService` | Material catalog, grade lookup, conversions |
 | `ShippingService` | Load building, weight rollups, shipping status |
 | `WeightCalculator` | Dual-unit weight calculations |
+| `UpfService` | Bulk UPF operations (Rename/Copy Type) |
+| `PricingService` | UPF-based cost calculations |
+| `StockService` | UPF inventory management |
+| `KeyGenerationService` | FabTrol PKEY/FILEKEY generation |
 
 ---
 

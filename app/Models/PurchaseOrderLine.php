@@ -39,6 +39,7 @@ class PurchaseOrderLine extends Model
         'purchase_order_id',
         'line_number',
         'material_id',
+        'upf_price_id',
         'type',
         'size',
         'grade',
@@ -59,6 +60,11 @@ class PurchaseOrderLine extends Model
     public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class);
+    }
+
+    public function upfPrice(): BelongsTo
+    {
+        return $this->belongsTo(\Modules\UPF\Models\UpfPrice::class);
     }
 
     public function receivingRecords(): HasMany

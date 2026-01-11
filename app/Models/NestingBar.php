@@ -31,6 +31,7 @@ class NestingBar extends Model
         'nesting_id',
         'bar_number',
         'stock_item_id',
+        'upf_price_id',
         'is_purchase',
         'length',
         'quantity',
@@ -48,6 +49,11 @@ class NestingBar extends Model
     public function stockItem(): BelongsTo
     {
         return $this->belongsTo(StockItem::class);
+    }
+
+    public function upfPrice(): BelongsTo
+    {
+        return $this->belongsTo(\Modules\UPF\Models\UpfPrice::class);
     }
 
     public function nestingParts(): HasMany

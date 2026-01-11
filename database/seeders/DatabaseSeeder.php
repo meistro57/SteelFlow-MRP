@@ -43,6 +43,9 @@ class DatabaseSeeder extends Seeder
         // Seed Materials from AISC database (1200+ shapes)
         $this->call(MaterialSeeder::class);
 
+        // Seed UPF (FabTrol compatible) data
+        $this->call(\Modules\UPF\Database\Seeders\UPFDatabaseSeeder::class);
+
         // Seed Customers
         DB::table('customers')->insert([
             [

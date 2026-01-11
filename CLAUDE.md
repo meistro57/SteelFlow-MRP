@@ -279,16 +279,17 @@ php artisan migrate:fresh --seed
 ## Development Notes
 
 ### Current Implementation Status
-**Complete:** Database schema (14 migrations), 29 models, 12+ services, authentication, Docker environment
+**Complete:** Database schema (31 migrations), 39 models, 16+ services, authentication, Docker environment, UPF Compatibility Module (FabTrol replacement foundation)
 
 **In Progress:** Controllers and UI for Projects, Inventory, Reports, Production
 
 **Not Yet Implemented:** Full BOM UI, Nesting interface, Procurement UI, Shipping UI, Estimating module, Point of Sale, UI Editor, Service/Shop Tickets
 
-### CAD Integration
-Two importers parse steel fabrication CAD files:
+### CAD & Data Integration
+Three importers parse fabrication files:
 - `KissImporter`: Parses KISS format → BOM structure
 - `XsrImporter`: Parses XSR format → BOM structure
+- `FabTrolImporter`: Parses UPF CSV → Legacy Material Catalog
 
 Both extract: assembly marks, part marks, materials, weights, quantities
 

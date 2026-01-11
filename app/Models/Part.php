@@ -48,6 +48,7 @@ class Part extends Model
         'assembly_id',
         'part_mark',
         'material_id',
+        'upf_price_id',
         'type',
         'size_imperial',
         'size_metric',
@@ -79,6 +80,11 @@ class Part extends Model
     public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class);
+    }
+
+    public function upfPrice(): BelongsTo
+    {
+        return $this->belongsTo(\Modules\UPF\Models\UpfPrice::class);
     }
 
     public function instances(): HasMany

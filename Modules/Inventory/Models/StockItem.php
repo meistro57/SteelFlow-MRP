@@ -46,6 +46,7 @@ class StockItem extends Model
     protected $fillable = [
         'stock_id',
         'material_id',
+        'upf_price_id',
         'type',
         'size',
         'grade',
@@ -67,6 +68,11 @@ class StockItem extends Model
     public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class);
+    }
+
+    public function upfPrice(): BelongsTo
+    {
+        return $this->belongsTo(\Modules\UPF\Models\UpfPrice::class);
     }
 
     public function reservedProject(): BelongsTo
