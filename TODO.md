@@ -79,9 +79,9 @@
 - [x] **GUI Manager**: sidebar collapse control.
 - [x] **Settings Page**: created comprehensive settings interface with theme, density, and sidebar controls.
 - [x] **Auto-persistence**: all settings saved automatically to user account and persist across sessions.
-- [ ] **GUI Manager**: configurable accent colours.
+- [x] **GUI Manager**: configurable accent colours.
 - [ ] **User Preferences**: saved dashboard layouts and filters.
-- [ ] **Mobile Responsiveness**: tablet/mobile UI polish.
+- [x] **Mobile Responsiveness**: tablet/mobile UI polish.
 
 ## Platform Hardening
 - [ ] Add comprehensive API documentation (OpenAPI/Swagger).

@@ -11,6 +11,7 @@ const form = useForm({
     theme: settings.value.theme || 'light',
     layout_density: settings.value.layout_density || 'comfortable',
     sidebar_collapsed: settings.value.sidebar_collapsed || false,
+    accent_color: settings.value.accent_color || 'forge',
 });
 
 // Theme options
@@ -18,6 +19,14 @@ const themeOptions = [
     { value: 'light', label: 'Light Mode', icon: '☀️', description: 'Bright interface for well-lit environments' },
     { value: 'dark', label: 'Dark Mode', icon: '🌙', description: 'Reduced eye strain in low light' },
     { value: 'system', label: 'System', icon: '💻', description: 'Follow system preferences' },
+];
+
+// Accent color options
+const accentOptions = [
+    { value: 'forge', label: 'Forge Orange', color: 'bg-forge-500', description: 'High-visibility industrial orange' },
+    { value: 'weld', label: 'Arc Blue', color: 'bg-weld-500', description: 'Electric arc welding blue' },
+    { value: 'plasma', label: 'Plasma Purple', color: 'bg-plasma-500', description: 'Precision plasma cutting purple' },
+    { value: 'safety', label: 'Safety Yellow', color: 'bg-safety-500', description: 'Caution-ready safety yellow' },
 ];
 
 // Layout density options
@@ -31,6 +40,7 @@ const densityOptions = [
 const currentTheme = computed(() => form.theme);
 const currentDensity = computed(() => form.layout_density);
 const sidebarCollapsed = computed(() => form.sidebar_collapsed);
+const currentAccent = computed(() => form.accent_color);
 
 // Update settings
 const updateSetting = (key, value) => {
@@ -59,6 +69,9 @@ const submitForm = () => {
             // Apply layout density
             document.documentElement.setAttribute('data-density', form.layout_density);
 
+            // Apply accent color
+            document.documentElement.setAttribute('data-accent', form.accent_color);
+
             // Apply sidebar state
             if (form.sidebar_collapsed) {
                 document.documentElement.setAttribute('data-sidebar', 'collapsed');
@@ -66,13 +79,14 @@ const submitForm = () => {
                 document.documentElement.removeAttribute('data-sidebar');
             }
 
-            // Emit event for sidebar toggle
+            // Emit event for settings changes
             if (window) {
                 window.dispatchEvent(new CustomEvent('settings-updated', {
                     detail: {
                         sidebar_collapsed: form.sidebar_collapsed,
                         layout_density: form.layout_density,
                         theme: form.theme,
+                        accent_color: form.accent_color,
                     }
                 }));
             }
@@ -143,6 +157,62 @@ const toggleSidebar = () => {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="divider" />
+
+    <!-- Accent Color -->
+    <div class="space-y-4">
+      <div>
+        <h3 class="text-lg font-semibold text-steel-300 mb-1">
+          Accent Color
+        </h3>
+        <p class="text-sm text-steel-500 mb-4">
+          Choose the primary highlighting color for the interface
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <button
+          v-for="option in accentOptions"
+          :key="option.value"
+          type="button"
+          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left"
+          :class="currentAccent === option.value
+            ? `border-steel-400 bg-steel-750 shadow-industrial`
+            : 'border-steel-700 bg-steel-800 hover:border-steel-600 hover:bg-steel-750'"
+          @click="updateSetting('accent_color', option.value)"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full border border-white/20"
+              :class="option.color"
+            />
+            <div class="flex-1">
+              <div class="font-semibold text-steel-200 text-sm">
+                {{ option.label }}
+              </div>
+            </div>
+            <div
+              v-if="currentAccent === option.value"
+              class="w-4 h-4 rounded-full bg-steel-200 flex items-center justify-center"
+            >
+              <svg
+                class="w-2 h-2 text-steel-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="4"
                   d="M5 13l4 4L19 7"
                 />
               </svg>

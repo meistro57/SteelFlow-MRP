@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $badge_barcode
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $active_count
  * @property-read \App\Models\Department $department
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PartWorkArea> $routingSteps
  */

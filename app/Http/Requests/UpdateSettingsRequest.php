@@ -23,6 +23,7 @@ class UpdateSettingsRequest extends FormRequest
             'theme' => ['sometimes', 'string', 'in:light,dark,system'],
             'layout_density' => ['sometimes', 'string', 'in:compact,comfortable,spacious'],
             'sidebar_collapsed' => ['sometimes', 'boolean'],
+            'accent_color' => ['sometimes', 'string', 'in:forge,weld,plasma,safety'],
         ];
     }
 

@@ -41,6 +41,9 @@ Route::middleware('auth')->group(function () {
 
     // Shipping Routes
     Route::get('/shipping', [ShippingController::class, 'index'])->name('shipping.index');
+    Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
+    Route::post('/shipping', [ShippingController::class, 'store'])->name('shipping.store');
+    Route::get('/shipping/{load}', [ShippingController::class, 'show'])->name('shipping.show');
 
     // Production Routes
     Route::get('/production', [ProductionController::class, 'index'])->name('production.index');

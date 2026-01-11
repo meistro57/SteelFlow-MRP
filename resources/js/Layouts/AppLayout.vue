@@ -11,6 +11,7 @@ const page = usePage();
 const user = computed(() => page.props.auth?.user);
 const settings = computed(() => user.value?.settings || {});
 const sidebarCollapsed = ref(settings.value.sidebar_collapsed || false);
+const mobileMenuOpen = ref(false);
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: 'chart' },
@@ -104,10 +105,10 @@ onMounted(() => {
           </div>
 
           <!-- Right Side Actions -->
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2 md:space-x-4">
             <!-- Search (placeholder) -->
             <button
-              class="p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
+              class="hidden sm:block p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
               title="Search"
             >
               <svg
@@ -127,7 +128,7 @@ onMounted(() => {
 
             <!-- Notifications -->
             <button
-              class="p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800 relative"
+              class="hidden sm:block p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800 relative"
               title="Notifications"
             >
               <svg
@@ -149,7 +150,7 @@ onMounted(() => {
             <!-- Settings -->
             <Link
               :href="route('settings.index')"
-              class="p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
+              class="hidden sm:block p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
               :class="{ 'text-forge-500 bg-steel-800': $page.url === '/settings' }"
               title="Settings"
             >
@@ -175,8 +176,8 @@ onMounted(() => {
             </Link>
 
             <!-- User Menu -->
-            <div class="flex items-center space-x-3 pl-4 border-l border-steel-700">
-              <div class="text-right">
+            <div class="flex items-center space-x-2 sm:space-x-3 sm:pl-4 sm:border-l sm:border-steel-700">
+              <div class="hidden sm:block text-right">
                 <div class="text-sm font-medium text-white">
                   {{ $page.props.auth.user.name }}
                 </div>
@@ -194,7 +195,96 @@ onMounted(() => {
                 {{ $page.props.auth.user.name.split(' ').map(n => n[0]).join('').toUpperCase() }}
               </Link>
             </div>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+              <button
+                class="inline-flex items-center justify-center p-2 rounded-md text-steel-400 hover:text-white hover:bg-steel-800 focus:outline-none"
+                @click="mobileMenuOpen = !mobileMenuOpen"
+              >
+                <span class="sr-only">Open main menu</span>
+                <svg
+                  v-if="!mobileMenuOpen"
+                  class="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+                <svg
+                  v-else
+                  class="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div
+        v-if="mobileMenuOpen"
+        class="md:hidden bg-steel-900 border-b border-steel-700"
+      >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <Link
+            v-for="item in navigation"
+            :key="item.name"
+            :href="item.href"
+            class="block px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800"
+            :class="{ 'text-forge-500 bg-steel-800': $page.url === item.href }"
+            @click="mobileMenuOpen = false"
+          >
+            {{ item.name }}
+          </Link>
+          
+          <template v-if="$page.props.auth.user.role === 'admin'">
+            <div class="border-t border-steel-800 my-2 pt-2 px-3 text-xs font-bold text-steel-500 uppercase">
+              Admin
+            </div>
+            <Link
+              v-for="item in adminNavigation"
+              :key="item.name"
+              :href="item.href"
+              class="block px-3 py-2 rounded-md text-base font-medium text-amber-500 hover:text-amber-400 hover:bg-amber-900/20"
+              @click="mobileMenuOpen = false"
+            >
+              {{ item.name }}
+            </Link>
+          </template>
+
+          <div class="border-t border-steel-800 my-2 pt-2">
+            <Link
+              :href="route('settings.index')"
+              class="block px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800"
+              @click="mobileMenuOpen = false"
+            >
+              Settings
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
         </div>
       </div>
     </nav>

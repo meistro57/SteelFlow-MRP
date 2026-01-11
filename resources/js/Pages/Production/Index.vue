@@ -1,14 +1,17 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 defineProps({
-    title: String,
+    title: { type: String, default: 'Production' },
+    stats: { type: Object, required: true },
 });
 </script>
 
 <template>
   <AppLayout title="Production">
+    <Head title="Production - SteelFlow MRP" />
+
     <template #header>
       <div class="flex justify-between items-center">
         <div>
@@ -48,10 +51,10 @@ defineProps({
           Active Batches
         </div>
         <div class="text-3xl font-bold font-mono text-forge-400 mt-2">
-          12
+          {{ stats.activeBatches || 0 }}
         </div>
         <div class="text-xs text-text-tertiary mt-2">
-          3 cutting, 6 welding, 3 finishing
+          Current work in progress
         </div>
       </div>
 
@@ -60,10 +63,10 @@ defineProps({
           Parts Completed
         </div>
         <div class="text-3xl font-bold font-mono text-weld-400 mt-2">
-          1,247
+          {{ stats.partsCompletedToday || 0 }}
         </div>
         <div class="text-xs text-text-tertiary mt-2">
-          Today: 89 parts
+          Operations recorded today
         </div>
       </div>
 
@@ -72,10 +75,10 @@ defineProps({
           On Schedule
         </div>
         <div class="text-3xl font-bold font-mono text-green-400 mt-2">
-          94%
+          {{ stats.onSchedulePercentage || 0 }}%
         </div>
         <div class="text-xs text-text-tertiary mt-2">
-          18 of 19 jobs on track
+          Overall project timeliness
         </div>
       </div>
 
@@ -84,10 +87,10 @@ defineProps({
           Shop Efficiency
         </div>
         <div class="text-3xl font-bold font-mono text-white mt-2">
-          87%
+          {{ stats.shopEfficiency || 0 }}%
         </div>
         <div class="text-xs text-text-tertiary mt-2">
-          vs. 85% last week
+          Standard vs Actual labor
         </div>
       </div>
     </div>
@@ -216,38 +219,31 @@ defineProps({
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          Production Status
+          Work Area Status
         </h2>
         <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <span class="text-text-secondary">Cutting Operations</span>
-            <span class="badge badge-in-progress">3 Active</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-text-secondary">Welding Operations</span>
-            <span class="badge badge-in-progress">6 Active</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-text-secondary">Finishing Operations</span>
-            <span class="badge badge-in-progress">3 Active</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-text-secondary">Quality Control</span>
-            <span class="badge badge-complete">2 Complete</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-text-secondary">Ready for Shipping</span>
-            <span class="badge badge-complete">8 Ready</span>
+          <div
+            v-for="area in stats.workAreaStats"
+            :key="area.name"
+            class="flex items-center justify-between"
+          >
+            <span class="text-text-secondary">{{ area.name }}</span>
+            <span
+              class="badge"
+              :class="area.active > 0 ? 'badge-in-progress' : 'badge-complete'"
+            >
+              {{ area.active }} Active
+            </span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Coming Soon Notice -->
-    <div class="mt-6 card-industrial bg-steel-900 border-forge-900">
-      <div class="flex items-center">
+    <!-- Recent Production Activity -->
+    <div class="mt-6 card-industrial">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center">
         <svg
-          class="w-6 h-6 text-forge-400 mr-3"
+          class="w-6 h-6 mr-2 text-forge-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -256,17 +252,49 @@ defineProps({
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <div>
-          <div class="font-semibold text-white">
-            Production Module Under Development
-          </div>
-          <div class="text-sm text-text-tertiary mt-1">
-            Full work order management, batch tracking, and real-time production metrics coming soon. Use the Barcode Scanner for mobile shop floor operations.
-          </div>
-        </div>
+        Recent Activity
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-steel-700">
+          <thead>
+            <tr class="text-left text-xs uppercase tracking-wider text-text-tertiary">
+              <th class="px-4 py-3">
+                Event
+              </th>
+              <th class="px-4 py-3">
+                Time
+              </th>
+              <th class="px-4 py-3">
+                Status
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-steel-800">
+            <tr
+              v-for="activity in stats.recentActivity"
+              :key="activity.id"
+              class="hover:bg-steel-800/60"
+            >
+              <td class="px-4 py-3 text-sm text-white">
+                {{ activity.message }}
+              </td>
+              <td class="px-4 py-3 text-sm text-text-secondary">
+                {{ activity.time }}
+              </td>
+              <td class="px-4 py-3">
+                <span
+                  class="badge text-xs"
+                  :class="activity.status === 'complete' ? 'badge-complete' : 'badge-in-progress'"
+                >
+                  {{ activity.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </AppLayout>

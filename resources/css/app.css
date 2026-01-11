@@ -3,6 +3,34 @@
 @config '../../tailwind.config.js';
 
 @layer base {
+  :root {
+    --accent-primary: #ff5722; /* forge-600 */
+    --accent-secondary: #ff9800; /* forge-400 */
+    --accent-glow: rgba(255, 107, 53, 0.4);
+    --accent-glow-lg: rgba(255, 107, 53, 0.2);
+  }
+
+  [data-accent="weld"] {
+    --accent-primary: #0096c7; /* weld-600 */
+    --accent-secondary: #48cae4; /* weld-400 */
+    --accent-glow: rgba(0, 180, 216, 0.4);
+    --accent-glow-lg: rgba(0, 180, 216, 0.2);
+  }
+
+  [data-accent="plasma"] {
+    --accent-primary: #7e22ce; /* plasma-600 */
+    --accent-secondary: #9333ea; /* plasma-500 */
+    --accent-glow: rgba(147, 51, 234, 0.4);
+    --accent-glow-lg: rgba(147, 51, 234, 0.2);
+  }
+
+  [data-accent="safety"] {
+    --accent-primary: #d97706; /* safety-600 */
+    --accent-secondary: #fbbf24; /* safety-400 */
+    --accent-glow: rgba(245, 158, 11, 0.4);
+    --accent-glow-lg: rgba(245, 158, 11, 0.2);
+  }
+
   /* Industrial Base Styles */
   body {
     @apply bg-steel-950 text-steel-300 font-sans antialiased;
@@ -45,11 +73,12 @@
     @apply transition-all duration-200;
     @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
-    @apply bg-forge-600 text-white border-none;
-    @apply hover:bg-forge-700 hover:-translate-y-0.5;
-    @apply active:bg-forge-800 active:translate-y-0;
-    @apply shadow-glow-forge hover:shadow-glow-forge-lg;
-    @apply focus:ring-forge-500;
+    background-color: var(--accent-primary);
+    @apply text-white border-none;
+    @apply hover:brightness-110 hover:-translate-y-0.5;
+    @apply active:brightness-90 active:translate-y-0;
+    box-shadow: 0 0 8px var(--accent-glow), 0 0 16px var(--accent-glow-lg);
+    @apply focus:ring-steel-500;
   }
 
   .btn-secondary {
@@ -202,8 +231,11 @@
     @apply inline-flex items-center gap-1.5;
     @apply px-3 py-1.5 rounded-industrial;
     @apply text-xs font-bold uppercase tracking-wide;
-    @apply border bg-orange-500/15 border-forge-500 text-forge-400;
-    @apply shadow-glow-forge animate-pulse-glow;
+    background-color: color-mix(in srgb, var(--accent-primary) 15%, transparent);
+    border-color: var(--accent-primary);
+    color: var(--accent-secondary);
+    box-shadow: 0 0 8px var(--accent-glow);
+    @apply animate-pulse-glow;
   }
 
   .badge-complete {
@@ -358,13 +390,14 @@
     @apply text-steel-400 transition-all duration-200;
     @apply hover:text-steel-300;
     @apply relative;
-    @apply text-forge-500;
+    color: var(--accent-secondary);
   }
 
   .nav-link-active::after {
     content: '';
     @apply absolute bottom-0 left-0 right-0 h-0.5;
-    @apply bg-forge-500 shadow-glow-forge;
+    background-color: var(--accent-secondary);
+    box-shadow: 0 0 8px var(--accent-glow);
   }
 
   /* === PROGRESS BARS === */
@@ -375,7 +408,8 @@
   }
 
   .progress-fill {
-    @apply h-full bg-gradient-forge;
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    @apply h-full;
     @apply shadow-glow-forge transition-all duration-500;
   }
 

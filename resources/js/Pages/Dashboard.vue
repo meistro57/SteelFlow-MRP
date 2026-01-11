@@ -1,5 +1,6 @@
 <!-- resources/js/Pages/Dashboard.vue -->
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 // Props received from Laravel via Inertia
@@ -44,18 +45,24 @@ const recentActivity = [
           <span>📂</span>
           <span>View Repo</span>
         </a>
-        <button class="btn-ghost">
+        <Link
+          :href="route('settings.index')"
+          class="btn-ghost"
+        >
           <span>⚙️</span>
           <span>Settings</span>
-        </button>
+        </Link>
         <button class="btn-weld">
           <span>🔍</span>
           <span>Search</span>
         </button>
-        <button class="btn-primary">
+        <Link
+          :href="route('projects.create')"
+          class="btn-primary"
+        >
           <span>📋</span>
           <span>New Job</span>
-        </button>
+        </Link>
       </div>
     </div>
 
@@ -152,7 +159,10 @@ const recentActivity = [
           </div>
         </button>
 
-        <button class="btn-secondary justify-start text-left h-auto py-4 flex-col items-start gap-2">
+        <Link
+          :href="route('projects.create')"
+          class="btn-secondary justify-start text-left h-auto py-4 flex-col items-start gap-2"
+        >
           <div class="flex items-center gap-3 w-full">
             <span class="text-2xl">📦</span>
             <div>
@@ -164,9 +174,12 @@ const recentActivity = [
               </div>
             </div>
           </div>
-        </button>
+        </Link>
 
-        <button class="btn-secondary justify-start text-left h-auto py-4 flex-col items-start gap-2 border-glow-weld">
+        <Link
+          :href="route('production.scan')"
+          class="btn-secondary justify-start text-left h-auto py-4 flex-col items-start gap-2 border-glow-weld"
+        >
           <div class="flex items-center gap-3 w-full">
             <span class="text-2xl">📱</span>
             <div>
@@ -178,7 +191,7 @@ const recentActivity = [
               </div>
             </div>
           </div>
-        </button>
+        </Link>
       </div>
     </div>
 

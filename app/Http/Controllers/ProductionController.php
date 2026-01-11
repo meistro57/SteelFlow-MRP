@@ -20,8 +20,12 @@ class ProductionController extends Controller
 
     public function index()
     {
+        $reportService = app(\App\Services\ReportingService::class);
+        $stats = $reportService->getProductionStats();
+
         return Inertia::render('Production/Index', [
             'title' => 'Production Dashboard',
+            'stats' => $stats,
         ]);
     }
 

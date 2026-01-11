@@ -60,7 +60,7 @@ const sortSymbol = (column) => {
         </div>
         <div class="flex gap-3">
           <button
-            class="btn-secondary"
+            class="hidden sm:inline-flex btn-secondary"
             type="button"
           >
             <svg
@@ -78,9 +78,9 @@ const sortSymbol = (column) => {
             </svg>
             Manage Loads
           </button>
-          <button
+          <Link
+            :href="route('shipping.create')"
             class="btn-primary"
-            type="button"
           >
             <svg
               class="w-5 h-5 mr-2 inline-block"
@@ -96,7 +96,7 @@ const sortSymbol = (column) => {
               />
             </svg>
             New Load
-          </button>
+          </Link>
         </div>
       </div>
     </template>
@@ -233,10 +233,15 @@ const sortSymbol = (column) => {
               <tr
                 v-for="load in loads.data"
                 :key="load.id"
-                class="hover:bg-steel-800/60"
+                class="hover:bg-steel-800/60 transition-colors"
               >
-                <td class="px-4 py-3 font-mono text-white">
-                  {{ load.load_number || `L-${load.id}` }}
+                <td class="px-4 py-3 font-mono">
+                  <Link
+                    :href="route('shipping.show', load.id)"
+                    class="text-forge-500 hover:text-forge-400 font-bold"
+                  >
+                    {{ load.load_number || `L-${load.id}` }}
+                  </Link>
                 </td>
                 <td class="px-4 py-3">
                   <div class="text-white font-semibold">
