@@ -22,9 +22,9 @@ class LoadResource extends Resource
 {
     protected static ?string $model = Load::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-truck';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-truck';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Shipping';
+    protected static \UnitEnum|string|null $navigationGroup = 'Shipping';
 
     protected static ?int $navigationSort = 1;
 

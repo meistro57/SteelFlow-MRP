@@ -21,9 +21,9 @@ class FabJobResource extends Resource
 {
     protected static ?string $model = FabJob::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Production';
+    protected static \UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?string $navigationLabel = 'Jobs';
 

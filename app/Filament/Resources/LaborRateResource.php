@@ -18,9 +18,9 @@ class LaborRateResource extends Resource
 {
     protected static ?string $model = LaborRate::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clock';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Material Setup';
+    protected static \UnitEnum|string|null $navigationGroup = 'Material Setup';
 
     protected static ?int $navigationSort = 4;
 

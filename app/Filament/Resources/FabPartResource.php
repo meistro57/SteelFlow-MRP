@@ -21,9 +21,9 @@ class FabPartResource extends Resource
 {
     protected static ?string $model = FabPart::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cube';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Production';
+    protected static \UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?string $navigationLabel = 'Parts';
 

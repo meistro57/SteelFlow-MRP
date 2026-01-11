@@ -21,9 +21,9 @@ class DrawingResource extends Resource
 {
     protected static ?string $model = Drawing::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Projects';
+    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 5;
 

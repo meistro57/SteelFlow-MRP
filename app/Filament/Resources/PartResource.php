@@ -20,9 +20,9 @@ class PartResource extends Resource
 {
     protected static ?string $model = Part::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-puzzle-piece';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-puzzle-piece';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Projects';
+    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 4;
 

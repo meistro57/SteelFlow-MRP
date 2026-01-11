@@ -19,9 +19,9 @@ class AssemblyResource extends Resource
 {
     protected static ?string $model = Assembly::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Projects';
+    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 3;
 

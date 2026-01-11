@@ -25,9 +25,9 @@ class DataExportResource extends Resource
 {
     protected static ?string $model = DataExport::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-arrow-down-tray';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrow-down-tray';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System';
+    protected static \UnitEnum|string|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 12;
 

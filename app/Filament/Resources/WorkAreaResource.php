@@ -19,9 +19,9 @@ class WorkAreaResource extends Resource
 {
     protected static ?string $model = WorkArea::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-square-3-stack-3d';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-square-3-stack-3d';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Production';
+    protected static \UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?int $navigationSort = 4;
 

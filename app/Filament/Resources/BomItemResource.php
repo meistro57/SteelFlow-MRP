@@ -20,9 +20,9 @@ class BomItemResource extends Resource
 {
     protected static ?string $model = BomItem::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-list-bullet';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-list-bullet';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Production';
+    protected static \UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?string $navigationLabel = 'BOM Items';
 

@@ -20,9 +20,9 @@ class RawMaterialResource extends Resource
 {
     protected static ?string $model = RawMaterial::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-archive-box';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-archive-box';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inventory';
+    protected static \UnitEnum|string|null $navigationGroup = 'Inventory';
 
     protected static ?string $navigationLabel = 'Materials';
 

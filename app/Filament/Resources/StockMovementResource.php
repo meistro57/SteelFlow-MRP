@@ -20,9 +20,9 @@ class StockMovementResource extends Resource
 {
     protected static ?string $model = StockMovement::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-arrows-right-left';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrows-right-left';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inventory';
+    protected static \UnitEnum|string|null $navigationGroup = 'Inventory';
 
     protected static ?string $navigationLabel = 'Movement History';
 

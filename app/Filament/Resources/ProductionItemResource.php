@@ -22,9 +22,9 @@ class ProductionItemResource extends Resource
 {
     protected static ?string $model = ProductionItem::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Production';
+    protected static \UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?int $navigationSort = 1;
 

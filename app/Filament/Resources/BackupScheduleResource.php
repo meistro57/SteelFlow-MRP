@@ -23,9 +23,9 @@ class BackupScheduleResource extends Resource
 {
     protected static ?string $model = BackupSchedule::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clock';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System';
+    protected static \UnitEnum|string|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 11;
 

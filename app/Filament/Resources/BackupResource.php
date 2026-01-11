@@ -25,9 +25,9 @@ class BackupResource extends Resource
 {
     protected static ?string $model = Backup::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-circle-stack';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-circle-stack';
 
-    protected static string|\UnitEnum|null $navigationGroup = 'System';
+    protected static \UnitEnum|string|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 10;
 
