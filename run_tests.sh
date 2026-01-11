@@ -52,6 +52,19 @@ run_backend_quality_checks() {
     return $((lint_status + analyse_status))
 }
 
+# Function to run backend linting and auto-fix
+run_backend_lint_fix() {
+    echo -e "${BLUE}Running backend linting with auto-fix (Laravel Pint)...${NC}"
+    docker compose exec app composer lint
+    local status=$?
+    if [ $status -ne 0 ]; then
+        echo -e "${YELLOW}Backend linting and fixing completed with issues.${NC}"
+        return $status
+    fi
+    echo -e "${GREEN}Backend linting and fixing completed.${NC}"
+    return 0
+}
+
 # Function to run frontend linting check
 run_frontend_lint_check() {
     echo -e "${BLUE}Running frontend linting check (ESLint)...${NC}"
@@ -129,14 +142,14 @@ check_system_health() {
             fi
             
             # 7. Meilisearch Connectivity
-            if docker compose exec -T app php artisan tinker --execute="echo json_encode(app(Laravel\\Scout\\EngineManager::class)->engine()->getMeilisearchClient()->isHealthy());" 2>/dev/null | grep -q "true"; then
+            if docker compose exec -T app php artisan tinker --execute="echo json_encode(app(Meilisearch\\Client::class)->isHealthy());" 2>/dev/null | grep -q "true"; then
                 echo -e "${GREEN}✅ Meilisearch connection successful${NC}"
             else
                 echo -e "${YELLOW}⚠️ Meilisearch connection failed${NC}"
             fi
 
             # 8. Unrun Migrations
-            local pending=$(docker compose exec -T app php artisan migrate:status --pending 2>/dev/null | grep -c "No" || echo 0)
+            local pending=$(docker compose exec -T app php artisan migrate:status --pending 2>/dev/null | grep "Pending" | wc -l)
             if [ "$pending" -gt 0 ]; then
                 echo -e "${YELLOW}⚠️ $pending pending migrations found${NC}"
             else
@@ -288,16 +301,23 @@ run_tests_with_autorepair() {
     run_backend_tests || {
         echo -e "${YELLOW}Backend tests failed. Attempting repair...${NC}"
         repair_system
+        run_backend_lint_fix
         echo -e "${BLUE}Retrying backend tests after repair...${NC}"
         run_backend_tests || failed=true
     }
     
     if [ "$failed" = false ]; then
-        run_backend_quality_checks || failed=true
+        run_backend_quality_checks || {
+            run_backend_lint_fix
+            run_backend_quality_checks || failed=true
+        }
     fi
     
     if [ "$failed" = false ]; then
-        run_frontend_lint_check || failed=true
+        run_frontend_lint_check || {
+            run_frontend_lint_fix
+            run_frontend_lint_check || failed=true
+        }
     fi
 
     if [ "$failed" = true ]; then
@@ -455,8 +475,9 @@ main_menu() {
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
         echo -e "${BROWN}│${NC} ${WHITE}TESTING & QUALITY${NC}                                                   ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[10]${NC} Run All Tests        ${CYAN}[13]${NC} Backend Quality Checks             ${BROWN}│${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[11]${NC} Tests w/ AutoFix     ${CYAN}[14]${NC} Frontend Linting Check             ${BROWN}│${NC}"
-        echo -e "${BROWN}│${NC}  ${CYAN}[12]${NC} Backend PHPUnit      ${CYAN}[15]${NC} Auto-Fix Frontend Lint             ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[11]${NC} Tests w/ AutoFix     ${CYAN}[14]${NC} Backend Auto-Fix Lint            ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}  ${CYAN}[12]${NC} Backend PHPUnit      ${CYAN}[15]${NC} Frontend Linting Check             ${BROWN}│${NC}"
+        echo -e "${BROWN}│${NC}                        ${CYAN}[21]${NC} Frontend Auto-Fix Lint             ${BROWN}│${NC}"
         echo -e "${BROWN}├─────────────────────────────────────────────────────────────────────┤${NC}"
         echo -e "${BROWN}│${NC} ${WHITE}ASSETS & DATA${NC}                                                       ${BROWN}│${NC}"
         echo -e "${BROWN}│${NC}  ${CYAN}[16]${NC} Project Statistics   ${CYAN}[18]${NC} Re-index Search                    ${BROWN}│${NC}"
@@ -486,13 +507,14 @@ main_menu() {
                 run_backend_tests $extra_args 
                 ;;
             13) run_backend_quality_checks ;;
-            14) run_frontend_lint_check ;;
-            15) run_frontend_lint_fix ;;
+            14) run_backend_lint_fix ;;
+            15) run_frontend_lint_check ;;
             16) show_project_stats ;;
             17) run_frontend_build ;;
             18) reindex_search ;;
             19) run_cad_tests ;;
             20) clear_caches ;;
+            21) run_frontend_lint_fix ;;
             0) echo "Exiting."; exit 0 ;;
             *) echo -e "${RED}Invalid option: $choice${NC}" ;;
         esac
@@ -523,6 +545,7 @@ if [ $# -gt 0 ]; then
             exit $?
             ;;
         "fix")
+            run_backend_lint_fix
             run_frontend_lint_fix
             exit $?
             ;;
@@ -595,7 +618,7 @@ if [ $# -gt 0 ]; then
             echo "  backend [args]    - Run PHPUnit tests"
             echo "  quality           - Run backend quality checks"
             echo "  lint              - Run frontend linting"
-            echo "  fix               - Run frontend linting fix"
+            echo "  fix               - Run backend and frontend linting fix"
             echo "  autorepair        - Run tests with automatic repair"
             echo "  rebuild           - Rebuild Docker containers"
             echo "  health            - Check system health"

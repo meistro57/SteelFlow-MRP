@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StockItemResource\Pages;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -17,14 +18,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Inventory\Models\StockItem;
+use UnitEnum;
 
 class StockItemResource extends Resource
 {
     protected static ?string $model = StockItem::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-archive-box';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-archive-box';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Inventory';
+    protected static UnitEnum|string|null $navigationGroup = 'Inventory';
 
     protected static ?string $navigationLabel = 'Stock List';
 

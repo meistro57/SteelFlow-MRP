@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Enums\MaterialType;
 use App\Filament\Resources\RawMaterialResource\Pages;
 use App\Models\RawMaterial;
+use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -15,14 +16,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class RawMaterialResource extends Resource
 {
     protected static ?string $model = RawMaterial::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-archive-box';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-archive-box';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Inventory';
+    protected static UnitEnum|string|null $navigationGroup = 'Inventory';
 
     protected static ?string $navigationLabel = 'Materials';
 

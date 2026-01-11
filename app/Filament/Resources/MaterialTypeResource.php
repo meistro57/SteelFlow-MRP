@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MaterialTypeResource\Pages;
+use BackedEnum;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
@@ -11,14 +12,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\UPF\Models\MaterialType;
+use UnitEnum;
 
 class MaterialTypeResource extends Resource
 {
     protected static ?string $model = MaterialType::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Material Setup';
+    protected static UnitEnum|string|null $navigationGroup = 'Material Setup';
 
     protected static ?int $navigationSort = 1;
 

@@ -21,19 +21,36 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Employee extends Model
 {
     protected $fillable = [
-        'name',
-        'employee_number',
+        'user_id',
+        'employee_code',
+        'first_name',
+        'last_name',
         'department',
-        'email',
-        'phone',
-        'hire_date',
+        'hourly_rate',
         'is_active',
+        'badge_barcode',
     ];
 
     protected $casts = [
-        'hire_date' => 'date',
+        'hourly_rate' => 'decimal:2',
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Get the user associated with the employee.
+     */
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the display name of the employee.
+     */
+    public function getNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 
     public function timeEntries(): HasMany
     {

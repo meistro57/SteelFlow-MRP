@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MaterialGradeResource\Pages;
+use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -18,7 +19,7 @@ class MaterialGradeResource extends Resource
 {
     protected static ?string $model = MaterialGrade::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-academic-cap';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static \UnitEnum|string|null $navigationGroup = 'Material Setup';
 

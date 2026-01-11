@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PartResource\Pages;
 use App\Models\Part;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,14 +16,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PartResource extends Resource
 {
     protected static ?string $model = Part::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-puzzle-piece';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-puzzle-piece';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 4;
 

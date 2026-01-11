@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BackupScheduleResource\Pages;
 use App\Filament\Resources\BackupScheduleResource\RelationManagers;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
@@ -18,14 +19,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Backup\Models\BackupSchedule;
+use UnitEnum;
 
 class BackupScheduleResource extends Resource
 {
     protected static ?string $model = BackupSchedule::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'System';
+    protected static UnitEnum|string|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 11;
 

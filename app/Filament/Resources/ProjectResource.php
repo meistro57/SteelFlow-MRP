@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -16,14 +17,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 2;
 

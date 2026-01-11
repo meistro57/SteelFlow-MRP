@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,28 +15,29 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Seed Users
-        DB::table('users')->insert([
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@steelflow.local'],
             [
-                'id' => 1,
                 'name' => 'Admin User',
-                'email' => 'admin@steelflow.local',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
-                'settings' => json_encode(['theme' => 'light', 'units' => 'imperial']),
+                'settings' => ['theme' => 'light', 'units' => 'imperial'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+        );
+
+        $manager = User::firstOrCreate(
+            ['email' => 'manager@steelflow.local'],
             [
-                'id' => 2,
                 'name' => 'Shop Manager',
-                'email' => 'manager@steelflow.local',
                 'password' => Hash::make('password'),
-                'role' => 'user',
-                'settings' => json_encode(['theme' => 'light', 'units' => 'imperial']),
+                'role' => 'manager',
+                'settings' => ['theme' => 'light', 'units' => 'imperial'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        );
 
         // Seed Grades (expanded with GradeSeeder)
         $this->call(GradeSeeder::class);
@@ -47,7 +49,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Modules\UPF\Database\Seeders\UPFDatabaseSeeder::class);
 
         // Seed Customers
-        DB::table('customers')->insert([
+        $customers = [
             [
                 'code' => 'ACME',
                 'name' => 'ACME Construction Corp',
@@ -96,10 +98,14 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ];
+
+        foreach ($customers as $customer) {
+            DB::table('customers')->updateOrInsert(['code' => $customer['code']], $customer);
+        }
 
         // Seed Vendors
-        DB::table('vendors')->insert([
+        $vendors = [
             [
                 'code' => 'STEEL1',
                 'name' => 'National Steel Supply',
@@ -148,13 +154,17 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ];
+
+        foreach ($vendors as $vendor) {
+            DB::table('vendors')->updateOrInsert(['code' => $vendor['code']], $vendor);
+        }
 
         // Seed Employees
-        DB::table('employees')->insert([
+        DB::table('employees')->updateOrInsert(
+            ['employee_code' => 'EMP001'],
             [
-                'user_id' => 1,
-                'employee_code' => 'EMP001',
+                'user_id' => $admin->id,
                 'first_name' => 'Admin',
                 'last_name' => 'User',
                 'department' => 'Management',
@@ -164,9 +174,12 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+        );
+
+        DB::table('employees')->updateOrInsert(
+            ['employee_code' => 'EMP002'],
             [
-                'user_id' => 2,
-                'employee_code' => 'EMP002',
+                'user_id' => $manager->id,
                 'first_name' => 'Shop',
                 'last_name' => 'Manager',
                 'department' => 'Production',
@@ -176,35 +189,43 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        );
 
         // Seed Departments
-        DB::table('departments')->insert([
+        $departments = [
             ['code' => 'WELD', 'name' => 'Welding', 'sort_order' => 1, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['code' => 'PAINT', 'name' => 'Paint & Finish', 'sort_order' => 2, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['code' => 'CUT', 'name' => 'Cutting & Fabrication', 'sort_order' => 3, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['code' => 'ASSEM', 'name' => 'Assembly', 'sort_order' => 4, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        ];
+
+        foreach ($departments as $dept) {
+            DB::table('departments')->updateOrInsert(['code' => $dept['code']], $dept);
+        }
 
         // Seed Work Areas
         $deptWeld = DB::table('departments')->where('code', 'WELD')->first()->id;
         $deptCut = DB::table('departments')->where('code', 'CUT')->first()->id;
         $deptPaint = DB::table('departments')->where('code', 'PAINT')->first()->id;
 
-        DB::table('work_areas')->insert([
+        $workAreas = [
             ['department_id' => $deptCut, 'code' => 'SAW', 'name' => 'Saw Station', 'sort_order' => 1, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['department_id' => $deptWeld, 'code' => 'WELD1', 'name' => 'Welding Bay 1', 'sort_order' => 2, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['department_id' => $deptWeld, 'code' => 'WELD2', 'name' => 'Welding Bay 2', 'sort_order' => 3, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['department_id' => $deptPaint, 'code' => 'BLAST', 'name' => 'Sand Blast', 'sort_order' => 4, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
             ['department_id' => $deptPaint, 'code' => 'SPRAY', 'name' => 'Paint Booth', 'sort_order' => 5, 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        ];
+
+        foreach ($workAreas as $area) {
+            DB::table('work_areas')->updateOrInsert(['department_id' => $area['department_id'], 'code' => $area['code']], $area);
+        }
 
         // Seed Sample Projects
         $customerAcme = DB::table('customers')->where('code', 'ACME')->first()->id;
         $customerBridge = DB::table('customers')->where('code', 'BRIDGE')->first()->id;
         $customerMetro = DB::table('customers')->where('code', 'METRO')->first()->id;
 
-        DB::table('projects')->insert([
+        $projects = [
             [
                 'job_number' => 'J2024-001',
                 'name' => 'Downtown Office Building - Steel Frame',
@@ -247,21 +268,29 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ];
+
+        foreach ($projects as $project) {
+            DB::table('projects')->updateOrInsert(['job_number' => $project['job_number']], $project);
+        }
 
         // Seed Phases for Projects
         $project1 = DB::table('projects')->where('job_number', 'J2024-001')->first()->id;
         $project2 = DB::table('projects')->where('job_number', 'J2024-002')->first()->id;
         $project3 = DB::table('projects')->where('job_number', 'J2024-003')->first()->id;
 
-        DB::table('phases')->insert([
+        $phases = [
             ['project_id' => $project1, 'code' => 'P1', 'description' => 'Main Structure', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project1, 'code' => 'P2', 'description' => 'Secondary Framing', 'sort_order' => 2, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project2, 'code' => 'MAIN', 'description' => 'Expansion Joint Assembly', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project3, 'code' => 'L1', 'description' => 'Level 1 - Ground', 'sort_order' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project3, 'code' => 'L2', 'description' => 'Level 2', 'sort_order' => 2, 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project3, 'code' => 'L3', 'description' => 'Level 3 - Roof', 'sort_order' => 3, 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        ];
+
+        foreach ($phases as $phase) {
+            DB::table('phases')->updateOrInsert(['project_id' => $phase['project_id'], 'code' => $phase['code']], $phase);
+        }
 
         // Seed Lots
         $phase1 = DB::table('phases')->where('project_id', $project1)->where('code', 'P1')->first()->id;
@@ -270,7 +299,7 @@ class DatabaseSeeder extends Seeder
         $phase4 = DB::table('phases')->where('project_id', $project3)->where('code', 'L1')->first()->id;
         $phase5 = DB::table('phases')->where('project_id', $project3)->where('code', 'L2')->first()->id;
 
-        DB::table('lots')->insert([
+        $lots = [
             ['project_id' => $project1, 'phase_id' => $phase1, 'code' => 'L1', 'description' => 'Columns', 'ship_date' => now()->addDays(75), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project1, 'phase_id' => $phase1, 'code' => 'L2', 'description' => 'Beams', 'ship_date' => now()->addDays(80), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project1, 'phase_id' => $phase2, 'code' => 'L3', 'description' => 'Bracing', 'ship_date' => now()->addDays(85), 'created_at' => now(), 'updated_at' => now()],
@@ -278,7 +307,11 @@ class DatabaseSeeder extends Seeder
             ['project_id' => $project3, 'phase_id' => $phase4, 'code' => 'COL-1', 'description' => 'Ground Columns', 'ship_date' => now()->addDays(100), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project3, 'phase_id' => $phase4, 'code' => 'BM-1', 'description' => 'Ground Beams', 'ship_date' => now()->addDays(105), 'created_at' => now(), 'updated_at' => now()],
             ['project_id' => $project3, 'phase_id' => $phase5, 'code' => 'COL-2', 'description' => 'Level 2 Columns', 'ship_date' => now()->addDays(110), 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        ];
+
+        foreach ($lots as $lot) {
+            DB::table('lots')->updateOrInsert(['project_id' => $lot['project_id'], 'phase_id' => $lot['phase_id'], 'code' => $lot['code']], $lot);
+        }
 
         // Seed Stock Items with realistic inventory
         $this->call(StockItemSeeder::class);

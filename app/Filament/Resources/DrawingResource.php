@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DrawingResource\Pages;
 use App\Models\Drawing;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -16,14 +17,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class DrawingResource extends Resource
 {
     protected static ?string $model = Drawing::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 5;
 

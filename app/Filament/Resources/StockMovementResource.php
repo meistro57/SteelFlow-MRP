@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StockMovementResource\Pages;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -15,14 +16,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Inventory\Models\StockMovement;
+use UnitEnum;
 
 class StockMovementResource extends Resource
 {
     protected static ?string $model = StockMovement::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrows-right-left';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-arrows-right-left';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Inventory';
+    protected static UnitEnum|string|null $navigationGroup = 'Inventory';
 
     protected static ?string $navigationLabel = 'Movement History';
 

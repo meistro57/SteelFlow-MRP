@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BackupResource\Pages;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -20,14 +21,15 @@ use Illuminate\Support\Facades\Storage;
 use Modules\Backup\Models\Backup;
 use Modules\Backup\Services\BackupService;
 use Modules\Backup\Services\RestoreService;
+use UnitEnum;
 
 class BackupResource extends Resource
 {
     protected static ?string $model = Backup::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-circle-stack';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-circle-stack';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'System';
+    protected static UnitEnum|string|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 10;
 

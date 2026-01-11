@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\NestingResource\Pages;
 use App\Models\Nesting;
 use App\Services\Nesting\NestingService;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,14 +16,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class NestingResource extends Resource
 {
     protected static ?string $model = Nesting::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-puzzle-piece';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-puzzle-piece';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Production';
+    protected static UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?int $navigationSort = 2;
 

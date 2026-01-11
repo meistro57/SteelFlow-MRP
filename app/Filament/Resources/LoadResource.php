@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LoadResource\Pages;
 use App\Models\Load;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
@@ -17,14 +18,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class LoadResource extends Resource
 {
     protected static ?string $model = Load::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-truck';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-truck';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Shipping';
+    protected static UnitEnum|string|null $navigationGroup = 'Shipping';
 
     protected static ?int $navigationSort = 1;
 

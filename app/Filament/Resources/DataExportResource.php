@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DataExportResource\Pages;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\KeyValue;
@@ -20,14 +21,15 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
 use Modules\Backup\Models\DataExport;
 use Modules\Backup\Services\ExportService;
+use UnitEnum;
 
 class DataExportResource extends Resource
 {
     protected static ?string $model = DataExport::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-arrow-down-tray';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-arrow-down-tray';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'System';
+    protected static UnitEnum|string|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 12;
 

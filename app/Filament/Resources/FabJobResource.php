@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Enums\JobStatus;
 use App\Filament\Resources\FabJobResource\Pages;
 use App\Models\FabJob;
+use BackedEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -16,14 +17,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class FabJobResource extends Resource
 {
     protected static ?string $model = FabJob::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Production';
+    protected static UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?string $navigationLabel = 'Jobs';
 

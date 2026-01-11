@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AutoHandlingResource\Pages;
+use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -13,14 +14,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\UPF\Models\AutoHandling;
 use Modules\UPF\Models\MaterialType;
+use UnitEnum;
 
 class AutoHandlingResource extends Resource
 {
     protected static ?string $model = AutoHandling::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-truck';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-truck';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Material Setup';
+    protected static UnitEnum|string|null $navigationGroup = 'Material Setup';
 
     protected static ?int $navigationSort = 5;
 

@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PurchaseOrderResource\Pages;
 use App\Models\PurchaseOrder;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -16,14 +17,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PurchaseOrderResource extends Resource
 {
     protected static ?string $model = PurchaseOrder::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Procurement';
+    protected static UnitEnum|string|null $navigationGroup = 'Procurement';
 
     protected static ?int $navigationSort = 2;
 

@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AssemblyResource\Pages;
 use App\Models\Assembly;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,14 +15,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class AssemblyResource extends Resource
 {
     protected static ?string $model = Assembly::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-queue-list';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Projects';
+    protected static UnitEnum|string|null $navigationGroup = 'Projects';
 
     protected static ?int $navigationSort = 3;
 

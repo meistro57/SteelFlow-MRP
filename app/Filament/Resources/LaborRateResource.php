@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LaborRateResource\Pages;
+use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -13,14 +14,15 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\UPF\Models\LaborRate;
 use Modules\UPF\Models\MaterialType;
+use UnitEnum;
 
 class LaborRateResource extends Resource
 {
     protected static ?string $model = LaborRate::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Material Setup';
+    protected static UnitEnum|string|null $navigationGroup = 'Material Setup';
 
     protected static ?int $navigationSort = 4;
 

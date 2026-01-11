@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BomItemResource\Pages;
 use App\Models\BomItem;
 use App\Models\RawMaterial;
+use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -15,14 +16,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class BomItemResource extends Resource
 {
     protected static ?string $model = BomItem::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-list-bullet';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-list-bullet';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Production';
+    protected static UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?string $navigationLabel = 'BOM Items';
 

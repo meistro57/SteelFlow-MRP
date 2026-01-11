@@ -6,6 +6,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductionBatchResource\Pages;
 use App\Models\ProductionBatch;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,14 +15,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ProductionBatchResource extends Resource
 {
     protected static ?string $model = ProductionBatch::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-list-bullet';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-list-bullet';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Production';
+    protected static UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?int $navigationSort = 6;
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UpfPriceResource\Pages;
+use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -14,14 +15,15 @@ use Filament\Tables\Table;
 use Modules\UPF\Models\MaterialGrade;
 use Modules\UPF\Models\MaterialType;
 use Modules\UPF\Models\UpfPrice;
+use UnitEnum;
 
 class UpfPriceResource extends Resource
 {
     protected static ?string $model = UpfPrice::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-currency-dollar';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Material Setup';
+    protected static UnitEnum|string|null $navigationGroup = 'Material Setup';
 
     protected static ?int $navigationSort = 3;
 

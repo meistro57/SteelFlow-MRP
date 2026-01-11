@@ -8,6 +8,7 @@ use App\Enums\PartStatus;
 use App\Filament\Resources\FabPartResource\Pages;
 use App\Models\FabPart;
 use App\Models\RawMaterial;
+use BackedEnum;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -16,14 +17,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class FabPartResource extends Resource
 {
     protected static ?string $model = FabPart::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cube';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Production';
+    protected static UnitEnum|string|null $navigationGroup = 'Production';
 
     protected static ?string $navigationLabel = 'Parts';
 

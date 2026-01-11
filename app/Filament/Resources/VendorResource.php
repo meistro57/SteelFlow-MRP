@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\VendorResource\Pages;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -15,14 +16,15 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\Inventory\Models\Vendor;
+use UnitEnum;
 
 class VendorResource extends Resource
 {
     protected static ?string $model = Vendor::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-storefront';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-building-storefront';
 
-    protected static \UnitEnum|string|null $navigationGroup = 'Procurement';
+    protected static UnitEnum|string|null $navigationGroup = 'Procurement';
 
     protected static ?int $navigationSort = 1;
 
