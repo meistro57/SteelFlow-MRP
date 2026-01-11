@@ -8,6 +8,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property string $frequency
+ * @property string|null $time
+ * @property bool $enabled
+ * @property int $retention_days
+ * @property bool $cloud_sync
+ * @property \Illuminate\Support\Carbon|null $last_run_at
+ * @property \Illuminate\Support\Carbon|null $next_run_at
+ * @property int|null $created_by
+ * @property array|null $options
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\User|null $creator
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Modules\Backup\Models\Backup[] $backups
+ * @property-read int|null $backups_count
+ */
 class BackupSchedule extends Model
 {
     use SoftDeletes;

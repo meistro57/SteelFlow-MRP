@@ -22,7 +22,7 @@ class SendBackupCompletedNotification
                 ->body("Backup '{$backup->name}' has been completed successfully. Size: {$backup->formatted_size}")
                 ->icon('heroicon-o-check-circle')
                 ->actions([
-                    \Filament\Notifications\Actions\Action::make('view')
+                    \Filament\Actions\Action::make('view')
                         ->label('View Backup')
                         ->url(route('filament.admin.resources.backups.view', $backup)),
                 ])

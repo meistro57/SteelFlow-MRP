@@ -29,67 +29,61 @@ class ExportService
             'options' => $options,
         ]);
 
+        // Create export record outside of transaction to ensure it persists if matching throws
+        $export = DataExport::create([
+            'name' => $options['name'] ?? $this->generateExportName($type),
+            'type' => $type,
+            'format' => $format,
+            'status' => 'in_progress',
+            'filters' => $options['filters'] ?? null,
+            'started_at' => now(),
+            'created_by' => Auth::id(),
+        ]);
+
         try {
-            return DB::transaction(function () use ($type, $format, $options, $operationId) {
-                // Create export record
-                $export = DataExport::create([
-                    'name' => $options['name'] ?? $this->generateExportName($type),
-                    'type' => $type,
-                    'format' => $format,
-                    'status' => 'in_progress',
-                    'filters' => $options['filters'] ?? null,
-                    'started_at' => now(),
-                    'created_by' => Auth::id(),
-                ]);
+            Log::info('Export record created', [
+                'operation_id' => $operationId,
+                'export_id' => $export->id,
+            ]);
 
-                Log::info('Export record created', [
-                    'operation_id' => $operationId,
-                    'export_id' => $export->id,
-                ]);
+            // Execute the export
+            $path = $this->executeExport($export, $options);
 
-                try {
-                    // Execute the export
-                    $path = $this->executeExport($export, $options);
+            // Calculate file size and row count
+            $size = $this->storage->getFileSize($path);
+            $rowCount = $this->countRows($path, $export->format);
 
-                    // Calculate file size and row count
-                    $size = $this->storage->getFileSize($path);
-                    $rowCount = $this->countRows($path, $export->format);
+            // Update export record
+            $export->update([
+                'status' => 'completed',
+                'path' => $path,
+                'size' => $size,
+                'row_count' => $rowCount,
+                'completed_at' => now(),
+            ]);
 
-                    // Update export record
-                    $export->update([
-                        'status' => 'completed',
-                        'path' => $path,
-                        'size' => $size,
-                        'row_count' => $rowCount,
-                        'completed_at' => now(),
-                    ]);
+            Log::info('Export completed successfully', [
+                'operation_id' => $operationId,
+                'export_id' => $export->id,
+                'path' => $path,
+                'row_count' => $rowCount,
+            ]);
 
-                    Log::info('Export completed successfully', [
-                        'operation_id' => $operationId,
-                        'export_id' => $export->id,
-                        'path' => $path,
-                        'row_count' => $rowCount,
-                    ]);
+            // Dispatch export completed event
+            DataExportCompleted::dispatch($export);
 
-                    // Dispatch export completed event
-                    DataExportCompleted::dispatch($export);
-
-                    return $export;
-                } catch (\Throwable $exception) {
-                    // Mark export as failed
-                    $export->update([
-                        'status' => 'failed',
-                        'error_message' => $exception->getMessage(),
-                        'completed_at' => now(),
-                    ]);
-
-                    // Dispatch export failed event
-                    DataExportFailed::dispatch($export, $exception->getMessage());
-
-                    throw $exception;
-                }
-            });
+            return $export;
         } catch (\Throwable $exception) {
+            // Mark export as failed
+            $export->update([
+                'status' => 'failed',
+                'error_message' => $exception->getMessage(),
+                'completed_at' => now(),
+            ]);
+
+            // Dispatch export failed event
+            DataExportFailed::dispatch($export, $exception->getMessage());
+
             Log::error('Export failed', [
                 'operation_id' => $operationId,
                 'type' => $type,

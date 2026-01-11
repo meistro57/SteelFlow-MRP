@@ -5,6 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $fab_part_id
+ * @property int $raw_material_id
+ * @property int $quantity_required
+ * @property float $cut_length
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * 
+ * @property-read \App\Models\FabPart $fabPart
+ * @property-read \App\Models\RawMaterial $rawMaterial
+ */
 class BomItem extends Model
 {
     protected $fillable = [

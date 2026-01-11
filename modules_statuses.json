@@ -1,5 +1,6 @@
 {
     "Core": true,
     "Inventory": true,
-    "Backup": true
+    "Backup": true,
+    "ShopTicket": true
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\Backup\Listeners;
 
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Modules\Backup\Events\BackupFailed;
 
@@ -22,7 +23,7 @@ class SendBackupFailedNotification
                 ->body("Backup '{$backup->name}' has failed. Error: {$event->errorMessage}")
                 ->icon('heroicon-o-x-circle')
                 ->actions([
-                    \Filament\Notifications\Actions\Action::make('view')
+                    Action::make('view')
                         ->label('View Details')
                         ->url(route('filament.admin.resources.backups.view', $backup)),
                 ])

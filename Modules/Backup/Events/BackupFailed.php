@@ -12,6 +12,6 @@ class BackupFailed
 
     public function __construct(
         public Backup $backup,
-        public string $errorMessage
+        public string $errorMessage,
     ) {}
 }

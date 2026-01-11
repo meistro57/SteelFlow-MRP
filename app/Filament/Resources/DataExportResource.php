@@ -286,7 +286,7 @@ class DataExportResource extends Resource
                                 [
                                     'name' => $data['name'] ?? null,
                                     'filters' => $data['filters'] ?? [],
-                                ]
+                                ],
                             );
 
                             Notification::make()
@@ -309,7 +309,7 @@ class DataExportResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 

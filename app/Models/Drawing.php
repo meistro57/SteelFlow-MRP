@@ -7,6 +7,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $project_id
+ * @property string $number
+ * @property string $revision
+ * @property string|null $title
+ * @property string|null $file_path
+ * @property \Illuminate\Support\Carbon|null $revised_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * 
+ * @property-read string|null $url
+ * @property-read \App\Models\Project $project
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Assembly> $assemblies
+ */
 class Drawing extends Model
 {
     use SoftDeletes;

@@ -22,10 +22,10 @@ class SendDataExportCompletedNotification
                 ->body("Export '{$export->name}' has been completed successfully. {$export->row_count} records exported. Size: {$export->formatted_size}")
                 ->icon('heroicon-o-check-circle')
                 ->actions([
-                    \Filament\Notifications\Actions\Action::make('view')
+                    \Filament\Actions\Action::make('view')
                         ->label('View Export')
                         ->url(route('filament.admin.resources.data-exports.view', $export)),
-                    \Filament\Notifications\Actions\Action::make('download')
+                    \Filament\Actions\Action::make('download')
                         ->label('Download')
                         ->url(route('filament.admin.resources.data-exports.view', $export)),
                 ])

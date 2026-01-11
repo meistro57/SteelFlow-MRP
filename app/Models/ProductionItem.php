@@ -10,6 +10,16 @@ use App\States\ProductionItem\ProductionItemState;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ModelStates\HasStates;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $part_number
+ * @property \App\States\ProductionItem\ProductionItemState $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * 
+ * @property-read string $display_status
+ */
 class ProductionItem extends Model
 {
     use HasStates;
@@ -26,13 +36,7 @@ class ProductionItem extends Model
 
     public function getDisplayStatusAttribute(): string
     {
-        $status = $this->status;
-
-        if ($status instanceof ProductionItemState) {
-            return $status->label();
-        }
-
-        return $status !== null ? (string) $status : '';
+        return $this->status->label();
     }
 
     public function nextStatus(): ?string

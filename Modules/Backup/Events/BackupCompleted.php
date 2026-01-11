@@ -11,6 +11,6 @@ class BackupCompleted
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Backup $backup
+        public Backup $backup,
     ) {}
 }

@@ -6,6 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property string $load_number
+ * @property int $project_id
+ * @property string $status
+ * @property string|null $destination
+ * @property \Illuminate\Support\Carbon|null $ship_date
+ * @property string|null $carrier
+ * @property string|null $truck_number
+ * @property string|null $trailer_number
+ * @property string|null $driver_name
+ * @property float $total_weight_lbs
+ * @property float $total_weight_kg
+ * @property int $total_pieces
+ * @property string|null $bol_number
+ * @property \Illuminate\Support\Carbon|null $shipped_at
+ * @property \Illuminate\Support\Carbon|null $delivered_at
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * 
+ * @property-read \App\Models\Project $project
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\LoadItem> $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ShippingDocument> $documents
+ */
 class Load extends Model
 {
     protected $fillable = [

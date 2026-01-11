@@ -62,6 +62,9 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - **🛒 Smart Purchasing**: PO lifecycle tracking with integrated Heat Number and Mill Cert management.
 - **⚡ Shop Floor Tracking**: Real-time progress updates via mobile-first barcode/QR scanning.
 - **🚚 Logistics Control**: Automated load building, BOL generation, and shipping history.
+- **📈 Advanced Optimization**: Optimize Linear Nesting module for maximum yield and remnant recovery.
+- **🏪 Multi-mode POS**: Point of Sale interface for retail, gas exchange, and quick service invoicing.
+- **🛠️ Service & Operation**: Dedicated Service Ticket and Shop Ticket modules for field and shop floor management.
 - **🌍 Global Ready**: Seamless switching between Metric and Imperial systems at the core logic level.
 
 ---
@@ -142,6 +145,13 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [ ] Labor Standard Application
 - [ ] Proposal & Quote Generation (PDF)
 - [ ] Bid-to-Project Conversion Logic
+
+### **Phase 9: Specialized Modules** 📅 Planned
+- [ ] **Optimize Linear Nesting**: Yield maximization algorithms
+- [ ] **Point of Sale (POS)**: Retail and gas sales interface
+- [ ] **UI Editor Module**: Visual dashboard and layout builder
+- [ ] **Service Ticket Module**: Field service and maintenance tracking
+- [ ] **Shop Ticket Module**: Digital production orders and QC checks
 
 **Legend:** ✅ Complete | 🔄 In Progress | 📅 Planned
 

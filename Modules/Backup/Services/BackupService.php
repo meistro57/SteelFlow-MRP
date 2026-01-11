@@ -30,67 +30,61 @@ class BackupService
             'options' => $options,
         ]);
 
+        // Create backup record outside of transaction to ensure it persists if matching throws
+        $backup = Backup::create([
+            'name' => $options['name'] ?? $this->generateBackupName($type),
+            'type' => $type,
+            'status' => 'in_progress',
+            'started_at' => now(),
+            'created_by' => Auth::id(),
+            'notes' => $options['notes'] ?? null,
+        ]);
+
         try {
-            return DB::transaction(function () use ($type, $options, $operationId) {
-                // Create backup record
-                $backup = Backup::create([
-                    'name' => $options['name'] ?? $this->generateBackupName($type),
-                    'type' => $type,
-                    'status' => 'in_progress',
-                    'started_at' => now(),
-                    'created_by' => Auth::id(),
-                    'notes' => $options['notes'] ?? null,
-                ]);
+            Log::info('Backup record created', [
+                'operation_id' => $operationId,
+                'backup_id' => $backup->id,
+            ]);
 
-                Log::info('Backup record created', [
-                    'operation_id' => $operationId,
-                    'backup_id' => $backup->id,
-                ]);
+            // Execute the backup based on type
+            $path = match ($type) {
+                'database' => $this->databaseBackup->backup($backup),
+                default => throw new \InvalidArgumentException("Unsupported backup type: {$type}"),
+            };
 
-                try {
-                    // Execute the backup based on type
-                    $path = match ($type) {
-                        'database' => $this->databaseBackup->backup($backup),
-                        default => throw new \InvalidArgumentException("Unsupported backup type: {$type}"),
-                    };
+            // Calculate file size
+            $size = $this->storage->getFileSize($path);
 
-                    // Calculate file size
-                    $size = $this->storage->getFileSize($path);
+            // Update backup record
+            $backup->update([
+                'status' => 'completed',
+                'path' => $path,
+                'size' => $size,
+                'completed_at' => now(),
+            ]);
 
-                    // Update backup record
-                    $backup->update([
-                        'status' => 'completed',
-                        'path' => $path,
-                        'size' => $size,
-                        'completed_at' => now(),
-                    ]);
+            Log::info('Backup completed successfully', [
+                'operation_id' => $operationId,
+                'backup_id' => $backup->id,
+                'path' => $path,
+                'size' => $size,
+            ]);
 
-                    Log::info('Backup completed successfully', [
-                        'operation_id' => $operationId,
-                        'backup_id' => $backup->id,
-                        'path' => $path,
-                        'size' => $size,
-                    ]);
+            // Dispatch backup completed event
+            BackupCompleted::dispatch($backup);
 
-                    // Dispatch backup completed event
-                    BackupCompleted::dispatch($backup);
-
-                    return $backup;
-                } catch (\Throwable $exception) {
-                    // Mark backup as failed
-                    $backup->update([
-                        'status' => 'failed',
-                        'error_message' => $exception->getMessage(),
-                        'completed_at' => now(),
-                    ]);
-
-                    // Dispatch backup failed event
-                    BackupFailed::dispatch($backup, $exception->getMessage());
-
-                    throw $exception;
-                }
-            });
+            return $backup;
         } catch (\Throwable $exception) {
+            // Mark backup as failed
+            $backup->update([
+                'status' => 'failed',
+                'error_message' => $exception->getMessage(),
+                'completed_at' => now(),
+            ]);
+
+            // Dispatch backup failed event
+            BackupFailed::dispatch($backup, $exception->getMessage());
+
             Log::error('Backup creation failed', [
                 'operation_id' => $operationId,
                 'type' => $type,

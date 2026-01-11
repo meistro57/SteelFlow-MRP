@@ -24,7 +24,7 @@ class BackupVerifyCommand extends Command
         $backupId = $this->argument('id');
 
         if ($backupId) {
-            return $this->verifySingle($backupId);
+            return $this->verifySingle((int) $backupId);
         }
 
         return $this->verifyAll();

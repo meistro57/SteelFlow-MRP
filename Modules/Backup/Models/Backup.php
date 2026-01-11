@@ -7,6 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property string $status
+ * @property string|null $path
+ * @property string|null $cloud_path
+ * @property int|null $size
+ * @property \Illuminate\Support\Carbon|null $started_at
+ * @property \Illuminate\Support\Carbon|null $completed_at
+ * @property string|null $error_message
+ * @property int|null $created_by
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $formatted_size
+ * @property-read int|null $duration
+ * @property-read \App\Models\User|null $creator
+ */
 class Backup extends Model
 {
     use SoftDeletes;
@@ -90,6 +110,6 @@ class Backup extends Model
             return null;
         }
 
-        return $this->started_at->diffInSeconds($this->completed_at);
+        return (int) $this->started_at->diffInSeconds($this->completed_at);
     }
 }

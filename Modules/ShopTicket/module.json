@@ -1,0 +1,11 @@
+{
+    "name": "ShopTicket",
+    "alias": "shopticket",
+    "description": "Digital work orders and stage-gate production tracking for SteelFlow MRP.",
+    "keywords": ["shop", "ticket", "production", "tracking", "workflow"],
+    "priority": 0,
+    "providers": [
+        "Modules\\ShopTicket\\Providers\\ShopTicketServiceProvider"
+    ],
+    "files": []
+}

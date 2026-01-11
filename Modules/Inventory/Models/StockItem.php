@@ -2,16 +2,44 @@
 
 namespace Modules\Inventory\Models;
 
-use App\Models\Project; // <--- ADD THIS LINE (Assuming Project is still in App\Models)
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property 'free'|'assigned'|'committed'|'used'|'available'|'reserved'|'checked_out'|'lost'|'damaged' $status
- * @property float $total_length
- * @property float $total_length_in
+ * @property int $id
+ * @property string|null $stock_id
+ * @property int $material_id
+ * @property string $type
+ * @property string $size
+ * @property string $grade
+ * @property float $length
+ * @property int $quantity
+ * @property string $status
+ * @property int|null $reserved_project_id
+ * @property string|null $stock_area
+ * @property string|null $heat_number
+ * @property string|null $po_number
+ * @property string|null $country_of_origin
+ * @property float|null $cost_per_unit
+ * @property \Illuminate\Support\Carbon|null $receive_date
+ * @property string|null $notes
+ * @property bool $is_remnant
+ * @property int|null $parent_stock_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * 
+ * @property-read \Modules\Inventory\Models\Material $material
+ * @property-read \App\Models\Project|null $reservedProject
+ * @property-read \Modules\Inventory\Models\StockItem|null $parentStock
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\StockItem> $remnants
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\StockMovement> $movements
+ * 
+ * @property-read float|null $total_length_in
+ * @property float|null $total_length
  */
 class StockItem extends Model
 {

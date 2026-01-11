@@ -12,6 +12,6 @@ class DataExportFailed
 
     public function __construct(
         public DataExport $export,
-        public string $errorMessage
+        public string $errorMessage,
     ) {}
 }

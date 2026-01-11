@@ -281,6 +281,10 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 
 ### Planned
 - Estimating module (Phase 8)
+- Optimize Linear Nesting (Advanced yield algorithms)
+- Point of Sale (Retail & gas sales)
+- UI Editor Module (Visual interface builder)
+- Service Ticket & Shop Ticket modules
 - API documentation
 - Mobile app optimization
 

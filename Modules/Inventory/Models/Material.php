@@ -8,6 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property string $type
+ * @property string $size_imperial
+ * @property string|null $size_metric
+ * @property int $grade_id
+ * @property float $unit_weight_lbs
+ * @property float $unit_weight_kg
+ * @property float|null $price_per_lb
+ * @property float|null $price_per_kg
+ * @property float|null $surface_area_sqft
+ * @property bool $is_active
+ * @property float $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * 
+ * @property-read \Modules\Inventory\Models\Grade $grade
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Part> $parts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Inventory\Models\StockItem> $stockItems
+ */
 class Material extends Model
 {
     use HasFactory;

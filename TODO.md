@@ -99,3 +99,8 @@
 - [ ] **Dashboards + Kanban**: KPIs and workflow boards.
 - [ ] **Scheduling**: calendar views for deliveries, inspections, pours, crane days.
 - [ ] **Estimating Module**: schema design, bid management, takeoff engine, quote PDFs.
+- [ ] **Optimize Linear Nesting**: Advanced yield optimization, remnant integration algorithms.
+- [ ] **Point of Sale (POS)**: Retail counter, gas sales, and quick job invoicing.
+- [ ] **UI Editor Module**: Visual dashboard builder and drag-and-drop layout manager.
+- [ ] **Service Ticket Module**: Field maintenance tracking and equipment history.
+- [x] **Shop Ticket Module**: Digital work orders and real-time stage tracking (Schema implemented).

@@ -74,10 +74,13 @@ These are the critical gaps that need to be addressed:
 | Advanced Reports | Partial | Inventory + BOM reports live; purchasing/production reports pending |
 | Dashboard Widgets | Partial | Real-time metrics, project overview |
 | Gas Cylinder Tracking | Planned | Database schema, tracking logic, rental billing |
-| Service Call Dispatch | Planned | Mobile app, scheduling, field tracking |
-| Multi-mode POS | Planned | Retail + gas sales + quick jobs support |
+| Service Call Dispatch | Planned | Mobile app, scheduling, field tracking, **Service Ticket Module** |
+| Multi-mode POS | Planned | Retail + gas sales + quick jobs support, **integrated sales dashboard** |
 | Truck Inventory Management | Planned | Service vehicle stock tracking |
 | Recurring Billing | Planned | Monthly cylinder rental automation |
+| **Optimize Linear Nesting** | Planned | Advanced yield optimization, remnant integration |
+| **UI Editor Module** | Planned | Visual dashboard builder and layout customizer |
+| **Shop Ticket Module** | In Progress | Digital work orders and stage-gate production tracking |
 | Integration Architecture | Planned | End-to-end connectivity blueprint |
 
 ### Low Priority - Polish & Optimization

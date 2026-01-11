@@ -66,8 +66,8 @@ class ReportingService
                 ->select('type', DB::raw('SUM(quantity) as count'), DB::raw('SUM(quantity * length) as total_length_in'))
                 ->groupBy('type')
                 ->get()
-                ->map(function ($item) {
-                    $item->total_length = $item->total_length_in / 12; // Convert to feet for the report snapshot
+                ->map(function (StockItem $item) {
+                    $item->total_length = (float) $item->total_length_in / 12; // Convert to feet for the report snapshot
 
                     return $item;
                 }),

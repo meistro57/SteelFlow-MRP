@@ -11,6 +11,6 @@ class DataExportCompleted
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public DataExport $export
+        public DataExport $export,
     ) {}
 }

@@ -283,7 +283,7 @@ php artisan migrate:fresh --seed
 
 **In Progress:** Controllers and UI for Projects, Inventory, Reports, Production
 
-**Not Yet Implemented:** Full BOM UI, Nesting interface, Procurement UI, Shipping UI, Estimating module
+**Not Yet Implemented:** Full BOM UI, Nesting interface, Procurement UI, Shipping UI, Estimating module, Point of Sale, UI Editor, Service/Shop Tickets
 
 ### CAD Integration
 Two importers parse steel fabrication CAD files:

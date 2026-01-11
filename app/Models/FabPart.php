@@ -8,6 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $fab_job_id
+ * @property string $mark_number
+ * @property string|null $description
+ * @property int $quantity
+ * @property string|null $material_grade
+ * @property float|null $weight_each
+ * @property \App\Enums\PartStatus $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * 
+ * @property-read \App\Models\FabJob $fabJob
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BomItem> $bomItems
+ * @property-read float $total_weight
+ */
 class FabPart extends Model
 {
     use SoftDeletes;

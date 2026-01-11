@@ -8,8 +8,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property \Carbon\Carbon|null $due_date
- * @property JobStatus $status
+ * @property int $id
+ * @property string $job_number
+ * @property string|null $customer_name
+ * @property string|null $description
+ * @property \App\Enums\JobStatus $status
+ * @property \Illuminate\Support\Carbon|null $due_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * 
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FabPart> $parts
+ * @property-read int $total_parts
+ * @property-read float $total_weight
  */
 class FabJob extends Model
 {

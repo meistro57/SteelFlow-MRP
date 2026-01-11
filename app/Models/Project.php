@@ -8,6 +8,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
+/**
+ * @property int $id
+ * @property string $job_number
+ * @property string $name
+ * @property int|null $customer_id
+ * @property string $status
+ * @property string|null $job_type
+ * @property string|null $po_number
+ * @property float|null $contract_weight_lbs
+ * @property float|null $contract_weight_kg
+ * @property \Illuminate\Support\Carbon|null $ship_date
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Phase[] $phases
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lot[] $lots
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Assembly[] $assemblies
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Part[] $parts
+ * @property-read \App\Models\Customer|null $customer
+ */
 class Project extends Model
 {
     use Searchable, SoftDeletes;
