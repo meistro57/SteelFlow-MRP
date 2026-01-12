@@ -99,7 +99,7 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 
 ## Project Structure
 
-### Models (52 total)
+### Models (70 total)
 
 #### Project Management
 | Model | Description | Key Fields |
@@ -162,17 +162,29 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `PartWorkArea` | Part routing | part_instance_id, work_area_id, sequence, status, hours |
 | `TimeEntry` | Labor tracking | employee_id, work_area_id, hours, quantity |
 | `Employee` | Shop floor workforce | name, badge_number, department_id |
+| `ShopTicket`| Digital work order | job_number, status, priority |
+| `WorkOrder`  | Finite production task | machine_id, start_time, end_time |
+| `Machine`    | Shop floor equipment | name, capability_tags |
 
-#### Shipping & Logistics
+#### Quality & NCR
 | Model | Description | Key Fields |
 |-------|-------------|------------|
-| `Load` | Shipping loads | load_number, status, bol_number, carrier, weights |
-| `LoadItem` | Load items | load_id, assembly_instance_id, weight |
-| `ShippingDocument` | Packing lists/BOLs | load_id, type, file_path |
+| `NCR` | Non-Conformance Report | id, status, disposition, root_cause |
 
-#### System
+#### Finance & Invoicing
 | Model | Description | Key Fields |
 |-------|-------------|------------|
+| `Invoice` | Customer invoice | invoice_number, status, total_amount |
+| `VendorInvoice` | AP invoice tracking | vendor_id, invoice_number, match_status |
+| `Payment` | Receipt of funds | invoice_id, amount, payment_method |
+| `ApplicationForPayment` | AIA Progress Billing | project_id, period_to, retainage_percent |
+
+#### Documents & System
+| Model | Description | Key Fields |
+|-------|-------------|------------|
+| `Document` | Versioned document | title, documentable_type, category |
+| `AuditEntry` | Immutable audit trail | model_type, model_id, event, old_values, new_values |
+| `Backup` | System data snapshot | filename, disk, size, status |
 | `User` | Application users | name, email, azure_id, settings (JSON) |
 
 ---
@@ -197,6 +209,11 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `PricingService` | UPF-based cost calculations |
 | `StockService` | UPF inventory management |
 | `KeyGenerationService` | FabTrol PKEY/FILEKEY generation |
+| `FinanceService` | AP/AR and Progress Billing management |
+| `NCRService` | Quality workflow and disposition tracking |
+| `BackupService` | Database and filesystem protection |
+| `PdfService` | High-fidelity PDF document generation |
+| `ThreeWayMatchService` | Procurement to Invoicing validation |
 
 ---
 
@@ -217,27 +234,14 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `DrawingController` | `/drawings/{id}` | Drawing management |
 | `LabelController` | `/labels/*` | ZPL label generation |
 | `SettingsController` | `/settings` | User preferences |
+| `InvoiceController` | `/finance/invoices` | Customer billing system |
+| `NCRController` | `/quality/ncr` | Non-Conformance management |
 
 ---
 
-## Database Migrations (14 total)
+## Database Migrations (43 total)
 
-| Migration | Tables |
-|-----------|--------|
-| `create_users_table` | users, sessions, password_resets |
-| `create_cache_table` | cache, cache_locks |
-| `create_jobs_table` | jobs, job_batches, failed_jobs |
-| `add_azure_id_to_users_table` | users.azure_id |
-| `create_projects_tables` | projects, phases, lots |
-| `create_master_data_tables` | materials, grades, vendors, customers |
-| `create_bom_tables` | assemblies, parts, instances, batches, loads |
-| `create_drawings_table` | drawings |
-| `create_procurement_tables` | purchase_orders, po_lines, stock_items, receiving_records, stock_movements |
-| `create_nesting_tables` | nestings, nesting_bars, nesting_parts |
-| `create_production_tracking_tables` | departments, work_areas, part_work_areas, time_entries |
-| `create_shipping_tables` | loads, load_items, shipping_documents |
-| `add_settings_to_users_table` | users.settings (JSON) |
-| `add_soft_deletes_to_tables` | deleted_at timestamps |
+Implemented across core and enterprise modules to support high-integrity business data.
 
 ---
 
@@ -301,14 +305,18 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 - Dark/light theme (persisted to user profile)
 - Microsoft 365 OAuth authentication
 - Redis caching and queue management
+- **Quality Control**: Non-Conformance Reports (NCR) state machine
+- **Financial Module**: AP/AR, Progress Billing (AIA), Three-Way Matching
+- **Document Control**: Centralized storage with versioning and CAD links
+- **System Safety**: Automated database and file backups with cloud sync
+- **Immutable Auditing**: Per-model history tracking for every change
 
 ### In Development
-- Plate Nesting visualization (2D)
-- Receiving validation (Over-receive prevention)
-- PDF Label generation
-- Advanced production tracking and routing UI
-- Shipping module load building
-- Advanced reporting
+- Plate Nesting visualization (2d)
+- Advanced production scheduling (Finite Capacity)
+- Mobile Service Call dispatch (Service Ticket module)
+- Multi-mode POS (Retail/Gas sales)
+- UI Layout Editor (Dashboard builder)
 
 ### Planned
 - Contract Documents module (PDF viewer & version control)

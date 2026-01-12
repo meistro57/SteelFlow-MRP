@@ -8,7 +8,7 @@ This document tracks the current implementation status and development prioritie
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Database Schema | Complete | 31 migrations, 52 models |
+| Database Schema | Complete | 43 migrations, 70 models |
 | Backend Services | Complete | 16+ services; UPF & core implemented |
 | Filament UI | Implemented | UPF Material Catalog & Admin foundation |
 | Authentication | Complete | Laravel Sanctum + Azure OAuth |

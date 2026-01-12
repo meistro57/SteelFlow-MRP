@@ -8,7 +8,7 @@ SteelFlow MRP is a **Manufacturing Resource Planning system** for steel fabricat
 
 **Tech Stack:** Laravel 11 (PHP 8.4+), Vue.js 3, Inertia.js, Pinia, Tailwind CSS, MySQL 8.0, Redis, Meilisearch, Docker
 
-**Current Stage:** Foundation complete with full backend services. Active development on controllers and UI to connect backend logic to frontend.
+**Current Stage:** Complete manufacturing ecosystem with modular architecture. Legacy FabTrol migration capability, ERP-level financial tracking, and digital shop floor operational.
 
 ## Development Commands
 
@@ -133,9 +133,18 @@ Business logic lives in `app/Services/`, NOT in controllers. Controllers are thi
 - `LabelService`: ZPL code generation for Zebra printers
 - `WeightCalculator`: Dual-unit weight calculations
 - `KissImporter` / `XsrImporter`: CAD file parsers
+- `NCRService`: Non-conformance reporting lifecycle
+- `FinanceService`: Invoicing and payment management
+- `ThreeWayMatchService`: Financial procurement validation
+- `BackupService` / `DatabaseBackupService`: System data protection
+- `PdfService`: Blade-to-PDF template generation
+- `DocumentService`: Versioned document control
+- `StockService` / `PricingService`: Legacy UPF management
+- `KeyGenerationService`: FabTrol-compatible key management
+- `ImportTemplateService`: Dynamic CSV/Excel mapping engine
 
 ### Model Relationships
-29 Eloquent models with rich relationships. Always use eager loading to prevent N+1 queries:
+70+ Eloquent models with rich relationships across modules. Always use eager loading to prevent N+1 queries:
 
 ```php
 // Good - eager load relationships
@@ -279,9 +288,9 @@ php artisan migrate:fresh --seed
 ## Development Notes
 
 ### Current Implementation Status
-**Complete:** Database schema (31 migrations), 52 models, 16+ services, authentication, BOM Management (CRUD), Inventory Module, Procurement & Receiving, Linear Nesting visualization, Docker environment.
+**Complete:** Database schema (43 migrations), 70 models, 25+ services, authentication, BOM Management, Inventory Module, Procurement & Receiving, Linear Nesting visualization, Docker environment, NCR/Quality Module, Finance & Billing, Automated Backups, Documents Module, Audit Trails, RBAC (Authz).
 
-**In Progress:** Plate Nesting visualization, Receiving validation, PDF Labels, Shipping UI, Production routing details.
+**In Progress:** Plate Nesting visualization, Advanced Production Scheduling (Finite Capacity), Mobile Service Dispatch, Multi-tenant POS.
 
 ### CAD & Data Integration
 Three importers parse fabrication files:

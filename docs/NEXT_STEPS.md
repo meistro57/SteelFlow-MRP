@@ -7,7 +7,7 @@
 
 ## Overview
 
-This document outlines the prioritized next steps for SteelFlow MRP development based on the current roadmap analysis. Tasks are organized by urgency and business impact.
+This document outlines the prioritized next steps for SteelFlow MRP development. Many of the backend models and core data management features are already implemented and accessible via the **Filament Admin Panel**. The current focus is on building the specific **User-Facing Workflows** (Inertia/Vue) that provide the optimized shop-floor and project management experiences.
 
 ---
 
@@ -83,6 +83,7 @@ app/Http/Controllers/ReportController.php (enhance)
 
 ### 4. NCR (Non-Conformance Report) UI
 **Business Value:** HIGH - Quality control visibility and tracking
+**Status:** Backend & Filament UI Done; Inertia UI Needed
 
 **Tasks:**
 - [ ] Create NCR list page with filters (status, severity, date range)
@@ -105,6 +106,7 @@ resources/js/Pages/Quality/NCRShow.vue
 
 ### 5. Invoicing UI Foundation
 **Business Value:** HIGH - Complete order-to-cash cycle
+**Status:** Backend & Filament UI Done; Inertia UI Needed
 
 **Tasks:**
 - [ ] Create invoice list page
