@@ -16,8 +16,9 @@ use Inertia\Response;
 class ShippingController extends Controller
 {
     public function __construct(
-        protected ShippingService $shippingService
+        protected ShippingService $shippingService,
     ) {}
+
     /**
      * Display a dashboard view of shipping loads.
      */

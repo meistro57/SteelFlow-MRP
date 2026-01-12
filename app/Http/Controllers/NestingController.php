@@ -12,7 +12,7 @@ use Inertia\Response;
 class NestingController extends Controller
 {
     public function __construct(
-        protected NestingService $nestingService
+        protected NestingService $nestingService,
     ) {}
 
     public function index(): Response

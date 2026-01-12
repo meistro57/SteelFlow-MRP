@@ -90,6 +90,9 @@ class StockItemSeeder extends Seeder
         // Get project IDs for assigning stock
         $projectIds = DB::table('projects')->pluck('id')->toArray();
 
+        // Get a valid user ID for tracking
+        $userId = DB::table('users')->where('email', 'admin@steelflow.local')->value('id') ?? 1;
+
         $stockItems = [];
         $movements = [];
         $stockCount = 0;
@@ -188,7 +191,7 @@ class StockItemSeeder extends Seeder
                     'reference_type' => 'po',
                     'reference_id' => null,
                     'notes' => "Received from {$stockItem['po_number']}",
-                    'created_by' => 1,
+                    'created_by' => $userId,
                     'created_at' => $receiveDate,
                     'updated_at' => $receiveDate,
                 ];
@@ -206,7 +209,7 @@ class StockItemSeeder extends Seeder
                         'reference_type' => 'project',
                         'reference_id' => $projectId,
                         'notes' => 'Assigned to project',
-                        'created_by' => 1,
+                        'created_by' => $userId,
                         'created_at' => $receiveDate->addDays(rand(1, 30)),
                         'updated_at' => $receiveDate->addDays(rand(1, 30)),
                     ];
@@ -222,7 +225,7 @@ class StockItemSeeder extends Seeder
                         'reference_type' => 'project',
                         'reference_id' => $projectId,
                         'notes' => 'Assigned to project',
-                        'created_by' => 1,
+                        'created_by' => $userId,
                         'created_at' => $receiveDate->addDays(rand(1, 20)),
                         'updated_at' => $receiveDate->addDays(rand(1, 20)),
                     ];
@@ -237,7 +240,7 @@ class StockItemSeeder extends Seeder
                         'reference_type' => 'nesting',
                         'reference_id' => null,
                         'notes' => 'Committed to nesting',
-                        'created_by' => 1,
+                        'created_by' => $userId,
                         'created_at' => $receiveDate->addDays(rand(21, 40)),
                         'updated_at' => $receiveDate->addDays(rand(21, 40)),
                     ];

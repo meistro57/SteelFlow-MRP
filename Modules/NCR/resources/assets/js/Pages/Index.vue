@@ -1,19 +1,15 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
 import { PlusIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 
-const props = defineProps({
+defineProps({
     ncrs: Object,
     stats: Object,
     filters: Object,
     statuses: Object,
 });
-
-const search = ref(props.filters?.search || '');
-const statusFilter = ref(props.filters?.status || '');
 
 const formatDate = (date) => {
     if (!date) return '-';

@@ -79,9 +79,12 @@ export default defineConfig(({ mode }) => {
             host: '0.0.0.0', // Listen on all interfaces for remote access
             port: 5173,
             strictPort: true,
+            allowedHosts: true, // Allow all hosts for development
+            origin: env.APP_URL || 'http://localhost', // Force asset URLs to use the main domain
             hmr: {
                 host: hmrHost,
                 protocol: protocol,
+                clientPort: protocol === 'https' ? 443 : 80, // Use Nginx port for HMR client
             },
             cors: {
                 origin: '*', // Allow all origins for development

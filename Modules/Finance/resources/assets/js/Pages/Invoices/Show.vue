@@ -1,7 +1,7 @@
 <script setup>
-import { Link, router, useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { BanknotesIcon, DocumentTextIcon } from '@heroicons/vue/24/outline';
+import { BanknotesIcon } from '@heroicons/vue/24/outline';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
 

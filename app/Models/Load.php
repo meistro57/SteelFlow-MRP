@@ -61,6 +61,11 @@ class Load extends Model
         return $this->hasMany(LoadItem::class);
     }
 
+    public function invoiceLineItems(): HasMany
+    {
+        return $this->hasMany(\Modules\Finance\Models\InvoiceLineItem::class);
+    }
+
     public function documents(): HasMany
     {
         return $this->hasMany(ShippingDocument::class);

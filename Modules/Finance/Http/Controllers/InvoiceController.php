@@ -15,7 +15,7 @@ use Modules\Finance\Services\FinanceService;
 class InvoiceController extends Controller
 {
     public function __construct(
-        protected FinanceService $financeService
+        protected FinanceService $financeService,
     ) {}
 
     /**
@@ -130,7 +130,7 @@ class InvoiceController extends Controller
     {
         $invoice->load([
             'project.customer',
-            'lineItems.load',
+            'lines.shippingLoad',
             'payments',
             'createdBy',
         ]);

@@ -16,7 +16,7 @@ use Modules\NCR\Services\NCRService;
 class NCRController extends Controller
 {
     public function __construct(
-        protected NCRService $ncrService
+        protected NCRService $ncrService,
     ) {}
 
     /**
@@ -225,7 +225,7 @@ class NCRController extends Controller
 
         if ($lastNCR) {
             $lastNumber = (int) substr($lastNCR->number, -4);
-            $nextNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+            $nextNumber = str_pad((string) ($lastNumber + 1), 4, '0', STR_PAD_LEFT);
         } else {
             $nextNumber = '0001';
         }

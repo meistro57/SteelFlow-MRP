@@ -12,8 +12,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
+ * @property int $project_id
+ * @property int $customer_id
+ * @property string $invoice_number
+ * @property \Illuminate\Support\Carbon $invoice_date
+ * @property \Illuminate\Support\Carbon $due_date
+ * @property float $subtotal_amount
+ * @property float $tax_amount
  * @property float $total_amount
  * @property float $paid_amount
+ * @property float $retention_amount
+ * @property string $status
+ * @property string|null $terms
+ * @property string|null $notes
+ * @property int $created_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Project $project
+ * @property-read \App\Models\Customer $customer
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Finance\Models\InvoiceLineItem> $lines
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Finance\Models\Payment> $payments
+ * @property-read \App\Models\User $creator
  */
 class Invoice extends Model
 {
