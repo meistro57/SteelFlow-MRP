@@ -1,0 +1,11 @@
+{
+    "name": "PdfCenter",
+    "alias": "pdfcenter",
+    "description": "Blade-based PDF generation pipeline for SteelFlow MRP.",
+    "keywords": ["pdf", "reports", "blade", "dompdf"],
+    "priority": 0,
+    "providers": [
+        "Modules\\PdfCenter\\Providers\\PdfCenterServiceProvider"
+    ],
+    "files": []
+}

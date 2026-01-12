@@ -83,7 +83,13 @@ These are the critical gaps that need to be addressed:
 | Recurring Billing | Planned | Monthly cylinder rental automation |
 | **Optimize Linear Nesting** | Planned | Advanced yield optimization, remnant integration |
 | **UI Editor Module** | Planned | Visual dashboard builder and layout customizer |
+| **AuditLog Module** | In Progress | Immutable history and per-record audit views |
+| **Documents Module** | In Progress | Centralized document control with versioning and attachments |
+| **Authz Module** | In Progress | Role-based access control and policy conventions |
 | **Shop Ticket Module** | In Progress | Digital work orders and stage-gate production tracking |
+| **NCR & Quality** | Planned | State machine for quality failures (Open -> Review -> Disposition) |
+| **Three-Way Match** | Planned | Financial validation for procurement (PO vs. Receipt vs. Invoice) |
+| **Progress Billing** | Planned | Construction accounting with AIA standards and retainage |
 | Integration Architecture | Planned | End-to-end connectivity blueprint |
 
 ### Low Priority - Polish & Optimization
@@ -113,6 +119,7 @@ See [docs/ESTIMATING_PLAN.md](docs/ESTIMATING_PLAN.md) for detailed planning.
 
 ---
 
+<<<<<<< Updated upstream
 ## Phases 9-14: Enterprise Resource Planning (ERP) Features - Planned
 
 To evolve from a Manufacturing Operations System to a full ERP platform, the following business management layers are planned:
@@ -168,6 +175,16 @@ To evolve from a Manufacturing Operations System to a full ERP platform, the fol
 1. **Stage 1 (Months 1-6):** Phase 9 + Phase 11 - Business Operations Baseline
 2. **Stage 2 (Months 7-12):** Phase 10 + Phase 12 - Production Optimization
 3. **Stage 3 (Months 13-18):** Phase 13 + Phase 14 + Phase 9 Integration - Enterprise Maturity
+=======
+## Phase 9: Enterprise Business Logic - Planned
+
+Bridging the gap between shop floor operations and enterprise management.
+
+- [ ] **NCR & Remediation**: State machine for quality failures (Open -> Review -> Disposition).
+- [ ] **Three-Way Match**: Financial validation for procurement (PO vs. Receipt vs. Invoice).
+- [ ] **Progress Billing**: Construction accounting with AIA standards and retainage calculations.
+- [ ] **Accounting Integration**: Webhooks and CSV exports for external GL synchronization.
+>>>>>>> Stashed changes
 
 ---
 
@@ -235,6 +252,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to this pr
 ---
 
 ## Recent Updates
+
+### January 12, 2026
+
+**Strategic Focus Update:**
+- **Business Logic Layer**: Defined requirements for NCR, Three-Way Match, and Progress Billing modules.
+- **Enterprise Foundation**: Scaffolded **Documents**, **AuditLog**, and **Authz** modules to support high-priority business needs.
+- **CAD Integration**: Enhanced `KissImporter` to automatically link assemblies to `Drawing` models during import.
+- **Audit Trails**: Registered `HasAuditFields` trait and `AuditLog` listener to ensure immutable history across all business models.
 
 ### January 11, 2026
 

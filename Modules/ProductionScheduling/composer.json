@@ -1,0 +1,22 @@
+{
+    "name": "steelflow/production-scheduling",
+    "description": "Production scheduling module for SteelFlow MRP",
+    "authors": [
+        {
+            "name": "Crush",
+            "email": "crush@charm.land"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\ProductionScheduling\\Providers\\ProductionSchedulingServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ProductionScheduling\\": ""
+        }
+    }
+}

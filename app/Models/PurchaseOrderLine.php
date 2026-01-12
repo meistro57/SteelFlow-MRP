@@ -48,6 +48,7 @@ class PurchaseOrderLine extends Model
         'quantity_received',
         'unit_price',
         'extended_price',
+        'match_status',
         'nesting_id',
         'notes',
     ];

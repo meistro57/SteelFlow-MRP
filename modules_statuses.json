@@ -3,5 +3,12 @@
     "Inventory": true,
     "Backup": true,
     "ShopTicket": true,
-    "UPF": true
+    "UPF": true,
+    "Documents": true,
+    "AuditLog": true,
+    "Authz": true,
+    "NCR": true,
+    "PdfCenter": true,
+    "Finance": true,
+    "ProductionScheduling": true
 }

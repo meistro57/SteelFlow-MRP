@@ -22,6 +22,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Models\Project $project
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Assembly> $assemblies
  */
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Modules\Documents\Models\Document;
+
 class Drawing extends Model
 {
     use SoftDeletes;
@@ -34,6 +37,14 @@ class Drawing extends Model
         'file_path',
         'revised_at',
     ];
+
+    /**
+     * Get all of the drawing's documents.
+     */
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'documentable');
+    }
 
     protected $appends = ['url'];
 

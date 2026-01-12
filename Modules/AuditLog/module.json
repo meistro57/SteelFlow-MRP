@@ -1,0 +1,11 @@
+{
+    "name": "AuditLog",
+    "alias": "auditlog",
+    "description": "Immutable audit log module for SteelFlow MRP, tracking all model changes and user actions.",
+    "keywords": ["audit", "logging", "history", "immutable"],
+    "priority": 1,
+    "providers": [
+        "Modules\\AuditLog\\Providers\\AuditLogServiceProvider"
+    ],
+    "files": []
+}

@@ -70,6 +70,11 @@ class PurchaseOrder extends Model
         return $this->hasMany(PurchaseOrderLine::class);
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(VendorInvoice::class);
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');

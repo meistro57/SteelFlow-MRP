@@ -65,6 +65,9 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - **📈 Advanced Optimization**: Optimize Linear Nesting module for maximum yield and remnant recovery.
 - **🏪 Multi-mode POS**: Point of Sale interface for retail, gas exchange, and quick service invoicing.
 - **🛠️ Service & Operation**: Dedicated Service Ticket and Shop Ticket modules for field and shop floor management.
+- **📉 Quality Control**: Non-Conformance Report (NCR) tracking with integrated rework workflow.
+- **⚖️ Financial Integrity**: Three-Way Match validation (PO vs. Receipt vs. Invoice) for procurement.
+- **💰 Construction Billing**: AIA-style Progress Billing with automatic retainage management.
 - **🌍 Global Ready**: Seamless switching between Metric and Imperial systems at the core logic level.
 
 ---
@@ -147,6 +150,9 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [ ] Bid-to-Project Conversion Logic
 
 ### **Phase 9: Specialized Modules** 📅 Planned
+- [ ] **NCR & Remediation**: Quality failure state machine and remakes
+- [ ] **Three-Way Match**: Financial validation for procurement
+- [ ] **Progress Billing**: AIA standards and retainage calculations
 - [ ] **Optimize Linear Nesting**: Yield maximization algorithms
 - [ ] **Point of Sale (POS)**: Retail and gas sales interface
 - [ ] **UI Editor Module**: Visual dashboard and layout builder
@@ -291,6 +297,12 @@ app/
 ├── Services/         # Business logic (BOM, Nesting, Inventory, Shipping, etc.)
 ├── Http/Controllers/ # Web controllers (Auth, Reports, Production, Labels, etc.)
 └── Jobs/             # Background workers for heavy computations
+Modules/
+├── Documents/        # Centralized file management & versioning (CAD drawings, KISS, etc.)
+├── AuditLog/         # Immutable audit trails for all system actions
+├── Authz/            # Role-based access control and sophisticated permissions
+├── UPF/              # Legacy FabTrol material catalog compatibility
+└── ShopTicket/       # Digital production orders and real-time tracking
 resources/
 ├── js/
 │   ├── Components/   # Vue components (ThemeToggle, BarcodeScanner, etc.)

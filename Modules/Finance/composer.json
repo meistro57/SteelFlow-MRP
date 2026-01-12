@@ -1,0 +1,22 @@
+{
+    "name": "steelflow/finance",
+    "description": "Finance module for SteelFlow MRP",
+    "authors": [
+        {
+            "name": "Crush",
+            "email": "crush@charm.land"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Finance\\Providers\\FinanceServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Finance\\": ""
+        }
+    }
+}

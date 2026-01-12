@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Modules\Core\Traits\HasAuditFields;
+
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Modules\Documents\Models\Document;
 
 /**
  * @property int $id
@@ -28,10 +32,11 @@ use Laravel\Scout\Searchable;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Assembly[] $assemblies
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Part[] $parts
  * @property-read \App\Models\Customer|null $customer
+ * @property-read \Illuminate\Database\Eloquent\Collection|Document[] $documents
  */
 class Project extends Model
 {
-    use Searchable, SoftDeletes;
+    use Searchable, SoftDeletes, HasAuditFields;
 
     protected $fillable = [
         'job_number',
@@ -69,5 +74,13 @@ class Project extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * Get all of the project's documents.
+     */
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'documentable');
     }
 }

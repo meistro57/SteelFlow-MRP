@@ -130,10 +130,19 @@ class KissImporter
         }
     }
 
+use App\Models\Assembly;
+use App\Models\Drawing;
+use App\Models\Part;
+use App\Models\Project;
+
+// ...
+
     protected function importAssembly(array $data, Project $project): void
     {
         // Reference: SHP, Mark, Qty, Description, WeightEach, WeightTotal, Remark, Drawing
         $mark = trim($data[1] ?? '');
+        $drawingNumber = trim($data[7] ?? '');
+
         if (! $mark) {
             Log::warning('Skipping assembly with empty mark', [
                 'operation_id' => $this->operationId,
@@ -141,6 +150,20 @@ class KissImporter
             ]);
 
             return;
+        }
+
+        $drawingId = null;
+        if ($drawingNumber) {
+            $drawing = Drawing::firstOrCreate(
+                [
+                    'project_id' => $project->id,
+                    'number' => $drawingNumber,
+                ],
+                [
+                    'title' => 'Imported from KISS',
+                ]
+            );
+            $drawingId = $drawing->id;
         }
 
         $assembly = Assembly::updateOrCreate(
@@ -155,6 +178,7 @@ class KissImporter
                 'total_weight_lbs' => (float) ($data[5] ?? 0),
                 'weight_each_kg' => (float) ($data[4] ?? 0) * 0.453592,
                 'total_weight_kg' => (float) ($data[5] ?? 0) * 0.453592,
+                'drawing_id' => $drawingId,
             ],
         );
 

@@ -1,0 +1,13 @@
+{
+    "name": "ProductionScheduling",
+    "alias": "production-scheduling",
+    "description": "Production scheduling and capacity planning for SteelFlow MRP",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ProductionScheduling\\Providers\\ProductionSchedulingServiceProvider"
+    ],
+    "files": [],
+    "resources": [],
+    "requires": []
+}

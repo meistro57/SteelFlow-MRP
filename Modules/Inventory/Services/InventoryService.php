@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Modules\Documents\Services\DocumentService;
 use Modules\Inventory\Models\ReceivingRecord;
 use Modules\Inventory\Models\StockItem;
 use Modules\Inventory\Models\StockMovement;
@@ -73,6 +74,17 @@ class InventoryService
                     'received_by' => Auth::id(),
                     'notes' => $data['notes'] ?? null,
                 ]);
+
+                // Handle Mill Cert File if provided
+                if (isset($data['mill_cert_file'])) {
+                    $docService = app(DocumentService::class);
+                    $docService->store($data['mill_cert_file'], [
+                        'name' => 'Mill_Cert_' . ($data['heat_number'] ?? 'Unknown'),
+                        'file_type' => 'pdf',
+                        'documentable_id' => $record->id,
+                        'documentable_type' => ReceivingRecord::class,
+                    ]);
+                }
 
                 // 2. Update PO line quantity
                 $line->increment('quantity_received', $data['quantity']);

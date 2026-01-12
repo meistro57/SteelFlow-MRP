@@ -152,6 +152,7 @@ class PurchaseOrderResource extends Resource
     {
         return [
             PurchaseOrderResource\RelationManagers\LinesRelationManager::class,
+            PurchaseOrderResource\RelationManagers\InvoicesRelationManager::class,
         ];
     }
 

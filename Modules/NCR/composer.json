@@ -1,0 +1,16 @@
+{
+    "name": "steelflow/ncr",
+    "description": "NCR module for SteelFlow MRP",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\NCR\\Providers\\NCRServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\NCR\\": ""
+        }
+    }
+}

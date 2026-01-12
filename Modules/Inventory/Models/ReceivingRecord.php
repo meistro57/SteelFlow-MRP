@@ -6,6 +6,8 @@ use App\Models\PurchaseOrderLine;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Modules\Documents\Models\Document;
 
 /**
  * @property int $id
@@ -37,6 +39,11 @@ class ReceivingRecord extends Model
         'notes',
     ];
 
+    protected $casts = [
+        'receive_date' => 'datetime',
+        'quantity_received' => 'float',
+    ];
+
     public function line(): BelongsTo
     {
         return $this->belongsTo(PurchaseOrderLine::class, 'purchase_order_line_id');
@@ -45,5 +52,13 @@ class ReceivingRecord extends Model
     public function receiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'received_by');
+    }
+
+    /**
+     * Get all of the receiving record's documents (e.g. Mill Cert).
+     */
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'documentable');
     }
 }

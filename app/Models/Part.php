@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Modules\Core\Traits\HasAuditFields;
 use Modules\Inventory\Models\Material;
 
 /**
@@ -41,7 +42,7 @@ use Modules\Inventory\Models\Material;
  */
 class Part extends Model
 {
-    use Searchable, SoftDeletes;
+    use Searchable, SoftDeletes, HasAuditFields;
 
     protected $fillable = [
         'project_id',
