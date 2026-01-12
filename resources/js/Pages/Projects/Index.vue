@@ -2,6 +2,9 @@
 import { Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
+import EmptyState from '@/Components/EmptyState.vue';
+import { PlusIcon, MagnifyingGlassIcon, FolderOpenIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
     projects: Object,
@@ -26,10 +29,17 @@ const formatDate = (date) => {
     if (!date) return '-';
     return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
+
+const breadcrumbItems = [
+    { label: 'Projects' },
+];
 </script>
 
 <template>
   <AppLayout title="Projects">
+    <!-- Breadcrumb -->
+    <Breadcrumb :items="breadcrumbItems" />
+
     <!-- Page Header -->
     <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
       <div>
@@ -45,19 +55,7 @@ const formatDate = (date) => {
           href="/projects/create"
           class="btn-primary"
         >
-          <svg
-            class="h-5 w-5 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+          <PlusIcon class="h-5 w-5" />
           New Project
         </Link>
       </div>
@@ -66,15 +64,19 @@ const formatDate = (date) => {
     <!-- Search Filter -->
     <div class="card mb-6">
       <div class="p-4">
-        <label class="block text-xs uppercase tracking-wider text-steel-400 mb-2 font-mono">
+        <label class="block text-xs uppercase tracking-wider text-steel-400 mb-2 font-mono flex items-center gap-2">
+          <MagnifyingGlassIcon class="w-4 h-4" />
           Search Projects
         </label>
-        <input
-          v-model="search"
-          type="text"
-          placeholder="Job #, Name, Customer..."
-          class="input w-full md:w-1/2"
-        >
+        <div class="relative w-full md:w-1/2">
+          <input
+            v-model="search"
+            type="text"
+            placeholder="Job #, Name, Customer..."
+            class="input w-full pl-10"
+          >
+          <MagnifyingGlassIcon class="w-5 h-5 text-steel-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        </div>
       </div>
     </div>
 
@@ -252,24 +254,13 @@ const formatDate = (date) => {
                 colspan="8"
                 class="text-center py-12 text-steel-500"
               >
-                <div class="flex flex-col items-center">
-                  <svg
-                    class="h-16 w-16 mb-4 text-steel-700"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                  <p class="text-lg uppercase tracking-wider font-mono">
-                    No Projects Found
-                  </p>
-                </div>
+                <EmptyState
+                  :icon="FolderOpenIcon"
+                  title="No Projects Found"
+                  description="Get started by creating your first fabrication project."
+                  action-text="Create Project"
+                  action-href="/projects/create"
+                />
               </td>
             </tr>
           </tbody>

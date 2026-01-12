@@ -2,6 +2,22 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import {
+    FolderOpenIcon,
+    CogIcon,
+    MagnifyingGlassIcon,
+    ClipboardDocumentListIcon,
+    RectangleGroupIcon,
+    ScaleIcon,
+    BoltIcon,
+    TruckIcon,
+    ArrowUpTrayIcon,
+    DevicePhoneMobileIcon,
+    CubeIcon,
+    CheckCircleIcon,
+    ExclamationTriangleIcon,
+    ClockIcon,
+} from '@heroicons/vue/24/outline';
 
 // Props received from Laravel via Inertia
 const props = defineProps({
@@ -42,25 +58,25 @@ const recentActivity = [
           rel="noopener noreferrer"
           class="btn-secondary"
         >
-          <span>📂</span>
+          <FolderOpenIcon class="w-5 h-5" />
           <span>View Repo</span>
         </a>
         <Link
           :href="route('settings.index')"
           class="btn-ghost"
         >
-          <span>⚙️</span>
+          <CogIcon class="w-5 h-5" />
           <span>Settings</span>
         </Link>
         <button class="btn-weld">
-          <span>🔍</span>
+          <MagnifyingGlassIcon class="w-5 h-5" />
           <span>Search</span>
         </button>
         <Link
           :href="route('projects.create')"
           class="btn-primary"
         >
-          <span>📋</span>
+          <ClipboardDocumentListIcon class="w-5 h-5" />
           <span>New Job</span>
         </Link>
       </div>
@@ -79,8 +95,8 @@ const recentActivity = [
         <div class="metric-trend-up">
           ↑ 3 from last week
         </div>
-        <div class="metric-icon">
-          🏗️
+        <div class="absolute top-6 right-6 opacity-20">
+          <RectangleGroupIcon class="w-16 h-16 text-forge-400" />
         </div>
       </div>
 
@@ -96,8 +112,8 @@ const recentActivity = [
         <div class="text-xs text-steel-500 mt-2">
           {{ (totalWeight / 2000).toFixed(1) }} tons
         </div>
-        <div class="metric-icon">
-          ⚖️
+        <div class="absolute top-6 right-6 opacity-20">
+          <ScaleIcon class="w-16 h-16 text-weld-400" />
         </div>
       </div>
 
@@ -116,8 +132,8 @@ const recentActivity = [
             :style="`width: ${productionProgress}%`"
           />
         </div>
-        <div class="metric-icon">
-          ⚡
+        <div class="absolute top-6 right-6 opacity-20">
+          <BoltIcon class="w-16 h-16 text-weld-400" />
         </div>
       </div>
 
@@ -133,8 +149,8 @@ const recentActivity = [
         <div class="metric-trend-up">
           ↑ 12% this week
         </div>
-        <div class="metric-icon">
-          🚚
+        <div class="absolute top-6 right-6 opacity-20">
+          <TruckIcon class="w-16 h-16 text-forge-400" />
         </div>
       </div>
     </div>
@@ -147,7 +163,7 @@ const recentActivity = [
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <button class="btn-primary justify-start text-left h-auto py-4 flex-col items-start gap-2">
           <div class="flex items-center gap-3 w-full">
-            <span class="text-2xl">📥</span>
+            <ArrowUpTrayIcon class="w-8 h-8 flex-shrink-0" />
             <div>
               <div class="font-bold">
                 Import KISS File
@@ -164,7 +180,7 @@ const recentActivity = [
           class="btn-secondary justify-start text-left h-auto py-4 flex-col items-start gap-2"
         >
           <div class="flex items-center gap-3 w-full">
-            <span class="text-2xl">📦</span>
+            <CubeIcon class="w-8 h-8 flex-shrink-0" />
             <div>
               <div class="font-bold">
                 Create Project
@@ -181,7 +197,7 @@ const recentActivity = [
           class="btn-secondary justify-start text-left h-auto py-4 flex-col items-start gap-2 border-glow-weld"
         >
           <div class="flex items-center gap-3 w-full">
-            <span class="text-2xl">📱</span>
+            <DevicePhoneMobileIcon class="w-8 h-8 flex-shrink-0" />
             <div>
               <div class="font-bold">
                 Scan Barcode
@@ -218,28 +234,29 @@ const recentActivity = [
               <div class="flex-shrink-0 mt-0.5">
                 <span
                   v-if="activity.status === 'in_progress'"
-                  class="badge-in-progress"
+                  class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-forge-500/10 border border-forge-500"
                 >
-                  ⚡
+                  <BoltIcon class="w-5 h-5 text-forge-400" />
                 </span>
                 <span
                   v-else-if="activity.status === 'complete'"
-                  class="badge-complete"
+                  class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-500/10 border border-green-500"
                 >
-                  ✓
+                  <CheckCircleIcon class="w-5 h-5 text-green-400" />
                 </span>
                 <span
                   v-else-if="activity.status === 'warning'"
-                  class="badge-warning"
+                  class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-safety-500/10 border border-safety-500"
                 >
-                  ⚠️
+                  <ExclamationTriangleIcon class="w-5 h-5 text-safety-400" />
                 </span>
               </div>
               <div class="flex-1 min-w-0">
                 <p class="text-steel-300 text-sm font-medium">
                   {{ activity.message }}
                 </p>
-                <p class="text-steel-500 text-xs mt-1">
+                <p class="text-steel-500 text-xs mt-1 flex items-center gap-1">
+                  <ClockIcon class="w-3 h-3" />
                   {{ activity.time }}
                 </p>
               </div>
