@@ -13,9 +13,6 @@
 ## 🌟 Vision
 To replace obsolete legacy systems with a high-performance, web-native platform that centralizes estimating, production, and logistics into a single source of truth.
 
-<img width="874" height="812" alt="image" src="https://github.com/user-attachments/assets/a533fcd0-70b9-4a2d-ba74-bb5632b7db82" />
-
-
 
 
 <img width="1569" height="862" alt="image" src="https://github.com/user-attachments/assets/5b9699a7-1b70-484f-b45f-fa80b2f11ec5" />
