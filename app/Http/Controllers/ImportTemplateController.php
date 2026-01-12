@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class ImportTemplateController extends Controller
 {
     public function __construct(
-        protected ImportTemplateService $templateService
+        protected ImportTemplateService $templateService,
     ) {}
 
     /**

@@ -108,7 +108,7 @@ onMounted(() => {
               </Link>
 
               <!-- Admin Navigation -->
-              <template v-if="$page.props.auth.user.role === 'admin'">
+              <template v-if="$page.props.auth?.user?.role === 'admin'">
                 <div class="h-6 w-px bg-steel-700 mx-2" />
                 <Link
                   v-for="item in adminNavigation"
@@ -199,7 +199,10 @@ onMounted(() => {
             </Link>
 
             <!-- User Menu -->
-            <div class="flex items-center space-x-2 sm:space-x-3 sm:pl-4 sm:border-l sm:border-steel-700">
+            <div
+              v-if="$page.props.auth?.user"
+              class="flex items-center space-x-2 sm:space-x-3 sm:pl-4 sm:border-l sm:border-steel-700"
+            >
               <div class="hidden sm:block text-right">
                 <div class="text-sm font-medium text-white">
                   {{ $page.props.auth.user.name }}
@@ -215,9 +218,10 @@ onMounted(() => {
                 class="w-9 h-9 bg-steel-700 rounded-sm flex items-center justify-center text-white font-bold hover:bg-steel-600 transition-colors"
                 title="Log Out"
               >
-                {{ $page.props.auth.user.name.split(' ').map(n => n[0]).join('').toUpperCase() }}
+                {{ $page.props.auth.user.name?.split(' ').map(n => n[0]).join('').toUpperCase() || '?' }}
               </Link>
             </div>
+
 
             <!-- Mobile menu button -->
             <div class="md:hidden flex items-center">
@@ -285,7 +289,7 @@ onMounted(() => {
             {{ item.name }}
           </Link>
 
-          <template v-if="$page.props.auth.user.role === 'admin'">
+          <template v-if="$page.props.auth?.user?.role === 'admin'">
             <div class="border-t border-steel-800 my-2 pt-2 px-3 text-xs font-bold text-steel-500 uppercase">
               Admin
             </div>
@@ -303,6 +307,7 @@ onMounted(() => {
               {{ item.name }}
             </Link>
           </template>
+
 
           <div class="border-t border-steel-800 my-2 pt-2">
             <Link

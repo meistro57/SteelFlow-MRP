@@ -147,7 +147,7 @@ const closeModal = () => {
                   Edit
                 </button>
                 <button
-                  v-if="$page.props.auth.user.id !== user.id"
+                  v-if="$page.props.auth?.user?.id !== user.id"
                   class="text-red-400 hover:text-red-300 font-bold text-xs uppercase tracking-tighter transition-colors"
                   @click="deleteUser(user)"
                 >

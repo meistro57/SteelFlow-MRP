@@ -61,7 +61,6 @@ export default defineConfig(({ mode }) => {
                     'resources/css/app.css',
                     'resources/js/app.js',
                     'resources/css/filament/admin/theme.css',
-                    'Modules/Inventory/resources/assets/js/app.js',
                  //   ...collectModuleAssets(),
                 ],
                 refresh: true,
@@ -103,6 +102,7 @@ export default defineConfig(({ mode }) => {
         resolve: {
             alias: {
                 '@': path.resolve(__dirname, 'resources/js'),
+                '@Modules': path.resolve(__dirname, 'Modules'),
             },
         },
     };

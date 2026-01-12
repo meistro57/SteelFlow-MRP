@@ -12,8 +12,11 @@ class ImportTemplateService
      * Available import template types
      */
     public const TEMPLATE_CUSTOMERS = 'customers';
+
     public const TEMPLATE_KISS = 'kiss';
+
     public const TEMPLATE_XSR = 'xsr';
+
     public const TEMPLATE_UPF = 'upf';
 
     /**
@@ -66,8 +69,8 @@ class ImportTemplateService
             $template['filename'],
             [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="' . $template['filename'] . '"',
-            ]
+                'Content-Disposition' => 'attachment; filename="'.$template['filename'].'"',
+            ],
         );
     }
 

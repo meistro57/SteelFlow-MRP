@@ -296,6 +296,7 @@ class InventoryController extends Controller
             ->orderBy('grade')
             ->pluck('grade')
             ->filter()
+            ->values()
             ->toArray();
     }
 }
