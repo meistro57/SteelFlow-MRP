@@ -5,6 +5,7 @@ use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DrawingController;
+use App\Http\Controllers\ImportTemplateController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\NestingController;
 use App\Http\Controllers\PartController;
@@ -32,6 +33,14 @@ Route::get('/login/microsoft/callback', [AuthController::class, 'handleProviderC
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ReportController::class, 'showMainDashboard'])->name('dashboard');
+
+    // Import Template Routes
+    Route::get('/import-templates', [ImportTemplateController::class, 'index'])->name('import-templates.index');
+    Route::get('/import-templates/{type}/download', [ImportTemplateController::class, 'download'])->name('import-templates.download');
+    Route::get('/import-templates/customers', [ImportTemplateController::class, 'customers'])->name('import-templates.customers');
+    Route::get('/import-templates/kiss', [ImportTemplateController::class, 'kiss'])->name('import-templates.kiss');
+    Route::get('/import-templates/xsr', [ImportTemplateController::class, 'xsr'])->name('import-templates.xsr');
+    Route::get('/import-templates/upf', [ImportTemplateController::class, 'upf'])->name('import-templates.upf');
 
     // Customer Routes
     Route::get('/customers/import', [CustomerController::class, 'importForm'])->name('customers.import');
