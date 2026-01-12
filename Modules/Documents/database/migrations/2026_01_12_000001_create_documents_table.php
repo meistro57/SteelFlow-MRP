@@ -17,14 +17,14 @@ return new class extends Migration
             $blueprint->unsignedBigInteger('file_size')->nullable();
             $blueprint->integer('version')->default(1);
             $blueprint->json('metadata')->nullable();
-            
+
             // Polymorphic link to Project, Assembly, Part, etc.
             $blueprint->nullableMorphs('documentable');
-            
+
             // Audit fields
             $blueprint->foreignId('created_by')->nullable()->constrained('users');
             $blueprint->foreignId('updated_by')->nullable()->constrained('users');
-            
+
             $blueprint->timestamps();
             $blueprint->softDeletes();
         });
@@ -36,7 +36,7 @@ return new class extends Migration
             $blueprint->integer('version');
             $blueprint->string('notes')->nullable();
             $blueprint->json('metadata')->nullable();
-            
+
             $blueprint->foreignId('created_by')->nullable()->constrained('users');
             $blueprint->timestamps();
         });

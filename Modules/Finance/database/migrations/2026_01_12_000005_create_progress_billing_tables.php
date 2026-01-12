@@ -36,7 +36,7 @@ return new class extends Migration
 
         Schema::create('application_line_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('application_id', 'afp_id')->constrained('applications_for_payment')->onDelete('cascade');
+            $table->foreignId('application_id')->constrained('applications_for_payment')->onDelete('cascade');
             $table->foreignId('sov_id')->constrained('schedule_of_values');
             $table->decimal('percent_complete', 5, 2);
             $table->decimal('total_earned', 15, 2);

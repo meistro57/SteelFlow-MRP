@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 use Modules\Core\Traits\HasAuditFields;
-
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Documents\Models\Document;
 
 /**
@@ -36,7 +35,7 @@ use Modules\Documents\Models\Document;
  */
 class Project extends Model
 {
-    use Searchable, SoftDeletes, HasAuditFields;
+    use HasAuditFields, Searchable, SoftDeletes;
 
     protected $fillable = [
         'job_number',

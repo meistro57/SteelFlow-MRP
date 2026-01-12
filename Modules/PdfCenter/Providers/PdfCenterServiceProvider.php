@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class PdfCenterServiceProvider extends ServiceProvider
 {
     protected string $name = 'PdfCenter';
+
     protected string $nameLower = 'pdfcenter';
 
     public function boot(): void
@@ -14,8 +15,5 @@ class PdfCenterServiceProvider extends ServiceProvider
         $this->loadViewsFrom(module_path($this->name, 'resources/views'), $this->nameLower);
     }
 
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 }

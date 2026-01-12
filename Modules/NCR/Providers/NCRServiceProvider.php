@@ -13,8 +13,5 @@ class NCRServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
     }
 
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 }

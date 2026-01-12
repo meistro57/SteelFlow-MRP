@@ -16,7 +16,7 @@ return new class extends Migration
             $blueprint->date('invoice_date');
             $blueprint->string('match_status')->default('unmatched'); // MATCHED, VARIANCE, UNMATCHED
             $blueprint->text('notes')->nullable();
-            
+
             $blueprint->foreignId('created_by')->nullable()->constrained('users');
             $blueprint->timestamps();
             $blueprint->softDeletes();

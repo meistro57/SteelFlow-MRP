@@ -2,18 +2,16 @@
 
 namespace Modules\Finance\Services;
 
+use App\Models\Load;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Modules\Finance\Models\ApplicationForPayment;
 use Modules\Finance\Models\ApplicationLineItem;
-use Modules\Finance\Models\ScheduleOfValue;
-use Modules\Finance\Models\VendorInvoice;
-use Modules\Finance\Models\VendorInvoiceLine;
 use Modules\Finance\Models\Invoice;
 use Modules\Finance\Models\InvoiceLineItem;
 use Modules\Finance\Models\Payment;
-use App\Models\Load;
-use App\Models\Project;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Modules\Finance\Models\ScheduleOfValue;
+use Modules\Finance\Models\VendorInvoice;
 
 class FinanceService
 {
@@ -65,7 +63,7 @@ class FinanceService
      */
     protected function generateInvoiceNumber(): string
     {
-        return 'INV-' . strtoupper(Str::random(8));
+        return 'INV-'.strtoupper(Str::random(8));
     }
 
     /**
@@ -104,13 +102,13 @@ class FinanceService
         foreach ($invoice->lines as $line) {
             $poLine = $line->poLine;
             $receivedQty = $poLine->receivingRecords()->sum('quantity_received');
-            
+
             $poAmount = $line->quantity * $poLine->unit_price;
             $receivedAmount = $receivedQty * $poLine->unit_price;
             $invoiceAmount = $line->extended_price;
 
             $variance = abs($invoiceAmount - $receivedAmount);
-            
+
             $lineStatus = $variance <= $tolerance ? 'matched' : 'variance';
             if ($lineStatus === 'variance') {
                 $matched = false;
@@ -129,13 +127,13 @@ class FinanceService
         }
 
         $invoice->update([
-            'match_status' => $matched ? 'matched' : 'variance'
+            'match_status' => $matched ? 'matched' : 'variance',
         ]);
 
         return [
             'invoice_id' => $invoice->id,
             'status' => $invoice->match_status,
-            'lines' => $results
+            'lines' => $results,
         ];
     }
 
@@ -164,10 +162,10 @@ class FinanceService
             foreach ($data['lines'] as $lineData) {
                 $sov = ScheduleOfValue::findOrFail($lineData['sov_id']);
                 $percentComplete = $lineData['percent_complete'];
-                
+
                 $earned = $sov->scheduled_value * ($percentComplete / 100);
                 $previousEarned = $this->getPreviousEarned($sov->id, $application->id);
-                
+
                 ApplicationLineItem::create([
                     'application_id' => $application->id,
                     'sov_id' => $sov->id,

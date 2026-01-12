@@ -9,6 +9,11 @@ abstract class NCRState extends State
 {
     abstract public function label(): string;
 
+    public function getName(): string
+    {
+        return (string) $this->getValue();
+    }
+
     public static function config(): StateConfig
     {
         return parent::config()

@@ -9,6 +9,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $file_path
+ * @property string|null $file_type
+ * @property string|null $mime_type
+ * @property int|null $file_size
+ * @property int $version
+ * @property array|null $metadata
+ * @property int|null $documentable_id
+ * @property string|null $documentable_type
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $documentable
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Modules\Documents\Models\DocumentVersion[] $versions
+ * @property-read \App\Models\User|null $creator
+ * @property-read \App\Models\User|null $updater
+ */
 class Document extends Model
 {
     use SoftDeletes;
@@ -52,15 +73,18 @@ class Document extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-    
+
     public function getFormattedSizeAttribute(): string
     {
-        if (!$this->file_size) return '0 B';
+        if (! $this->file_size) {
+            return '0 B';
+        }
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
         $bytes = max($this->file_size, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
         $pow = min($pow, count($units) - 1);
         $bytes /= pow(1024, $pow);
-        return round($bytes, 2) . ' ' . $units[$pow];
+
+        return round($bytes, 2).' '.$units[$pow];
     }
 }

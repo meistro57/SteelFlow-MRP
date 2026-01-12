@@ -2,7 +2,6 @@
 
 namespace Modules\Documents\Services;
 
-use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +19,9 @@ class DocumentService
         return DB::transaction(function () use ($file, $data) {
             $disk = config('documents.storage_disk', 'public');
             $basePath = config('documents.base_path', 'documents');
-            
+
             $path = $file->store($basePath, $disk);
-            
+
             $document = Document::create([
                 'name' => $data['name'] ?? $file->getClientOriginalName(),
                 'file_path' => $path,
@@ -57,7 +56,7 @@ class DocumentService
         return DB::transaction(function () use ($document, $file, $data) {
             $disk = config('documents.storage_disk', 'public');
             $basePath = config('documents.base_path', 'documents');
-            
+
             $path = $file->store($basePath, $disk);
             $newVersionNumber = $document->version + 1;
 
@@ -88,12 +87,13 @@ class DocumentService
     {
         return DB::transaction(function () use ($document) {
             $disk = config('documents.storage_disk', 'public');
-            
+
             foreach ($document->versions as $version) {
                 Storage::disk($disk)->delete($version->file_path);
             }
-            
+
             $document->versions()->delete();
+
             return $document->delete();
         });
     }
@@ -104,7 +104,7 @@ class DocumentService
     public function download(Document $document, ?int $versionNumber = null)
     {
         $disk = config('documents.storage_disk', 'public');
-        
+
         if ($versionNumber) {
             $version = $document->versions()->where('version', $versionNumber)->firstOrFail();
             $path = $version->file_path;

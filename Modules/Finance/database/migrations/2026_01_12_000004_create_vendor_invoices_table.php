@@ -35,6 +35,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('vendor_invoice_lines');
-        $table->dropIfExists('vendor_invoices');
+        Schema::dropIfExists('vendor_invoices');
     }
 };

@@ -2,13 +2,12 @@
 
 namespace Modules\NCR\Services;
 
-use App\Models\PartInstance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\NCR\Models\NCR;
-use Modules\NCR\States\Dispositioned;
 use Modules\NCR\States\Closed;
+use Modules\NCR\States\Dispositioned;
 
 class NCRService
 {
@@ -44,17 +43,17 @@ class NCRService
         if ($ncr->stock_item_id) {
             $stockItem = $ncr->stockItem;
             $stockItem->update(['status' => 'scrapped']);
-            
+
             Log::info("NCR Scrap: Material {$stockItem->id} marked as scrapped", [
                 'ncr_id' => $ncr->id,
-                'stock_item_id' => $stockItem->id
+                'stock_item_id' => $stockItem->id,
             ]);
         }
 
         // 2. Production Demand (Remake)
         if ($ncr->part_instance_id) {
             $originalPart = $ncr->partInstance;
-            
+
             // Clone the part instance to trigger a remake
             $remakeItem = $originalPart->replicate();
             $remakeItem->status = 'awaiting_nesting';
@@ -64,7 +63,7 @@ class NCRService
 
             Log::info("NCR Scrap: Triggered remake for Part Instance {$originalPart->id}", [
                 'ncr_id' => $ncr->id,
-                'new_part_instance_id' => $remakeItem->id
+                'new_part_instance_id' => $remakeItem->id,
             ]);
         }
     }
@@ -72,7 +71,7 @@ class NCRService
     protected function handleRework(NCR $ncr, array $data): void
     {
         $operation = $data['rework_operation'] ?? 'General Rework';
-        
+
         // Logic to add operation to routing would go here.
         // For now, we update the NCR record.
         $ncr->update(['rework_operation' => $operation]);
@@ -82,7 +81,7 @@ class NCRService
 
     protected function handleUseAsIs(NCR $ncr, array $data): void
     {
-        Log::info("NCR Use As Is: Engineering override applied", ['ncr_id' => $ncr->id]);
+        Log::info('NCR Use As Is: Engineering override applied', ['ncr_id' => $ncr->id]);
     }
 
     /**
@@ -91,6 +90,7 @@ class NCRService
     public function close(NCR $ncr): NCR
     {
         $ncr->status->transitionTo(Closed::class);
+
         return $ncr;
     }
 }

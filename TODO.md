@@ -92,17 +92,28 @@
 - [ ] Optimise queries and add caching for reference data.
 
 ## Future Modules (Codex + Roadmap)
-- [ ] **Authz Module**: roles, permissions, policy conventions, Filament integration.
-- [ ] **AuditLog Module**: immutable history, per-record audit views.
-- [ ] **Filament Shell**: role-based access + default dashboard + dense UI conventions.
-- [ ] **Documents Module**: tagging, versioning, attachment support.
-- [ ] **PdfCenter**: Blade template pipeline and first PDF generation.
+- [x] **Authz Module**: roles, permissions, policy conventions, Filament integration. (Implemented & Enabled)
+- [x] **AuditLog Module**: immutable history, per-record audit views. (Implemented & Enabled)
+- [x] **Filament Shell**: role-based access + default dashboard + dense UI conventions. (Integrated)
+- [x] **Documents Module**: tagging, versioning, attachment support. (Implemented & Enabled)
+- [x] **PdfCenter**: Blade template pipeline and first PDF generation. (Implemented & Enabled)
 - [ ] **ModelViewer**: GLB/GLTF viewer with permissions.
 - [ ] **Dashboards + Kanban**: KPIs and workflow boards.
-- [ ] **Scheduling**: calendar views for deliveries, inspections, pours, crane days.
+- [x] **Scheduling**: calendar views for deliveries, inspections, pours, crane days. (ProductionScheduling module implemented)
 - [ ] **Estimating Module**: schema design, bid management, takeoff engine, quote PDFs.
 - [ ] **Optimize Linear Nesting**: Advanced yield optimization, remnant integration algorithms.
 - [ ] **Point of Sale (POS)**: Retail counter, gas sales, and quick job invoicing.
 - [ ] **UI Editor Module**: Visual dashboard builder and drag-and-drop layout manager.
 - [ ] **Service Ticket Module**: Field maintenance tracking and equipment history.
-- [x] **Shop Ticket Module**: Digital work orders and real-time stage tracking (Schema implemented).
+- [x] **Shop Ticket Module**: Digital work orders and real-time stage tracking (Implemented & Enabled).
+- [x] **Finance & Billing**: Invoicing, Three-Way Match, and Progress Billing (Implemented & Enabled).
+- [x] **NCR & Quality**: Quality non-conformance tracking (Implemented & Enabled).
+
+## Maintenance & Stability
+- [x] Fix Fatal Exception in `KissImporter` due to trait syntax error.
+- [x] Fix `InvoiceLineItem::load()` compatibility issue with Eloquent.
+- [x] Fix Finance module migrations (typos and parameter errors).
+- [x] Fix missing `Vendor` model references in Finance module.
+- [x] Add internal scheduling models (`MachineCapability`, `MachineSchedule`, `MaintenanceSchedule`).
+- [x] Standardize code style across all enterprise modules using Laravel Pint.
+- [x] Add docblock metadata to core models for better static analysis.

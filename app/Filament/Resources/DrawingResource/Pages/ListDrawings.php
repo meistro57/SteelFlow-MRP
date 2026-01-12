@@ -10,7 +10,6 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
-use Modules\Documents\Services\CADDrawingService;
 
 class ListDrawings extends ListRecords
 {

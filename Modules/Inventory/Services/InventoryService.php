@@ -79,7 +79,7 @@ class InventoryService
                 if (isset($data['mill_cert_file'])) {
                     $docService = app(DocumentService::class);
                     $docService->store($data['mill_cert_file'], [
-                        'name' => 'Mill_Cert_' . ($data['heat_number'] ?? 'Unknown'),
+                        'name' => 'Mill_Cert_'.($data['heat_number'] ?? 'Unknown'),
                         'file_type' => 'pdf',
                         'documentable_id' => $record->id,
                         'documentable_type' => ReceivingRecord::class,

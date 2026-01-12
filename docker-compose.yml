@@ -99,6 +99,7 @@ services:
 
   vite:
     container_name: steelflow-vite
+    user: "1000:1000"
     image: node:20-alpine
     working_dir: /var/www
     volumes:

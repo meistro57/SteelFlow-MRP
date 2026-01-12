@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AuditEntryResource\Pages;
 use BackedEnum;
+use Filament\Actions;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -61,7 +62,7 @@ class AuditEntryResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Actions\ViewAction::make(),
             ])
             ->bulkActions([])
             ->defaultSort('created_at', 'desc');

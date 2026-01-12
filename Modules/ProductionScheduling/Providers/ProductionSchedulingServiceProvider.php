@@ -6,13 +6,10 @@ use Illuminate\Support\ServiceProvider;
 
 class ProductionSchedulingServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        //
-    }
+    public function register() {}
 
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }

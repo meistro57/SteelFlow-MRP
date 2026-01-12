@@ -6,6 +6,10 @@ use App\Models\Project;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property float $scheduled_value
+ */
 class ScheduleOfValue extends Model
 {
     protected $table = 'schedule_of_values';

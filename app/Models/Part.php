@@ -42,7 +42,7 @@ use Modules\Inventory\Models\Material;
  */
 class Part extends Model
 {
-    use Searchable, SoftDeletes, HasAuditFields;
+    use HasAuditFields, Searchable, SoftDeletes;
 
     protected $fillable = [
         'project_id',

@@ -6,6 +6,13 @@ use App\Models\PurchaseOrderLine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property float $quantity
+ * @property float $unit_price
+ * @property float $extended_price
+ * @property-read \App\Models\PurchaseOrderLine $poLine
+ */
 class VendorInvoiceLine extends Model
 {
     protected $fillable = [

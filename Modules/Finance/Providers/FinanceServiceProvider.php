@@ -13,12 +13,12 @@ class FinanceServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadConfigs();
     }
 
     protected function loadConfigs()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'finance');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'finance');
     }
 }

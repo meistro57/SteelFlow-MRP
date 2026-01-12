@@ -3,7 +3,6 @@
 namespace Modules\Authz\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthzServiceProvider extends ServiceProvider
 {
@@ -15,10 +14,7 @@ class AuthzServiceProvider extends ServiceProvider
         $this->registerPolicies();
     }
 
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
     protected function registerPolicies(): void
     {

@@ -13,6 +13,7 @@ class CreateNCR extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['reported_by'] = Auth::id();
+
         return $data;
     }
 }

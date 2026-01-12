@@ -5,6 +5,7 @@
 namespace App\Services\Import;
 
 use App\Models\Assembly;
+use App\Models\Drawing;
 use App\Models\Part;
 use App\Models\Project;
 use App\Services\BOMExtensionService;
@@ -130,13 +131,6 @@ class KissImporter
         }
     }
 
-use App\Models\Assembly;
-use App\Models\Drawing;
-use App\Models\Part;
-use App\Models\Project;
-
-// ...
-
     protected function importAssembly(array $data, Project $project): void
     {
         // Reference: SHP, Mark, Qty, Description, WeightEach, WeightTotal, Remark, Drawing
@@ -161,7 +155,7 @@ use App\Models\Project;
                 ],
                 [
                     'title' => 'Imported from KISS',
-                ]
+                ],
             );
             $drawingId = $drawing->id;
         }

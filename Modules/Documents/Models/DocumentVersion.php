@@ -6,6 +6,19 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $document_id
+ * @property string $file_path
+ * @property int $version
+ * @property string|null $notes
+ * @property array|null $metadata
+ * @property int|null $created_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Modules\Documents\Models\Document $document
+ * @property-read \App\Models\User|null $creator
+ */
 class DocumentVersion extends Model
 {
     protected $fillable = [

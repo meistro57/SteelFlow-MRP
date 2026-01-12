@@ -6,14 +6,12 @@ use App\Models\Drawing;
 use App\Models\Project;
 use App\Services\Import\KissImporter;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class CADDrawingService
 {
     public function __construct(
         protected KissImporter $kissImporter,
-        protected DocumentService $documentService
+        protected DocumentService $documentService,
     ) {}
 
     /**
@@ -35,7 +33,7 @@ class CADDrawingService
         $tempPath = $dataFile->getRealPath();
         $importSuccess = $this->kissImporter->import($tempPath, $project);
 
-        if (!$importSuccess) {
+        if (! $importSuccess) {
             return [
                 'success' => false,
                 'errors' => $this->kissImporter->getErrors(),
@@ -48,7 +46,7 @@ class CADDrawingService
             $filename = $pdf->getClientOriginalName();
             // Try to extract drawing number from filename (e.g. "100-REV1.pdf" -> "100")
             $drawingNumber = pathinfo($filename, PATHINFO_FILENAME);
-            
+
             // Clean up common suffixes like -REV1 or (1)
             $drawingNumber = preg_replace('/-REV\d+$/i', '', $drawingNumber);
             $drawingNumber = preg_replace('/\(\d+\)$/', '', $drawingNumber);
@@ -66,11 +64,11 @@ class CADDrawingService
                     'documentable_id' => $drawing->id,
                     'documentable_type' => Drawing::class,
                 ]);
-                
+
                 // Also update the legacy file_path on the drawing model for backward compatibility
                 $path = $pdf->store('drawings', 'public');
                 $drawing->update(['file_path' => $path]);
-                
+
                 $matchedDrawings++;
             }
         }

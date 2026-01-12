@@ -11,7 +11,7 @@ use Modules\Documents\Models\Document;
 
 class VendorInvoice extends Model
 {
-    use SoftDeletes, HasAuditFields;
+    use HasAuditFields, SoftDeletes;
 
     protected $fillable = [
         'purchase_order_id',

@@ -2,7 +2,6 @@
 
 namespace App\Services\Procurement;
 
-use App\Models\PurchaseOrder;
 use App\Models\VendorInvoice;
 use Illuminate\Support\Facades\Log;
 
@@ -16,16 +15,16 @@ class ThreeWayMatchService
     public function performMatch(VendorInvoice $invoice): string
     {
         $po = $invoice->purchaseOrder;
-        
+
         // Sum theoretical value of all receipts for this PO
         // PO Price * Receipt Qty
         $receiptTotalValue = 0;
-        
+
         foreach ($po->lines as $line) {
             $qtyReceived = $line->receivingRecords()->sum('quantity_received');
             $lineValue = $qtyReceived * $line->unit_price;
             $receiptTotalValue += $lineValue;
-            
+
             // Per-line status check
             $this->updateLineMatchStatus($line, $qtyReceived);
         }
@@ -40,7 +39,7 @@ class ThreeWayMatchService
                 'invoice_id' => $invoice->id,
                 'po_id' => $po->id,
                 'invoice_amount' => $invoice->amount,
-                'receipt_value' => $receiptTotalValue
+                'receipt_value' => $receiptTotalValue,
             ]);
         }
 

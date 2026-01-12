@@ -3,15 +3,14 @@
 namespace Modules\PdfCenter\Services;
 
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\Storage;
-use Modules\Documents\Services\DocumentService;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
+use Modules\Documents\Services\DocumentService;
 
 class PdfService
 {
     public function __construct(
-        protected DocumentService $documentService
+        protected DocumentService $documentService,
     ) {}
 
     /**
@@ -30,17 +29,17 @@ class PdfService
     {
         $pdf = $this->generate($view, $data);
         $output = $pdf->output();
-        
+
         $tempPath = tempnam(sys_get_temp_dir(), 'pdf_');
         file_put_contents($tempPath, $output);
-        
+
         // Create an UploadedFile instance from the temp file
         $file = new UploadedFile(
             $tempPath,
             $filename,
             'application/pdf',
             null,
-            true
+            true,
         );
 
         $document = $this->documentService->store($file, array_merge([

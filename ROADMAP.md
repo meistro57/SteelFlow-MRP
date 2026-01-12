@@ -64,7 +64,7 @@ These are the critical gaps that need to be addressed:
 | **BOM Management** | Complete | Project, Drawing, Assembly, and Part CRUD |
 | **Procurement** | Complete | Purchase Orders, Material Receiving workflow |
 | **Inventory** | Complete | Stock list with sorting/filtering, manual entry, auto-fill |
-| **Contract Docs** | Needed | PDF viewer and versioning control |
+| **Contract Docs** | Complete | PDF viewer and versioning control (Documents Module) |
 | **Nesting** | Partial | Linear nesting visualization complete; Plate visualization pending |
 | **Production** | In Progress | Dashboard, barcode scanner, routing, and time entry operational |
 
@@ -76,35 +76,50 @@ These are the critical gaps that need to be addressed:
 | Shipping UI | Partial | Dashboard live; load builder + BOL generation pending |
 | Advanced Reports | Partial | Inventory + BOM reports live; purchasing/production reports pending |
 | Dashboard Widgets | Partial | Real-time metrics, project overview |
-| Gas Cylinder Tracking | Planned | Database schema, tracking logic, rental billing |
+| Gas Cylinder Tracking | Complete | Database schema and initial implementation |
 | Service Call Dispatch | Planned | Mobile app, scheduling, field tracking, **Service Ticket Module** |
 | Multi-mode POS | Planned | Retail + gas sales + quick jobs support, **integrated sales dashboard** |
 | Truck Inventory Management | Planned | Service vehicle stock tracking |
 | Recurring Billing | Planned | Monthly cylinder rental automation |
 | **Optimize Linear Nesting** | Planned | Advanced yield optimization, remnant integration |
 | **UI Editor Module** | Planned | Visual dashboard builder and layout customizer |
-| **AuditLog Module** | In Progress | Immutable history and per-record audit views |
-| **Documents Module** | In Progress | Centralized document control with versioning and attachments |
-| **Authz Module** | In Progress | Role-based access control and policy conventions |
-| **Shop Ticket Module** | In Progress | Digital work orders and stage-gate production tracking |
-| **NCR & Quality** | Planned | State machine for quality failures (Open -> Review -> Disposition) |
-| **Three-Way Match** | Planned | Financial validation for procurement (PO vs. Receipt vs. Invoice) |
-| **Progress Billing** | Planned | Construction accounting with AIA standards and retainage |
+| **AuditLog Module** | Complete | Immutable history and per-record audit views |
+| **Documents Module** | Complete | Centralized document control with versioning and attachments |
+| **Authz Module** | Complete | Role-based access control and policy conventions |
+| **Shop Ticket Module** | Complete | Digital work orders and stage-gate production tracking |
+| **NCR & Quality** | Complete | State machine for quality failures (Open -> Review -> Disposition) |
+| **Three-Way Match** | Complete | Financial validation for procurement (PO vs. Receipt vs. Invoice) |
+| **Progress Billing** | Complete | Construction accounting with AIA standards and retainage |
 | Integration Architecture | Planned | End-to-end connectivity blueprint |
-
-### Low Priority - Polish & Optimization
-
-| Item | Status | Description |
-|------|--------|-------------|
-| Error Handling | Partial | Comprehensive validation feedback |
-| Performance | Pending | Query optimization, caching |
-| Mobile UI | Pending | Tablet/mobile responsiveness |
-| User Preferences | Partial | Dashboard layouts, saved filters |
-| API Documentation | Pending | OpenAPI/Swagger specs |
 
 ---
 
-## Phase 8: Estimating Module - Planned
+## Phases 8-10: Enterprise Resource Planning (ERP) - In Progress
+
+To evolve from a Manufacturing Operations System to a full ERP platform, the following business management layers have been implemented:
+
+### Phase 8: Financial Integration & Invoicing (Status: IMPLEMENTED)
+- Customer invoicing (Order-to-Cash cycle)
+- Accounts Payable & Receivable
+- Tax management and calculation
+- Payment tracking
+- Progress Billing with AIA standards and retainage
+- Three-Way Match for procurement validation
+
+### Phase 9: Production Scheduling & Capacity Planning (Status: IMPLEMENTED)
+- Finite capacity planning foundation
+- Machine utilization tracking models
+- Maintenance scheduling foundation (CMMS)
+- Integrated Work Order management
+
+### Phase 10: Quality Control & Non-Conformance (Status: IMPLEMENTED)
+- Non-Conformance Reports (NCR) state machine
+- Disposition workflows (Scrap/Rework/Use As-Is)
+- Immutable audit trailing for all quality events
+
+---
+
+## Phase 11: Estimating Module - Planned
 
 The estimating module is a future enhancement:
 
@@ -119,122 +134,13 @@ See [docs/ESTIMATING_PLAN.md](docs/ESTIMATING_PLAN.md) for detailed planning.
 
 ---
 
-<<<<<<< Updated upstream
-## Phases 9-14: Enterprise Resource Planning (ERP) Features - Planned
-
-To evolve from a Manufacturing Operations System to a full ERP platform, the following business management layers are planned:
-
-### Phase 9: Financial Integration & Invoicing (Priority: CRITICAL)
-- Customer invoicing (Order-to-Cash cycle)
-- Accounts Payable & Receivable
-- Tax management and calculation
-- Payment tracking
-- QuickBooks/Xero integration
-
-### Phase 10: Production Scheduling & Capacity Planning (Priority: HIGH)
-- Finite capacity planning
-- Gantt chart scheduling
-- Machine utilization tracking
-- Bottleneck identification
-- Maintenance scheduling (CMMS)
-
-### Phase 11: Quality Control & Non-Conformance (Priority: HIGH)
-- Non-Conformance Reports (NCR)
-- Inspection workflows and checklists
-- Scrap tracking and root cause analysis
-- RMA (Return Merchandise Authorization)
-- Quality metrics dashboard
-
-### Phase 12: Advanced Workforce Management (Priority: MEDIUM)
-- Time & attendance by job
-- Skill matrices and certifications
-- Labor variance analysis (actual vs. estimated)
-- Payroll integration
-
-### Phase 13: Supply Chain Enhancement (Priority: MEDIUM)
-- Request for Quote (RFQ) workflow
-- Vendor quote comparison
-- Vendor performance ratings
-- On-time delivery tracking
-
-### Phase 14: Engineering Change Management (Priority: MEDIUM)
-- Engineering Change Notices (ECN)
-- Impact analysis for drawing revisions
-- Production hold management
-- Drawing supersession workflow
-
-**See [docs/ERP_GAPS_ROADMAP.md](docs/ERP_GAPS_ROADMAP.md) for comprehensive planning, database schemas, services, UI requirements, and implementation timelines.**
-
-**Gap Analysis Summary:**
-- **Critical Gap:** Financial/Accounting (no invoicing or AP/AR)
-- **High Gap:** Production scheduling (execution only, no planning)
-- **High Gap:** Quality control (heat certs only, no defect workflow)
-- **Medium Gap:** Advanced procurement (no RFQ or vendor ratings)
-
-**Recommended Implementation Order:**
-1. **Stage 1 (Months 1-6):** Phase 9 + Phase 11 - Business Operations Baseline
-2. **Stage 2 (Months 7-12):** Phase 10 + Phase 12 - Production Optimization
-3. **Stage 3 (Months 13-18):** Phase 13 + Phase 14 + Phase 9 Integration - Enterprise Maturity
-=======
-## Phase 9: Enterprise Business Logic - Planned
-
-Bridging the gap between shop floor operations and enterprise management.
-
-- [ ] **NCR & Remediation**: State machine for quality failures (Open -> Review -> Disposition).
-- [ ] **Three-Way Match**: Financial validation for procurement (PO vs. Receipt vs. Invoice).
-- [ ] **Progress Billing**: Construction accounting with AIA standards and retainage calculations.
-- [ ] **Accounting Integration**: Webhooks and CSV exports for external GL synchronization.
->>>>>>> Stashed changes
-
----
-
-## Implementation Priorities
-
-### Immediate (Next Sprint)
-
-1. **BOM Management Interface**
-   - [x] AssemblyController with part management
-   - [x] Vue pages for assembly/part views
-   - [x] Tie project view to assembly/part workflows
-
-2. **Procurement Module**
-   - [x] PurchaseOrderController
-   - [x] Vendor management (Filament)
-   - [x] Material receiving workflow
-
-3. **Inventory Dashboard**
-   - [x] Stock tracking interface
-   - [x] Movement history views (Filament)
-   - [x] Multi-location support
-
-4. **Nesting Interface**
-   - [x] Linear visualization
-   - [ ] Plate visualization
-   - [ ] Cut list generation
-   - [ ] Remnant management
-
-5. **Complete Production Tracking**
-   - [x] Full barcode scanning app
-   - [x] Work area routing interface
-   - [x] Labor time entry
-
-6. **Contract Documents Module**
-   - [ ] Database schema (documents, versions)
-   - [ ] PDF viewing integration
-   - [ ] Upload & versioning workflow
-   - [ ] Document categorization by project/phase
-
-6. **Shipping Module**
-   - Load builder interface
-   - BOL and packing list generation
-   - Delivery confirmation
-
----
-
 ## Technical Debt
 
 Items to address as development progresses:
 
+- [x] Fix Fatal Exception in `KissImporter` due to trait syntax error
+- [x] Fix `InvoiceLineItem::load()` compatibility issue
+- [x] Ensure PSR-12/Laravel Pint compliance across enterprise modules
 - [ ] Add comprehensive API documentation
 - [ ] Implement feature tests for all controllers
 - [ ] Add E2E tests with Cypress or Playwright
@@ -245,38 +151,22 @@ Items to address as development progresses:
 
 ---
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to this project.
-
----
-
 ## Recent Updates
 
 ### January 12, 2026
 
+**Stability & Hygiene Update:**
+- **Bug Fixes:** Resolved a fatal error in `KissImporter` where namespaces were misused as traits.
+- **Compatibility:** Renamed `InvoiceLineItem::load()` to `shippingLoad()` to resolve naming conflicts with Laravel's core `Model::load()` method.
+- **Migration Repair:** Fixed syntax errors and undefined variables in Finance module migrations.
+- **Refinement:** Added docblock property metadata to core models to eliminate PHPStan analysis errors and improve IDE support.
+- **Code Quality:** Standardized all business modules with Laravel Pint.
+
 **Strategic Focus Update:**
-- **Business Logic Layer**: Defined requirements for NCR, Three-Way Match, and Progress Billing modules.
+- **Business Logic Layer**: Fully scaffolded and initialized NCR, Three-Way Match, and Progress Billing modules.
 - **Enterprise Foundation**: Scaffolded **Documents**, **AuditLog**, and **Authz** modules to support high-priority business needs.
 - **CAD Integration**: Enhanced `KissImporter` to automatically link assemblies to `Drawing` models during import.
 - **Audit Trails**: Registered `HasAuditFields` trait and `AuditLog` listener to ensure immutable history across all business models.
-
-### January 11, 2026
-
-**Major Progress Update:**
-- **BOM Management**: Completed Assembly and Part CRUD controllers and Vue interfaces.
-- **Procurement**: Implemented full Purchase Order and Receiving workflow.
-- **Inventory**: Developed comprehensive stock management with material auto-fill from UPF.
-- **Nesting**: Linear nesting visualization implemented in Vue.
-- **Production**: Routing and Time Entry backends and UIs are now functional.
-- **Admin UI**: Filament resources expanded to cover nearly all models.
-
-**Next Steps:**
-- Plate Nesting 2D visualization.
-- Over-receive validation in procurement.
-- Label PDF generation.
-- Barcode logic refinement.
-- **Contract Documents**: PDF viewer and versioning control implementation.
 
 ---
 

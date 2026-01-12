@@ -4,15 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NCRResource\Pages;
 use BackedEnum;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Modules\NCR\Models\NCR;
-use Filament\Notifications\Notification;
 use Modules\NCR\Services\NCRService;
 use Modules\PdfCenter\Services\PdfService;
 use UnitEnum;
@@ -32,49 +33,49 @@ class NCRResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-                TextInput::make('number')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->default(fn() => 'NCR-' . date('Ymd') . '-' . strtoupper(bin2hex(random_bytes(2)))),
-                
-                Select::make('part_instance_id')
-                    ->relationship('partInstance', 'id')
-                    ->searchable()
-                    ->preload()
-                    ->label('Part Instance'),
+            TextInput::make('number')
+                ->required()
+                ->unique(ignoreRecord: true)
+                ->default(fn () => 'NCR-'.date('Ymd').'-'.strtoupper(bin2hex(random_bytes(2)))),
 
-                Select::make('stock_item_id')
-                    ->relationship('stockItem', 'heat_number')
-                    ->searchable()
-                    ->preload()
-                    ->label('Source Material (Stock)'),
+            Select::make('part_instance_id')
+                ->relationship('partInstance', 'id')
+                ->searchable()
+                ->preload()
+                ->label('Part Instance'),
 
-                Select::make('status')
-                    ->options([
-                        'open' => 'Open',
-                        'under_review' => 'Under Review',
-                        'dispositioned' => 'Dispositioned',
-                        'closed' => 'Closed',
-                    ])
-                    ->disabled()
-                    ->dehydrated(false),
+            Select::make('stock_item_id')
+                ->relationship('stockItem', 'heat_number')
+                ->searchable()
+                ->preload()
+                ->label('Source Material (Stock)'),
 
-                Textarea::make('failure_reason')
-                    ->required()
-                    ->columnSpanFull(),
+            Select::make('status')
+                ->options([
+                    'open' => 'Open',
+                    'under_review' => 'Under Review',
+                    'dispositioned' => 'Dispositioned',
+                    'closed' => 'Closed',
+                ])
+                ->disabled()
+                ->dehydrated(false),
 
-                Select::make('disposition')
-                    ->options([
-                        'SCRAP' => 'Scrap (Discard & Remake)',
-                        'REWORK' => 'Rework (Repair)',
-                        'USE_AS_IS' => 'Use As Is (Override)',
-                    ])
-                    ->visible(fn($record) => $record && $record->status->getName() !== 'open'),
+            Textarea::make('failure_reason')
+                ->required()
+                ->columnSpanFull(),
 
-                Textarea::make('remediation_notes')
-                    ->columnSpanFull()
-                    ->visible(fn($record) => $record && $record->status->getName() !== 'open'),
-            ]);
+            Select::make('disposition')
+                ->options([
+                    'SCRAP' => 'Scrap (Discard & Remake)',
+                    'REWORK' => 'Rework (Repair)',
+                    'USE_AS_IS' => 'Use As Is (Override)',
+                ])
+                ->visible(fn ($record) => $record && $record->status->getName() !== 'open'),
+
+            Textarea::make('remediation_notes')
+                ->columnSpanFull()
+                ->visible(fn ($record) => $record && $record->status->getName() !== 'open'),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -116,16 +117,17 @@ class NCRResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\Action::make('download_report')
+                Actions\Action::make('download_report')
                     ->label('Report PDF')
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('info')
                     ->action(function (NCR $record) {
                         $pdfService = app(PdfService::class);
+
                         return $pdfService->generate('pdfcenter::templates.ncr_report', ['ncr' => $record])
-                            ->download($record->number . '_Report.pdf');
+                            ->download($record->number.'_Report.pdf');
                     }),
-                Tables\Actions\Action::make('disposition')
+                Actions\Action::make('disposition')
                     ->icon('heroicon-o-check-badge')
                     ->color('warning')
                     ->form([
@@ -142,26 +144,26 @@ class NCRResource extends Resource
                         TextInput::make('rework_operation')
                             ->label('Rework Operation')
                             ->placeholder('e.g., Grind smooth, Re-weld')
-                            ->visible(fn($get) => $get('disposition') === 'REWORK'),
+                            ->visible(fn ($get) => $get('disposition') === 'REWORK'),
                     ])
                     ->action(function (NCR $record, array $data) {
                         $service = app(NCRService::class);
                         $service->disposition($record, $data['disposition'], $data);
-                        
+
                         Notification::make()
                             ->success()
                             ->title('NCR Dispositioned')
                             ->body("Action '{$data['disposition']}' has been executed.")
                             ->send();
                     })
-                    ->visible(fn(NCR $record) => in_array($record->status->getName(), ['open', 'under_review'])),
-                
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                    ->visible(fn (NCR $record) => in_array($record->status->getName(), ['open', 'under_review'])),
+
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

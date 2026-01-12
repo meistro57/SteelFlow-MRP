@@ -13,9 +13,33 @@ use Modules\Inventory\Models\StockItem;
 use Modules\NCR\States\NCRState;
 use Spatie\ModelStates\HasStates;
 
+/**
+ * @property int $id
+ * @property string $number
+ * @property int|null $production_item_id
+ * @property int|null $part_instance_id
+ * @property int|null $stock_item_id
+ * @property \Modules\NCR\States\NCRState $status
+ * @property string|null $disposition
+ * @property string $failure_reason
+ * @property string|null $remediation_notes
+ * @property float|null $scrap_cost
+ * @property string|null $rework_operation
+ * @property int $reported_by
+ * @property int|null $dispositioned_by
+ * @property \Illuminate\Support\Carbon|null $dispositioned_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\ProductionItem|null $productionItem
+ * @property-read \App\Models\PartInstance|null $partInstance
+ * @property-read \Modules\Inventory\Models\StockItem|null $stockItem
+ * @property-read \App\Models\User|null $reporter
+ * @property-read \App\Models\User|null $dispositioner
+ */
 class NCR extends Model
 {
-    use SoftDeletes, HasStates, HasAuditFields;
+    use HasAuditFields, HasStates, SoftDeletes;
 
     protected $table = 'ncrs';
 

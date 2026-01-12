@@ -3,8 +3,8 @@
 namespace Modules\AuditLog\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Core\Events\ModelAuditEvent;
 use Modules\AuditLog\Listeners\LogModelAudit;
+use Modules\Core\Events\ModelAuditEvent;
 
 class EventServiceProvider extends ServiceProvider
 {

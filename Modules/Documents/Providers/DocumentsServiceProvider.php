@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class DocumentsServiceProvider extends ServiceProvider
 {
     protected string $name = 'Documents';
+
     protected string $nameLower = 'documents';
 
     public function boot(): void
@@ -26,7 +27,7 @@ class DocumentsServiceProvider extends ServiceProvider
             module_path($this->name, 'config/config.php') => config_path($this->nameLower.'.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->name, 'config/config.php'), $this->nameLower
+            module_path($this->name, 'config/config.php'), $this->nameLower,
         );
     }
 }

@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * @property int $id
  * @property int $project_id
@@ -22,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\Models\Project $project
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Assembly> $assemblies
  */
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Documents\Models\Document;
 
 class Drawing extends Model
