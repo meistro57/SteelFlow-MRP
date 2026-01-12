@@ -24,6 +24,7 @@ import {
     CogIcon,
     TruckIcon,
     HomeIcon,
+    PaintBrushIcon,
 } from '@heroicons/vue/24/outline';
 
 const navigation = [
@@ -37,6 +38,7 @@ const navigation = [
     { name: 'Nesting', href: '/nesting', icon: Squares2X2Icon },
     { name: 'Production', href: '/production', icon: CogIcon },
     { name: 'Shipping', href: '/shipping', icon: TruckIcon },
+    { name: 'UI Editor', href: '/ui-editor', icon: PaintBrushIcon },
 ];
 
 const adminNavigation = [

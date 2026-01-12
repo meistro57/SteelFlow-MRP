@@ -6,6 +6,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -21,6 +22,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|Dashboard[] $dashboards
  */
 class User extends Authenticatable implements FilamentUser
 {
@@ -84,5 +86,21 @@ class User extends Authenticatable implements FilamentUser
         }
 
         return true;
+    }
+
+    /**
+     * Get user's custom dashboards
+     */
+    public function dashboards(): HasMany
+    {
+        return $this->hasMany(Dashboard::class)->orderBy('sort_order');
+    }
+
+    /**
+     * Get user's default dashboard
+     */
+    public function getDefaultDashboard(): ?Dashboard
+    {
+        return $this->dashboards()->where('is_default', true)->first();
     }
 }
