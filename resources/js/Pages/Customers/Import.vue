@@ -56,6 +56,14 @@ const submit = () => {
           Expected headers: code, name, address_1, address_2, city, state, zip, country, phone, email, notes, is_active.
           Rows with missing names will be skipped politely.
         </p>
+        <p class="mt-2">
+          <a
+            :href="route('import-templates.customers')"
+            class="text-sm text-forge-400 hover:text-forge-300 font-mono underline"
+          >
+            Download Template CSV
+          </a>
+        </p>
       </div>
 
       <div class="flex justify-end space-x-3">
