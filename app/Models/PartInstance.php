@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Part $part
  * @property-read \App\Models\AssemblyInstance $assemblyInstance
  * @property-read \App\Models\Project $project
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PartWorkArea> $routing
  */
 class PartInstance extends Model
 {
@@ -43,5 +45,10 @@ class PartInstance extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function routing(): HasMany
+    {
+        return $this->hasMany(PartWorkArea::class);
     }
 }

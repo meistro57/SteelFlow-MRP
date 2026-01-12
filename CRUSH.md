@@ -99,7 +99,7 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 
 ## Project Structure
 
-### Models (29 total)
+### Models (52 total)
 
 #### Project Management
 | Model | Description | Key Fields |
@@ -204,6 +204,13 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 
 | Controller | Routes | Purpose |
 |-----------|--------|---------|
+| `PurchaseOrderController` | `/purchase-orders` | PO management |
+| `ReceivingController` | `/inventory/receiving` | Material receiving |
+| `AssemblyController` | `/projects/{project}/assemblies` | Assembly management |
+| `PartController` | `/assemblies/{assembly}/parts` | Part management |
+| `RoutingController` | `/production/routing` | Production routing |
+| `TimeEntryController` | `/production/time-entries` | Labor tracking |
+| `NestingController` | `/nestings/{nesting}` | Nesting visualization |
 | `AuthController` | `/login`, OAuth callback | Microsoft 365 authentication |
 | `ReportController` | `/dashboard`, `/reports/*` | Dashboard and reports |
 | `ProductionController` | `/scan` | Barcode scanning interface |
@@ -257,6 +264,11 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `Production/Scan.vue` | `/scan` | Barcode/QR scanning interface |
 | `Reports/Index.vue` | `/reports` | Reports dashboard |
 | `Auth/Login.vue` | `/login` | Microsoft OAuth login |
+| `Assemblies/Show.vue` | `/assemblies/{id}` | Assembly details |
+| `Parts/Show.vue` | `/parts/{id}` | Part details |
+| `PurchaseOrders/Index.vue` | `/purchase-orders` | PO list |
+| `Nesting/Show.vue` | `/nesting/{id}` | Nesting visualization |
+| `Inventory/Index.vue` | `/inventory` | Stock management |
 
 ### Vue Components
 | Component | Purpose |
@@ -280,8 +292,10 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 - Dual-unit system (Imperial/Metric)
 - CAD file integration (KISS/XSR parsers)
 - Inventory tracking with full audit trail
+- Procurement module (Purchase Orders & Receiving)
+- Manual Inventory management with material auto-fill
 - Heat number & mill certificate tracking
-- Nesting optimization (linear and plate)
+- Nesting optimization (linear visualization)
 - Barcode/QR code scanning
 - ZPL label generation for Zebra printers
 - Dark/light theme (persisted to user profile)
@@ -289,14 +303,15 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 - Redis caching and queue management
 
 ### In Development
-- Full BOM management UI
-- Procurement module UI
-- Nesting interface
-- Complete production tracking
-- Shipping module UI
+- Plate Nesting visualization (2D)
+- Receiving validation (Over-receive prevention)
+- PDF Label generation
+- Advanced production tracking and routing UI
+- Shipping module load building
 - Advanced reporting
 
 ### Planned
+- Contract Documents module (PDF viewer & version control)
 - Estimating module (Phase 8)
 - Optimize Linear Nesting (Advanced yield algorithms)
 - Point of Sale (Retail & gas sales)

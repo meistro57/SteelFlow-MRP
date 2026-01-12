@@ -8,13 +8,13 @@ This document tracks the current implementation status and development prioritie
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Database Schema | Complete | 31 migrations, 39 models |
-| Backend Services | In Progress | 16+ services; UPF & core implemented |
+| Database Schema | Complete | 31 migrations, 52 models |
+| Backend Services | Complete | 16+ services; UPF & core implemented |
 | Filament UI | Implemented | UPF Material Catalog & Admin foundation |
 | Authentication | Complete | Laravel Sanctum + Azure OAuth |
-| Controllers | In Progress | 11 controllers implemented for web UI |
-| Frontend Pages | In Progress | 21 Inertia/Vue pages (projects, drawings, customers, production, shipping, reports) |
-| UI Components | Partial | Core components built |
+| Controllers | In Progress | 21 controllers implemented for web UI |
+| Frontend Pages | In Progress | 35 Inertia/Vue pages |
+| UI Components | Complete | Core component library established |
 | API Endpoints | Minimal | No dedicated API routes yet |
 
 ---
@@ -60,12 +60,13 @@ These are the critical gaps that need to be addressed:
 
 | Module | Status | Description |
 |--------|--------|-------------|
-| UPF Compatibility | Complete | **NEW:** FabTrol UPF foundation, importer, and catalog |
-| **BOM Management** | Partial | Project & drawing CRUD exist; assembly/part CRUD needed |
-| **Procurement** | Needed | Purchase Orders, Material Receiving |
-| **Inventory** | Needed | Stock list with sorting/filtering, manual entry |
-| **Nesting** | Needed | Linear/plate nesting visualization |
-| **Production** | Partial | Dashboard, barcode scanner operational; routing/time entry pending |
+| UPF Compatibility | Complete | FabTrol UPF foundation, importer, and catalog |
+| **BOM Management** | Complete | Project, Drawing, Assembly, and Part CRUD |
+| **Procurement** | Complete | Purchase Orders, Material Receiving workflow |
+| **Inventory** | Complete | Stock list with sorting/filtering, manual entry, auto-fill |
+| **Contract Docs** | Needed | PDF viewer and versioning control |
+| **Nesting** | Partial | Linear nesting visualization complete; Plate visualization pending |
+| **Production** | In Progress | Dashboard, barcode scanner, routing, and time entry operational |
 
 ### Medium Priority - Feature Completion
 
@@ -117,33 +118,36 @@ See [docs/ESTIMATING_PLAN.md](docs/ESTIMATING_PLAN.md) for detailed planning.
 ### Immediate (Next Sprint)
 
 1. **BOM Management Interface**
-   - AssemblyController with part management
-   - Vue pages for assembly/part views
-   - Tie project view to assembly/part workflows
+   - [x] AssemblyController with part management
+   - [x] Vue pages for assembly/part views
+   - [x] Tie project view to assembly/part workflows
 
 2. **Procurement Module**
-   - PurchaseOrderController
-   - Vendor management
-   - Material receiving workflow
-
-### Short-term
+   - [x] PurchaseOrderController
+   - [x] Vendor management (Filament)
+   - [x] Material receiving workflow
 
 3. **Inventory Dashboard**
-   - Stock tracking interface
-   - Movement history views
-   - Multi-location support
+   - [x] Stock tracking interface
+   - [x] Movement history views (Filament)
+   - [x] Multi-location support
 
 4. **Nesting Interface**
-   - Visual nesting editor
-   - Cut list generation
-   - Remnant management
-
-### Medium-term
+   - [x] Linear visualization
+   - [ ] Plate visualization
+   - [ ] Cut list generation
+   - [ ] Remnant management
 
 5. **Complete Production Tracking**
-   - Full barcode scanning app
-   - Work area routing interface
-   - Labor time entry
+   - [x] Full barcode scanning app
+   - [x] Work area routing interface
+   - [x] Labor time entry
+
+6. **Contract Documents Module**
+   - [ ] Database schema (documents, versions)
+   - [ ] PDF viewing integration
+   - [ ] Upload & versioning workflow
+   - [ ] Document categorization by project/phase
 
 6. **Shipping Module**
    - Load builder interface
@@ -176,14 +180,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on contributing to this pr
 
 ### January 11, 2026
 
-**Status Review:**
-- **UPF Module Implemented**: Full legacy material catalog with PKEY/FILEKEY management.
-- **FabTrol Importer**: CLI tool `upf:import` active for DBF-to-CSV data migration.
-- **Admin UI**: Filament resources for Material Setup (Types, Grades, Prices, Labor, Handling).
-- Project and drawing CRUD UIs are available
-- Production dashboard and barcode scan pages are live
-- Shipping dashboard has load metrics and sortable lists
-- Inventory and project BOM reports are available
+**Major Progress Update:**
+- **BOM Management**: Completed Assembly and Part CRUD controllers and Vue interfaces.
+- **Procurement**: Implemented full Purchase Order and Receiving workflow.
+- **Inventory**: Developed comprehensive stock management with material auto-fill from UPF.
+- **Nesting**: Linear nesting visualization implemented in Vue.
+- **Production**: Routing and Time Entry backends and UIs are now functional.
+- **Admin UI**: Filament resources expanded to cover nearly all models.
+
+**Next Steps:**
+- Plate Nesting 2D visualization.
+- Over-receive validation in procurement.
+- Label PDF generation.
+- Barcode logic refinement.
+- **Contract Documents**: PDF viewer and versioning control implementation.
 
 ---
 

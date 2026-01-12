@@ -133,9 +133,25 @@ const formatDate = (date) => {
       <!-- Assemblies -->
       <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
         <div class="p-6">
-          <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-            Assemblies ({{ project.assemblies?.length || 0 }})
-          </h3>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+              Assemblies ({{ project.assemblies?.length || 0 }})
+            </h3>
+            <div class="flex space-x-2">
+              <Link
+                :href="route('reports.project.bom', project.id)"
+                class="inline-flex items-center px-4 py-2 bg-steel-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-steel-600"
+              >
+                Full BOM
+              </Link>
+              <Link
+                :href="route('projects.assemblies.create', project.id)"
+                class="inline-flex items-center px-4 py-2 bg-forge-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-forge-700"
+              >
+                Add Assembly
+              </Link>
+            </div>
+          </div>
           <div
             v-if="project.assemblies?.length > 0"
             class="overflow-x-auto"
@@ -167,7 +183,12 @@ const formatDate = (date) => {
                   class="hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {{ assembly.assembly_mark }}
+                    <Link
+                      :href="route('assemblies.show', assembly.id)"
+                      class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      {{ assembly.mark || assembly.assembly_mark }}
+                    </Link>
                   </td>
                   <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                     {{ assembly.quantity }}

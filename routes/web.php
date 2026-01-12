@@ -1,15 +1,21 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DrawingController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\NestingController;
+use App\Http\Controllers\PartController;
 use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\TimeEntryController;
 use Illuminate\Support\Facades\Route;
 
 // Root route - redirect to dashboard if authenticated, otherwise to login
@@ -35,6 +41,13 @@ Route::middleware('auth')->group(function () {
     // Project Routes
     Route::resource('projects', ProjectController::class);
 
+    // Purchase Order Routes
+    Route::resource('purchase-orders', PurchaseOrderController::class);
+    Route::get('/projects/{project}/assemblies/create', [AssemblyController::class, 'create'])->name('projects.assemblies.create');
+    Route::resource('assemblies', AssemblyController::class)->except(['index', 'create']);
+    Route::get('/assemblies/{assembly}/parts/create', [PartController::class, 'create'])->name('assemblies.parts.create');
+    Route::resource('parts', PartController::class)->except(['index', 'create']);
+
     // Drawing Routes
     Route::resource('drawings', DrawingController::class);
     Route::post('/drawings/{drawing}/upload', [DrawingController::class, 'upload'])->name('drawings.upload');
@@ -50,9 +63,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/scan', [ProductionController::class, 'scan'])->name('production.scan');
     Route::post('/scan', [ProductionController::class, 'processScan'])->name('production.process-scan');
 
+    // Routing Routes
+    Route::get('/routing', [RoutingController::class, 'index'])->name('routing.index');
+    Route::get('/part-instances/{part_instance}/routing/create', [RoutingController::class, 'create'])->name('routing.create');
+    Route::post('/part-instances/{part_instance}/routing', [RoutingController::class, 'store'])->name('routing.store');
+    Route::patch('/routing/{step}/status', [RoutingController::class, 'updateStatus'])->name('routing.update-status');
+
+    // Time Entry Routes
+    Route::get('/time-entries', [TimeEntryController::class, 'index'])->name('time-entries.index');
+    Route::post('/time-entries/start', [TimeEntryController::class, 'start'])->name('time-entries.start');
+    Route::post('/routing/{step}/complete', [TimeEntryController::class, 'complete'])->name('time-entries.complete');
+
     // Label Routes
     Route::get('/labels/part/{part}', [LabelController::class, 'part'])->name('labels.part');
     Route::get('/labels/stock/{item}', [LabelController::class, 'stock'])->name('labels.stock');
+
+    // Nesting Routes
+    Route::resource('nesting', NestingController::class);
 
     // Settings Routes
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');

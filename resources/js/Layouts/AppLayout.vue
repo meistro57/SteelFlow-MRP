@@ -20,6 +20,8 @@ const navigation = [
     { name: 'Drawings', href: '/drawings', icon: 'document' },
     { name: 'Customers', href: '/customers', icon: 'users' },
     { name: 'Inventory', href: '/inventory', icon: 'cube' },
+    { name: 'Procurement', href: '/purchase-orders', icon: 'shopping-cart' },
+    { name: 'Nesting', href: '/nesting', icon: 'grid' },
     { name: 'Production', href: '/production', icon: 'cog' },
     { name: 'Shipping', href: '/shipping', icon: 'truck' },
 ];
