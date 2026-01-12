@@ -1,9 +1,17 @@
 <script setup>
-import { Link, Head } from '@inertiajs/vue3';
+import { Link, Head, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { TruckIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-defineProps({
+const props = defineProps({
     load: { type: Object, required: true },
+    availableAssemblies: { type: Array, default: () => [] },
+});
+
+const showAddItemModal = ref(false);
+const addItemForm = useForm({
+    assembly_instance_id: null,
 });
 
 const formatDate = (value) => {
@@ -28,6 +36,26 @@ const statusLabel = (status) => {
     return status
         .replace('_', ' ')
         .replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
+const addItemToLoad = () => {
+    if (!addItemForm.assembly_instance_id) {
+        alert('Please select an assembly to add.');
+        return;
+    }
+
+    addItemForm.post(route('shipping.add-item', props.load.id), {
+        onSuccess: () => {
+            addItemForm.reset();
+            showAddItemModal.value = false;
+        },
+    });
+};
+
+const shipLoad = () => {
+    if (confirm('Mark this load as shipped? This will update all assembly statuses.')) {
+        router.post(route('shipping.ship', props.load.id));
+    }
 };
 </script>
 
@@ -57,8 +85,13 @@ const statusLabel = (status) => {
           <button class="btn-secondary">
             Print BOL
           </button>
-          <button class="btn-primary">
-            Edit Load
+          <button
+            v-if="load.status === 'pending'"
+            class="btn-success flex items-center gap-2"
+            @click="shipLoad"
+          >
+            <TruckIcon class="h-5 w-5" />
+            Ship Load
           </button>
         </div>
       </div>
@@ -212,8 +245,13 @@ const statusLabel = (status) => {
               </svg>
               Included Assemblies
             </h2>
-            <button class="btn-secondary py-1.5 px-3 text-xs">
-              Manage Items
+            <button
+              v-if="load.status === 'pending' && availableAssemblies.length > 0"
+              class="btn-primary py-1.5 px-3 text-xs flex items-center gap-2"
+              @click="showAddItemModal = true"
+            >
+              <PlusIcon class="h-4 w-4" />
+              Add Assembly
             </button>
           </div>
 
@@ -293,6 +331,83 @@ const statusLabel = (status) => {
               </tfoot>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- Add Item Modal -->
+      <div
+        v-if="showAddItemModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+        @click.self="showAddItemModal = false"
+      >
+        <div class="card-industrial max-w-2xl w-full mx-4">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-bold text-white">
+              Add Assembly to Load
+            </h3>
+            <button
+              class="text-steel-400 hover:text-white"
+              @click="showAddItemModal = false"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <form @submit.prevent="addItemToLoad">
+            <div class="mb-4">
+              <label class="block text-sm font-bold text-steel-400 mb-2">
+                Select Assembly
+              </label>
+              <select
+                v-model="addItemForm.assembly_instance_id"
+                class="input w-full"
+                required
+              >
+                <option
+                  :value="null"
+                  disabled
+                >
+                  Choose an assembly...
+                </option>
+                <option
+                  v-for="assembly in availableAssemblies"
+                  :key="assembly.id"
+                  :value="assembly.id"
+                >
+                  {{ assembly.assembly.mark }} - {{ assembly.assembly.assembly_type }} ({{ formatWeight(assembly.assembly.weight_each_lbs) }})
+                </option>
+              </select>
+            </div>
+
+            <div class="flex justify-end gap-3">
+              <button
+                type="button"
+                class="btn-secondary"
+                @click="showAddItemModal = false"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn-primary"
+                :disabled="addItemForm.processing"
+              >
+                Add to Load
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

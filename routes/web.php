@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
     Route::post('/shipping', [ShippingController::class, 'store'])->name('shipping.store');
     Route::get('/shipping/{load}', [ShippingController::class, 'show'])->name('shipping.show');
+    Route::post('/shipping/{load}/add-item', [ShippingController::class, 'addItem'])->name('shipping.add-item');
+    Route::post('/shipping/{load}/ship', [ShippingController::class, 'ship'])->name('shipping.ship');
 
     // Production Routes
     Route::get('/production', [ProductionController::class, 'index'])->name('production.index');
@@ -79,6 +81,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/labels/stock/{item}', [LabelController::class, 'stock'])->name('labels.stock');
 
     // Nesting Routes
+    Route::post('/nesting/{nesting}/approve', [NestingController::class, 'approve'])->name('nesting.approve');
+    Route::post('/nesting/{nesting}/confirm', [NestingController::class, 'confirm'])->name('nesting.confirm');
     Route::resource('nesting', NestingController::class);
 
     // Settings Routes

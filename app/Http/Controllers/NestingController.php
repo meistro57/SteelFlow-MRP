@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Nesting;
 use App\Models\Project;
+use App\Services\Nesting\NestingService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class NestingController extends Controller
 {
+    public function __construct(
+        protected NestingService $nestingService
+    ) {}
+
     public function index(): Response
     {
         $nestings = Nesting::with(['project'])
@@ -34,5 +40,53 @@ class NestingController extends Controller
         return Inertia::render('Nesting/Create', [
             'project' => $project,
         ]);
+    }
+
+    /**
+     * Approve a nesting (assign stock to nesting).
+     */
+    public function approve(Nesting $nesting): RedirectResponse
+    {
+        if ($nesting->status !== 'draft') {
+            return redirect()
+                ->back()
+                ->with('error', 'Only draft nestings can be approved.');
+        }
+
+        try {
+            $this->nestingService->approve($nesting);
+
+            return redirect()
+                ->route('nesting.show', $nesting)
+                ->with('success', 'Nesting approved successfully. Stock items have been assigned.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to approve nesting: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Confirm a nesting (mark stock as used and create remnants).
+     */
+    public function confirm(Nesting $nesting): RedirectResponse
+    {
+        if ($nesting->status !== 'approved') {
+            return redirect()
+                ->back()
+                ->with('error', 'Only approved nestings can be confirmed.');
+        }
+
+        try {
+            $this->nestingService->confirm($nesting);
+
+            return redirect()
+                ->route('nesting.show', $nesting)
+                ->with('success', 'Nesting confirmed successfully. Stock items marked as used and remnants created.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to confirm nesting: '.$e->getMessage());
+        }
     }
 }

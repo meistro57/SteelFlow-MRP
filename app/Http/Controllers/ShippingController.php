@@ -4,8 +4,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssemblyInstance;
 use App\Models\Load;
 use App\Models\Project;
+use App\Services\ShippingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,6 +15,9 @@ use Inertia\Response;
 
 class ShippingController extends Controller
 {
+    public function __construct(
+        protected ShippingService $shippingService
+    ) {}
     /**
      * Display a dashboard view of shipping loads.
      */
@@ -121,8 +126,83 @@ class ShippingController extends Controller
     {
         $load->load(['project', 'items.assemblyInstance.assembly', 'documents']);
 
+        // Get available assembly instances for this project that haven't been loaded yet
+        $availableAssemblies = AssemblyInstance::with('assembly')
+            ->where('project_id', $load->project_id)
+            ->whereIn('status', ['complete', 'inspected'])
+            ->whereNull('load_id')
+            ->get();
+
         return Inertia::render('Shipping/Show', [
             'load' => $load,
+            'availableAssemblies' => $availableAssemblies,
         ]);
+    }
+
+    /**
+     * Add an assembly instance to a load.
+     */
+    public function addItem(Request $request, Load $load): RedirectResponse
+    {
+        $validated = $request->validate([
+            'assembly_instance_id' => 'required|exists:assembly_instances,id',
+        ]);
+
+        try {
+            $instance = AssemblyInstance::findOrFail($validated['assembly_instance_id']);
+
+            // Validate the instance can be added
+            if ($instance->load_id) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Assembly is already assigned to a load.');
+            }
+
+            if ($instance->project_id !== $load->project_id) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Assembly must belong to the same project as the load.');
+            }
+
+            $this->shippingService->addItemToLoad($load, $instance);
+
+            return redirect()
+                ->route('shipping.show', $load)
+                ->with('success', 'Assembly added to load successfully.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to add item to load: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Mark a load as shipped.
+     */
+    public function ship(Load $load): RedirectResponse
+    {
+        if ($load->status === 'in_transit' || $load->status === 'delivered') {
+            return redirect()
+                ->back()
+                ->with('error', 'Load has already been shipped.');
+        }
+
+        if ($load->items()->count() === 0) {
+            return redirect()
+                ->back()
+                ->with('error', 'Cannot ship an empty load.');
+        }
+
+        try {
+            $this->shippingService->shipLoad($load);
+
+            return redirect()
+                ->route('shipping.show', $load)
+                ->with('success', 'Load marked as shipped successfully.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to ship load: '.$e->getMessage());
+        }
     }
 }
