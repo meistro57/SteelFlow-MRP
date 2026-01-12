@@ -1,0 +1,11 @@
+{
+    "name": "Nesting",
+    "alias": "nesting",
+    "description": "Nesting and material optimization services.",
+    "keywords": ["nesting", "optimization"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Nesting\\Providers\\NestingServiceProvider"
+    ],
+    "files": []
+}

@@ -2,8 +2,9 @@
 
 // app/Http/Controllers/ShippingController.php
 
-namespace App\Http\Controllers;
+namespace Modules\Shipping\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\AssemblyInstance;
 use App\Models\Load;
 use App\Models\Project;
@@ -76,7 +77,7 @@ class ShippingController extends Controller
             'nextShipDate' => Load::whereNotNull('ship_date')->orderBy('ship_date')->value('ship_date'),
         ];
 
-        return Inertia::render('Shipping/Index', [
+        return Inertia::render('Shipping::Index', [
             'loads' => $loads,
             'stats' => $stats,
             'filters' => $request->only(['sort_by', 'sort_direction']),
@@ -90,7 +91,7 @@ class ShippingController extends Controller
     {
         $projects = Project::orderBy('job_number')->get(['id', 'job_number', 'name']);
 
-        return Inertia::render('Shipping/Create', [
+        return Inertia::render('Shipping::Create', [
             'projects' => $projects,
             'statuses' => ['pending', 'in_transit', 'delivered', 'cancelled'],
         ]);
@@ -134,7 +135,7 @@ class ShippingController extends Controller
             ->whereNull('load_id')
             ->get();
 
-        return Inertia::render('Shipping/Show', [
+        return Inertia::render('Shipping::Show', [
             'load' => $load,
             'availableAssemblies' => $availableAssemblies,
         ]);

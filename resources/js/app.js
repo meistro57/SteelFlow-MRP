@@ -16,9 +16,9 @@ createInertiaApp({
         if (parts.length > 1) {
             const module = parts[0];
             const page = parts[1];
-            return resolvePageComponent(`/Modules/${module}/resources/assets/js/Pages/${page}.vue`, import.meta.glob('/Modules/**/*.vue'));
+            return resolvePageComponent(`../../Modules/${module}/resources/assets/js/Pages/${page}.vue`, import.meta.glob('../../Modules/**/*.vue'));
         }
-        return resolvePageComponent(`/resources/js/Pages/${name}.vue`, import.meta.glob('/resources/js/Pages/**/*.vue'));
+        return resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
     },
     setup({ el, App, props, plugin }) {
         const pinia = createPinia();

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Production\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\PartInstance;
 use App\Models\PartWorkArea;
 use App\Models\WorkArea;
@@ -16,14 +17,14 @@ class RoutingController extends Controller
     {
         $workAreas = WorkArea::with('department')->get();
 
-        return Inertia::render('Production/Routing', [
+        return Inertia::render('Production::Routing', [
             'workAreas' => $workAreas,
         ]);
     }
 
     public function create(PartInstance $partInstance): Response
     {
-        return Inertia::render('Production/Routing/Create', [
+        return Inertia::render('Production::Routing/Create', [
             'partInstance' => $partInstance->load(['part', 'project']),
             'workAreas' => WorkArea::all(),
         ]);

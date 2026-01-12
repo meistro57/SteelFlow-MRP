@@ -2,8 +2,9 @@
 
 // app/Http/Controllers/ProductionController.php
 
-namespace App\Http\Controllers;
+namespace Modules\Production\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProcessScanRequest;
 use App\Services\Production\ProductionService;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +24,7 @@ class ProductionController extends Controller
         $reportService = app(\App\Services\ReportingService::class);
         $stats = $reportService->getProductionStats();
 
-        return Inertia::render('Production/Index', [
+        return Inertia::render('Production::Index', [
             'title' => 'Production Dashboard',
             'stats' => $stats,
         ]);
@@ -31,7 +32,7 @@ class ProductionController extends Controller
 
     public function scan()
     {
-        return Inertia::render('Production/Scan');
+        return Inertia::render('Production::Scan');
     }
 
     public function processScan(ProcessScanRequest $request)

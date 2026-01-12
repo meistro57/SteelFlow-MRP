@@ -10,5 +10,8 @@
     "NCR": true,
     "PdfCenter": true,
     "Finance": true,
-    "ProductionScheduling": true
+    "ProductionScheduling": true,
+    "Nesting": true,
+    "Shipping": true,
+    "Production": true
 }

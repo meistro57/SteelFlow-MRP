@@ -234,6 +234,12 @@ const closeModal = () => {
                         <option value="user">
                           Standard User
                         </option>
+                        <option value="manager">
+                          Shop Manager
+                        </option>
+                        <option value="supervisor">
+                          Supervisor
+                        </option>
                         <option value="admin">
                           Administrator
                         </option>

@@ -15,7 +15,11 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || ! $request->user()->isAdmin()) {
+        if (! $request->user()) {
+            abort(403);
+        }
+
+        if (! in_array($request->user()->role, ['admin', 'manager', 'supervisor'])) {
             abort(403, 'Unauthorized action.');
         }
 

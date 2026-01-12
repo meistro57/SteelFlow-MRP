@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Production\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\PartWorkArea;
 use App\Models\TimeEntry;
@@ -23,7 +24,7 @@ class TimeEntryController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return Inertia::render('Production/TimeEntries', [
+        return Inertia::render('Production::TimeEntries', [
             'timeEntries' => $timeEntries,
             'employees' => Employee::all(),
         ]);

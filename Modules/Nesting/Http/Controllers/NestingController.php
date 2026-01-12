@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Nesting\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Nesting;
 use App\Models\Project;
 use App\Services\Nesting\NestingService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,7 +23,7 @@ class NestingController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return Inertia::render('Nesting/Index', [
+        return Inertia::render('Nesting::Index', [
             'nestings' => $nestings,
         ]);
     }
@@ -30,16 +32,37 @@ class NestingController extends Controller
     {
         $nesting->load(['project', 'bars.nestingParts.partInstance.part', 'bars.stockItem']);
 
-        return Inertia::render('Nesting/Show', [
+        return Inertia::render('Nesting::Show', [
             'nesting' => $nesting,
         ]);
     }
 
     public function create(Project $project): Response
     {
-        return Inertia::render('Nesting/Create', [
+        return Inertia::render('Nesting::Create', [
             'project' => $project,
         ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'type' => 'required|string|in:linear,plate',
+            'kerf_allowance' => 'required|numeric|min:0',
+        ]);
+
+        try {
+            $nesting = $this->nestingService->createNesting($validated);
+
+            return redirect()
+                ->route('nesting.show', $nesting)
+                ->with('success', 'Nesting optimizer completed successfully.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Failed to run optimizer: '.$e->getMessage());
+        }
     }
 
     /**
