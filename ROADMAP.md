@@ -113,6 +113,64 @@ See [docs/ESTIMATING_PLAN.md](docs/ESTIMATING_PLAN.md) for detailed planning.
 
 ---
 
+## Phases 9-14: Enterprise Resource Planning (ERP) Features - Planned
+
+To evolve from a Manufacturing Operations System to a full ERP platform, the following business management layers are planned:
+
+### Phase 9: Financial Integration & Invoicing (Priority: CRITICAL)
+- Customer invoicing (Order-to-Cash cycle)
+- Accounts Payable & Receivable
+- Tax management and calculation
+- Payment tracking
+- QuickBooks/Xero integration
+
+### Phase 10: Production Scheduling & Capacity Planning (Priority: HIGH)
+- Finite capacity planning
+- Gantt chart scheduling
+- Machine utilization tracking
+- Bottleneck identification
+- Maintenance scheduling (CMMS)
+
+### Phase 11: Quality Control & Non-Conformance (Priority: HIGH)
+- Non-Conformance Reports (NCR)
+- Inspection workflows and checklists
+- Scrap tracking and root cause analysis
+- RMA (Return Merchandise Authorization)
+- Quality metrics dashboard
+
+### Phase 12: Advanced Workforce Management (Priority: MEDIUM)
+- Time & attendance by job
+- Skill matrices and certifications
+- Labor variance analysis (actual vs. estimated)
+- Payroll integration
+
+### Phase 13: Supply Chain Enhancement (Priority: MEDIUM)
+- Request for Quote (RFQ) workflow
+- Vendor quote comparison
+- Vendor performance ratings
+- On-time delivery tracking
+
+### Phase 14: Engineering Change Management (Priority: MEDIUM)
+- Engineering Change Notices (ECN)
+- Impact analysis for drawing revisions
+- Production hold management
+- Drawing supersession workflow
+
+**See [docs/ERP_GAPS_ROADMAP.md](docs/ERP_GAPS_ROADMAP.md) for comprehensive planning, database schemas, services, UI requirements, and implementation timelines.**
+
+**Gap Analysis Summary:**
+- **Critical Gap:** Financial/Accounting (no invoicing or AP/AR)
+- **High Gap:** Production scheduling (execution only, no planning)
+- **High Gap:** Quality control (heat certs only, no defect workflow)
+- **Medium Gap:** Advanced procurement (no RFQ or vendor ratings)
+
+**Recommended Implementation Order:**
+1. **Stage 1 (Months 1-6):** Phase 9 + Phase 11 - Business Operations Baseline
+2. **Stage 2 (Months 7-12):** Phase 10 + Phase 12 - Production Optimization
+3. **Stage 3 (Months 13-18):** Phase 13 + Phase 14 + Phase 9 Integration - Enterprise Maturity
+
+---
+
 ## Implementation Priorities
 
 ### Immediate (Next Sprint)
