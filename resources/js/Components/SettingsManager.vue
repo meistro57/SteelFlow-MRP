@@ -1,6 +1,19 @@
 <script setup>
 import { computed } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
+import {
+    SunIcon,
+    MoonIcon,
+    ComputerDesktopIcon,
+    Squares2X2Icon,
+    ViewColumnsIcon,
+    RectangleStackIcon,
+    Bars3Icon,
+    CheckCircleIcon,
+    InformationCircleIcon,
+    CogIcon,
+    SwatchIcon,
+} from '@heroicons/vue/24/outline';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
@@ -16,24 +29,24 @@ const form = useForm({
 
 // Theme options
 const themeOptions = [
-    { value: 'light', label: 'Light Mode', icon: '☀️', description: 'Bright interface for well-lit environments' },
-    { value: 'dark', label: 'Dark Mode', icon: '🌙', description: 'Reduced eye strain in low light' },
-    { value: 'system', label: 'System', icon: '💻', description: 'Follow system preferences' },
+    { value: 'light', label: 'Light Mode', icon: SunIcon, description: 'Bright interface for well-lit environments' },
+    { value: 'dark', label: 'Dark Mode', icon: MoonIcon, description: 'Reduced eye strain in low light' },
+    { value: 'system', label: 'System', icon: ComputerDesktopIcon, description: 'Follow system preferences' },
 ];
 
 // Accent color options
 const accentOptions = [
-    { value: 'forge', label: 'Forge Orange', color: 'bg-forge-500', description: 'High-visibility industrial orange' },
-    { value: 'weld', label: 'Arc Blue', color: 'bg-weld-500', description: 'Electric arc welding blue' },
-    { value: 'plasma', label: 'Plasma Purple', color: 'bg-plasma-500', description: 'Precision plasma cutting purple' },
-    { value: 'safety', label: 'Safety Yellow', color: 'bg-safety-500', description: 'Caution-ready safety yellow' },
+    { value: 'forge', label: 'Forge Orange', color: 'bg-forge-500', hex: '#ff5722', description: 'High-visibility industrial orange' },
+    { value: 'weld', label: 'Arc Blue', color: 'bg-weld-500', hex: '#0096c7', description: 'Electric arc welding blue' },
+    { value: 'plasma', label: 'Plasma Purple', color: 'bg-plasma-500', hex: '#7e22ce', description: 'Precision plasma cutting purple' },
+    { value: 'safety', label: 'Safety Yellow', color: 'bg-safety-500', hex: '#d97706', description: 'Caution-ready safety yellow' },
 ];
 
 // Layout density options
 const densityOptions = [
-    { value: 'compact', label: 'Compact', icon: '⊞', description: 'Maximum information density for estimators and power users' },
-    { value: 'comfortable', label: 'Comfortable', icon: '▢', description: 'Balanced layout for general use' },
-    { value: 'spacious', label: 'Spacious', icon: '□', description: 'Large touch targets for shop floor tablets' },
+    { value: 'compact', label: 'Compact', icon: Squares2X2Icon, description: 'Maximum information density for estimators and power users' },
+    { value: 'comfortable', label: 'Comfortable', icon: ViewColumnsIcon, description: 'Balanced layout for general use' },
+    { value: 'spacious', label: 'Spacious', icon: RectangleStackIcon, description: 'Large touch targets for shop floor tablets' },
 ];
 
 // Current selections
@@ -104,9 +117,14 @@ const toggleSidebar = () => {
   <div class="card-elevated space-y-8">
     <!-- Header -->
     <div class="border-b border-steel-700 pb-4">
-      <h2 class="text-2xl font-bold text-steel-200">
-        ⚙️ Interface Settings
-      </h2>
+      <div class="flex items-center gap-3 mb-2">
+        <div class="w-12 h-12 rounded-full bg-forge-500/10 border border-forge-500 flex items-center justify-center">
+          <CogIcon class="w-6 h-6 text-forge-400" />
+        </div>
+        <h2 class="text-2xl font-bold text-steel-200">
+          Interface Settings
+        </h2>
+      </div>
       <p class="text-sm text-steel-400 mt-2">
         Customize your SteelFlow MRP experience to match your workflow and environment
       </p>
@@ -127,14 +145,22 @@ const toggleSidebar = () => {
           v-for="option in themeOptions"
           :key="option.value"
           type="button"
-          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left"
+          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left group"
           :class="currentTheme === option.value
             ? 'border-forge-500 bg-forge-500/10 shadow-glow-forge'
             : 'border-steel-700 bg-steel-800 hover:border-steel-600 hover:bg-steel-750'"
           @click="updateSetting('theme', option.value)"
         >
           <div class="flex items-start gap-3">
-            <span class="text-3xl">{{ option.icon }}</span>
+            <div
+              class="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+              :class="currentTheme === option.value ? 'bg-forge-500/20 text-forge-400' : 'bg-steel-700 text-steel-400 group-hover:bg-steel-600'"
+            >
+              <component
+                :is="option.icon"
+                class="w-6 h-6"
+              />
+            </div>
             <div class="flex-1">
               <div class="font-semibold text-steel-200 mb-1">
                 {{ option.label }}
@@ -145,21 +171,9 @@ const toggleSidebar = () => {
             </div>
             <div
               v-if="currentTheme === option.value"
-              class="w-5 h-5 rounded-full bg-forge-500 flex items-center justify-center"
+              class="w-5 h-5 rounded-full bg-forge-500 flex items-center justify-center flex-shrink-0"
             >
-              <svg
-                class="w-3 h-3 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="3"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckCircleIcon class="w-3 h-3 text-white" />
             </div>
           </div>
         </button>
@@ -171,53 +185,57 @@ const toggleSidebar = () => {
     <!-- Accent Color -->
     <div class="space-y-4">
       <div>
-        <h3 class="text-lg font-semibold text-steel-300 mb-1">
-          Accent Color
-        </h3>
+        <div class="flex items-center gap-2 mb-1">
+          <SwatchIcon class="w-5 h-5 text-steel-400" />
+          <h3 class="text-lg font-semibold text-steel-300">
+            Accent Color
+          </h3>
+        </div>
         <p class="text-sm text-steel-500 mb-4">
           Choose the primary highlighting color for the interface
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <button
           v-for="option in accentOptions"
           :key="option.value"
           type="button"
-          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left"
+          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left group relative overflow-hidden"
           :class="currentAccent === option.value
             ? `border-steel-400 bg-steel-750 shadow-industrial`
             : 'border-steel-700 bg-steel-800 hover:border-steel-600 hover:bg-steel-750'"
           @click="updateSetting('accent_color', option.value)"
         >
-          <div class="flex items-center gap-3">
-            <div
-              class="w-8 h-8 rounded-full border border-white/20"
-              :class="option.color"
-            />
-            <div class="flex-1">
-              <div class="font-semibold text-steel-200 text-sm">
-                {{ option.label }}
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-3">
+              <div
+                class="w-10 h-10 rounded-full border-2 border-white/20 shadow-lg"
+                :class="option.color"
+              />
+              <div class="flex-1">
+                <div class="font-semibold text-steel-200 text-sm">
+                  {{ option.label }}
+                </div>
+                <div class="text-xs text-steel-500 font-mono">
+                  {{ option.hex }}
+                </div>
               </div>
             </div>
-            <div
-              v-if="currentAccent === option.value"
-              class="w-4 h-4 rounded-full bg-steel-200 flex items-center justify-center"
-            >
-              <svg
-                class="w-2 h-2 text-steel-900"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="4"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+            <div class="text-xs text-steel-500">
+              {{ option.description }}
             </div>
           </div>
+          <div
+            v-if="currentAccent === option.value"
+            class="absolute top-2 right-2 w-6 h-6 rounded-full bg-steel-200 flex items-center justify-center"
+          >
+            <CheckCircleIcon class="w-4 h-4 text-steel-900" />
+          </div>
+          <!-- Preview gradient -->
+          <div
+            class="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity"
+            :class="option.color"
+          />
         </button>
       </div>
     </div>
@@ -227,9 +245,12 @@ const toggleSidebar = () => {
     <!-- Layout Density -->
     <div class="space-y-4">
       <div>
-        <h3 class="text-lg font-semibold text-steel-300 mb-1">
-          Layout Density
-        </h3>
+        <div class="flex items-center gap-2 mb-1">
+          <ViewColumnsIcon class="w-5 h-5 text-steel-400" />
+          <h3 class="text-lg font-semibold text-steel-300">
+            Layout Density
+          </h3>
+        </div>
         <p class="text-sm text-steel-500 mb-4">
           Adjust information density and spacing
         </p>
@@ -239,14 +260,22 @@ const toggleSidebar = () => {
           v-for="option in densityOptions"
           :key="option.value"
           type="button"
-          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left"
+          class="p-4 rounded-industrial border-2 transition-all duration-200 text-left group"
           :class="currentDensity === option.value
             ? 'border-weld-500 bg-weld-500/10 shadow-glow-weld'
             : 'border-steel-700 bg-steel-800 hover:border-steel-600 hover:bg-steel-750'"
           @click="updateSetting('layout_density', option.value)"
         >
           <div class="flex items-start gap-3">
-            <span class="text-3xl">{{ option.icon }}</span>
+            <div
+              class="w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+              :class="currentDensity === option.value ? 'bg-weld-500/20 text-weld-400' : 'bg-steel-700 text-steel-400 group-hover:bg-steel-600'"
+            >
+              <component
+                :is="option.icon"
+                class="w-6 h-6"
+              />
+            </div>
             <div class="flex-1">
               <div class="font-semibold text-steel-200 mb-1">
                 {{ option.label }}
@@ -257,21 +286,9 @@ const toggleSidebar = () => {
             </div>
             <div
               v-if="currentDensity === option.value"
-              class="w-5 h-5 rounded-full bg-weld-500 flex items-center justify-center"
+              class="w-5 h-5 rounded-full bg-weld-500 flex items-center justify-center flex-shrink-0"
             >
-              <svg
-                class="w-3 h-3 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="3"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckCircleIcon class="w-3 h-3 text-white" />
             </div>
           </div>
         </button>
@@ -283,16 +300,24 @@ const toggleSidebar = () => {
     <!-- Sidebar Toggle -->
     <div class="space-y-4">
       <div>
-        <h3 class="text-lg font-semibold text-steel-300 mb-1">
-          Sidebar
-        </h3>
+        <div class="flex items-center gap-2 mb-1">
+          <Bars3Icon class="w-5 h-5 text-steel-400" />
+          <h3 class="text-lg font-semibold text-steel-300">
+            Sidebar
+          </h3>
+        </div>
         <p class="text-sm text-steel-500 mb-4">
           Show or hide the navigation sidebar to maximize workspace
         </p>
       </div>
-      <div class="flex items-center justify-between p-4 bg-steel-800 rounded-industrial border border-steel-700">
+      <div class="flex items-center justify-between p-4 bg-steel-800 rounded-industrial border border-steel-700 hover:border-steel-600 transition-colors">
         <div class="flex items-center gap-3">
-          <span class="text-2xl">📋</span>
+          <div
+            class="w-10 h-10 rounded-full flex items-center justify-center"
+            :class="sidebarCollapsed ? 'bg-weld-500/20 text-weld-400' : 'bg-steel-700 text-steel-400'"
+          >
+            <Bars3Icon class="w-6 h-6" />
+          </div>
           <div>
             <div class="font-semibold text-steel-200">
               Navigation Sidebar
@@ -309,7 +334,7 @@ const toggleSidebar = () => {
           @click="toggleSidebar"
         >
           <span
-            class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-200"
+            class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-200 shadow-lg"
             :class="sidebarCollapsed ? 'translate-x-8' : 'translate-x-1'"
           />
         </button>
@@ -318,19 +343,7 @@ const toggleSidebar = () => {
 
     <!-- Info Box -->
     <div class="alert-info">
-      <svg
-        class="w-5 h-5 flex-shrink-0"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
+      <InformationCircleIcon class="w-5 h-5 flex-shrink-0" />
       <div>
         <div class="font-semibold mb-1">
           Saved Automatically

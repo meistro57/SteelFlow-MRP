@@ -13,22 +13,35 @@ const settings = computed(() => user.value?.settings || {});
 const sidebarCollapsed = ref(settings.value.sidebar_collapsed || false);
 const mobileMenuOpen = ref(false);
 
+import {
+    ChartBarIcon,
+    RectangleGroupIcon,
+    DocumentTextIcon,
+    UsersIcon,
+    CubeIcon,
+    ShoppingCartIcon,
+    Squares2X2Icon,
+    CogIcon,
+    TruckIcon,
+    HomeIcon,
+} from '@heroicons/vue/24/outline';
+
 const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: 'chart' },
-    { name: 'Reports', href: '/reports', icon: 'chart' },
-    { name: 'Projects', href: '/projects', icon: 'folder' },
-    { name: 'Drawings', href: '/drawings', icon: 'document' },
-    { name: 'Customers', href: '/customers', icon: 'users' },
-    { name: 'Inventory', href: '/inventory', icon: 'cube' },
-    { name: 'Procurement', href: '/purchase-orders', icon: 'shopping-cart' },
-    { name: 'Nesting', href: '/nesting', icon: 'grid' },
-    { name: 'Production', href: '/production', icon: 'cog' },
-    { name: 'Shipping', href: '/shipping', icon: 'truck' },
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
+    { name: 'Reports', href: '/reports', icon: ChartBarIcon },
+    { name: 'Projects', href: '/projects', icon: RectangleGroupIcon },
+    { name: 'Drawings', href: '/drawings', icon: DocumentTextIcon },
+    { name: 'Customers', href: '/customers', icon: UsersIcon },
+    { name: 'Inventory', href: '/inventory', icon: CubeIcon },
+    { name: 'Procurement', href: '/purchase-orders', icon: ShoppingCartIcon },
+    { name: 'Nesting', href: '/nesting', icon: Squares2X2Icon },
+    { name: 'Production', href: '/production', icon: CogIcon },
+    { name: 'Shipping', href: '/shipping', icon: TruckIcon },
 ];
 
 const adminNavigation = [
-    { name: 'Users', href: '/admin/users', icon: 'users' },
-    { name: 'System', href: '/admin/system', icon: 'cog' },
+    { name: 'Users', href: '/admin/users', icon: UsersIcon },
+    { name: 'System', href: '/admin/system', icon: CogIcon },
 ];
 
 // Listen for settings updates
@@ -84,12 +97,16 @@ onMounted(() => {
                 v-for="item in navigation"
                 :key="item.name"
                 :href="item.href"
-                class="nav-link"
+                class="nav-link group"
                 :class="{ 'nav-link-active': $page.url === item.href || $page.url.startsWith(item.href + '/') }"
               >
+                <component
+                  :is="item.icon"
+                  class="w-4 h-4 inline-block mr-1.5 transition-transform group-hover:scale-110"
+                />
                 {{ item.name }}
               </Link>
-              
+
               <!-- Admin Navigation -->
               <template v-if="$page.props.auth.user.role === 'admin'">
                 <div class="h-6 w-px bg-steel-700 mx-2" />
@@ -97,9 +114,13 @@ onMounted(() => {
                   v-for="item in adminNavigation"
                   :key="item.name"
                   :href="item.href"
-                  class="px-3 py-2 rounded-md text-sm font-medium transition-colors text-amber-500 hover:text-amber-400 hover:bg-amber-900/20"
+                  class="px-3 py-2 rounded-md text-sm font-medium transition-all text-amber-500 hover:text-amber-400 hover:bg-amber-900/20 flex items-center gap-2 group"
                   :class="{ 'bg-amber-900/30 text-amber-300 ring-1 ring-amber-700/50': $page.url.startsWith('/admin') }"
                 >
+                  <component
+                    :is="item.icon"
+                    class="w-4 h-4 transition-transform group-hover:scale-110"
+                  />
                   Admin: {{ item.name }}
                 </Link>
               </template>
@@ -253,13 +274,17 @@ onMounted(() => {
             v-for="item in navigation"
             :key="item.name"
             :href="item.href"
-            class="block px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800 transition-all"
             :class="{ 'text-forge-500 bg-steel-800': $page.url === item.href }"
             @click="mobileMenuOpen = false"
           >
+            <component
+              :is="item.icon"
+              class="w-5 h-5"
+            />
             {{ item.name }}
           </Link>
-          
+
           <template v-if="$page.props.auth.user.role === 'admin'">
             <div class="border-t border-steel-800 my-2 pt-2 px-3 text-xs font-bold text-steel-500 uppercase">
               Admin
@@ -268,9 +293,13 @@ onMounted(() => {
               v-for="item in adminNavigation"
               :key="item.name"
               :href="item.href"
-              class="block px-3 py-2 rounded-md text-base font-medium text-amber-500 hover:text-amber-400 hover:bg-amber-900/20"
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-amber-500 hover:text-amber-400 hover:bg-amber-900/20 transition-all"
               @click="mobileMenuOpen = false"
             >
+              <component
+                :is="item.icon"
+                class="w-5 h-5"
+              />
               {{ item.name }}
             </Link>
           </template>
@@ -278,9 +307,10 @@ onMounted(() => {
           <div class="border-t border-steel-800 my-2 pt-2">
             <Link
               :href="route('settings.index')"
-              class="block px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800"
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800 transition-all"
               @click="mobileMenuOpen = false"
             >
+              <CogIcon class="w-5 h-5" />
               Settings
             </Link>
           </div>
