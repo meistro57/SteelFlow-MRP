@@ -17,6 +17,7 @@ use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TimeEntryController;
+use App\Http\Controllers\UIEditorController;
 use Illuminate\Support\Facades\Route;
 
 // Root route - redirect to dashboard if authenticated, otherwise to login
@@ -106,6 +107,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/projects/{project}/bom', [ReportController::class, 'projectBom'])->name('reports.project.bom');
     Route::get('/reports/projects/{project}/bom/csv', [ReportController::class, 'projectBomCsv'])->name('reports.project.bom.csv');
     Route::get('/reports/projects/{project}/bom/pdf', [ReportController::class, 'projectBomPdf'])->name('reports.project.bom.pdf');
+
+    // UI Editor / Dashboard Builder Routes
+    Route::prefix('ui-editor')->name('ui-editor.')->group(function () {
+        Route::get('/', [UIEditorController::class, 'index'])->name('index');
+        Route::get('/create', [UIEditorController::class, 'create'])->name('create');
+        Route::post('/', [UIEditorController::class, 'store'])->name('store');
+        Route::get('/{dashboard}', [UIEditorController::class, 'show'])->name('show');
+        Route::get('/{dashboard}/edit', [UIEditorController::class, 'edit'])->name('edit');
+        Route::put('/{dashboard}', [UIEditorController::class, 'update'])->name('update');
+        Route::delete('/{dashboard}', [UIEditorController::class, 'destroy'])->name('destroy');
+        Route::post('/{dashboard}/set-default', [UIEditorController::class, 'setDefault'])->name('set-default');
+        Route::post('/{dashboard}/duplicate', [UIEditorController::class, 'duplicate'])->name('duplicate');
+
+        // Widget management (JSON responses for AJAX)
+        Route::post('/{dashboard}/widgets', [UIEditorController::class, 'addWidget'])->name('widgets.store');
+        Route::put('/{dashboard}/widgets/{widget}', [UIEditorController::class, 'updateWidget'])->name('widgets.update');
+        Route::delete('/{dashboard}/widgets/{widget}', [UIEditorController::class, 'removeWidget'])->name('widgets.destroy');
+        Route::put('/{dashboard}/layout', [UIEditorController::class, 'updateLayout'])->name('layout.update');
+        Route::get('/{dashboard}/widgets/{widget}/data', [UIEditorController::class, 'getWidgetData'])->name('widgets.data');
+    });
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
