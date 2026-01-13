@@ -64,6 +64,7 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - **📈 Advanced Optimization**: Optimize Linear Nesting module for maximum yield and remnant recovery.
 - **🏪 Multi-mode POS**: Point of Sale interface for retail, gas exchange, and quick service invoicing.
 - **🛠️ Service & Operation**: Dedicated Service Ticket and Shop Ticket modules for field and shop floor management.
+- **🎨 UI Customization**: Visual dashboard builder with drag-and-drop widgets and customizable layouts.
 - **📉 Quality Control**: Non-Conformance Report (NCR) tracking with integrated rework workflow.
 - **⚖️ Financial Integrity**: Three-Way Match validation (PO vs. Receipt vs. Invoice) for procurement.
 - **💰 Construction Billing**: AIA-style Progress Billing with automatic retainage management.
@@ -149,7 +150,7 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [ ] Proposal & Quote Generation (PDF)
 - [ ] Bid-to-Project Conversion Logic
 
-### **Phase 9: Specialized Modules** ✅ Complete
+### **Phase 9: Specialized Modules** 🔄 In Progress
 - [x] **NCR & Remediation**: Quality failure state machine and remakes
 - [x] **Three-Way Match**: Financial validation for procurement
 - [x] **Progress Billing**: AIA standards and retainage calculations
@@ -157,9 +158,10 @@ See the [Roadmap & Progress](#️-roadmap--progress) section below for detailed 
 - [x] **AuditLog Module**: Immutable history tracking for all changes
 - [x] **Shop Ticket Module**: Digital production orders and real-time tracking
 - [x] **Finance & Billing**: Comprehensive AP/AR and invoicing system
+- [x] **UI Editor Module**: Visual dashboard builder with drag-and-drop widgets
+- [x] **Import Templates**: CSV export templates for KISS, XSR, UPF imports
 - [ ] **Optimize Linear Nesting**: Yield maximization algorithms (Planned)
 - [ ] **Point of Sale (POS)**: Retail and gas sales interface (Planned)
-- [ ] **UI Editor Module**: Visual dashboard and layout builder (Planned)
 - [ ] **Service Ticket Module**: Field service and maintenance tracking (Planned)
 
 **Legend:** ✅ Complete | 🔄 In Progress | 📅 Planned
@@ -311,7 +313,8 @@ Modules/
 ├── ShopTicket/       # Digital production orders and real-time tracking
 ├── PdfCenter/        # Automated document generation pipeline
 ├── Backup/           # Automated data protection and cloud sync
-└── ProductionScheduling/ # Machine capacity and maintenance planning
+├── ProductionScheduling/ # Machine capacity and maintenance planning
+└── UIEditor/         # Visual dashboard builder with customizable widgets
 resources/
 ├── js/
 │   ├── Components/   # Vue components (ThemeToggle, BarcodeScanner, etc.)

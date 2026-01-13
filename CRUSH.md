@@ -186,6 +186,9 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `AuditEntry` | Immutable audit trail | model_type, model_id, event, old_values, new_values |
 | `Backup` | System data snapshot | filename, disk, size, status |
 | `User` | Application users | name, email, azure_id, settings (JSON) |
+| `Dashboard` | Custom user dashboards | user_id, name, is_default, is_shared, layout (JSON) |
+| `DashboardWidget` | Dashboard widget instances | dashboard_id, widget_template_id, config (JSON), position |
+| `WidgetTemplate` | Reusable widget definitions | name, type, default_config (JSON) |
 
 ---
 
@@ -214,6 +217,8 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `BackupService` | Database and filesystem protection |
 | `PdfService` | High-fidelity PDF document generation |
 | `ThreeWayMatchService` | Procurement to Invoicing validation |
+| `UIEditorService` | Dashboard builder and widget management |
+| `ImportTemplateService` | Dynamic CSV/Excel mapping engine |
 
 ---
 
@@ -236,6 +241,7 @@ bidding -> awarded -> active -> on_hold -> complete -> archived
 | `SettingsController` | `/settings` | User preferences |
 | `InvoiceController` | `/finance/invoices` | Customer billing system |
 | `NCRController` | `/quality/ncr` | Non-Conformance management |
+| `UIEditorController` | `/ui-editor` | Dashboard builder and customization |
 
 ---
 
@@ -310,21 +316,20 @@ Implemented across core and enterprise modules to support high-integrity busines
 - **Document Control**: Centralized storage with versioning and CAD links
 - **System Safety**: Automated database and file backups with cloud sync
 - **Immutable Auditing**: Per-model history tracking for every change
+- **Dashboard Builder**: Visual UI editor with drag-and-drop widgets and custom layouts
+- **Import Templates**: CSV export templates for KISS, XSR, and UPF data imports
 
 ### In Development
 - Plate Nesting visualization (2d)
 - Advanced production scheduling (Finite Capacity)
 - Mobile Service Call dispatch (Service Ticket module)
 - Multi-mode POS (Retail/Gas sales)
-- UI Layout Editor (Dashboard builder)
 
 ### Planned
-- Contract Documents module (PDF viewer & version control)
 - Estimating module (Phase 8)
 - Optimize Linear Nesting (Advanced yield algorithms)
 - Point of Sale (Retail & gas sales)
-- UI Editor Module (Visual interface builder)
-- Service Ticket & Shop Ticket modules
+- Service Ticket module (Field maintenance tracking)
 - API documentation
 - Mobile app optimization
 
