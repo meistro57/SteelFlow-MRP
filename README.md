@@ -13,15 +13,27 @@
 ## 🌟 Vision
 To replace obsolete legacy systems with a high-performance, web-native platform that centralizes estimating, production, and logistics into a single source of truth.
 
-<img width="2343" height="1543" alt="image" src="https://github.com/user-attachments/assets/fba7d8eb-a6b4-44b8-8bc5-12552be3b3ff" />
+<img width="1916" height="911" alt="image" src="https://github.com/user-attachments/assets/17b30f27-36a4-427c-905f-6e431f71aa81" />
 
 <img width="2344" height="1548" alt="image" src="https://github.com/user-attachments/assets/391e2087-743a-4023-aab8-da24db3ca3ef" />
 
-<img width="2341" height="1542" alt="image" src="https://github.com/user-attachments/assets/d72d1205-2afb-4776-b690-9f5b193a8dfb" />
+<img width="1916" height="909" alt="image" src="https://github.com/user-attachments/assets/06464e92-605f-4c40-8f9c-82aeafec05a4" />
+
+<img width="1912" height="909" alt="image" src="https://github.com/user-attachments/assets/393e743a-a977-4ecb-8a57-67b8dd07a68b" />
+
+<img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/0b2c2565-a4a7-4d65-ac38-4d651987a003" />
 
 <img width="2345" height="1545" alt="image" src="https://github.com/user-attachments/assets/368efc51-46c7-409f-9276-aef3d5835487" />
 
 <img width="2344" height="1542" alt="image" src="https://github.com/user-attachments/assets/5162a2af-132e-4acd-a9c8-2189c231dd99" />
+
+<img width="1919" height="909" alt="image" src="https://github.com/user-attachments/assets/24f33fa7-ad59-417a-b96c-c6c2dcd71059" />
+
+<img width="1919" height="912" alt="image" src="https://github.com/user-attachments/assets/0575a13e-be4c-496d-8891-83ceb068a3a4" />
+
+<img width="558" height="723" alt="image" src="https://github.com/user-attachments/assets/25012f34-1b12-49fd-a366-4d0f8c2d0e60" />
+<img width="1919" height="912" alt="image" src="https://github.com/user-attachments/assets/494f5a38-b904-44bd-8d25-2b16f082c945" />
+
 
 
 
