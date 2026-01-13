@@ -71,7 +71,9 @@ const submit = () => {
       </div>
 
       <div class="bg-steel-800/50 border border-steel-700 rounded p-4">
-        <h3 class="text-sm font-semibold text-steel-300 mb-2">Import Details</h3>
+        <h3 class="text-sm font-semibold text-steel-300 mb-2">
+          Import Details
+        </h3>
         <ul class="space-y-1 text-xs text-steel-400 font-mono">
           <li>• Project: {{ project.name }}</li>
           <li>• Job Number: {{ project.job_number }}</li>

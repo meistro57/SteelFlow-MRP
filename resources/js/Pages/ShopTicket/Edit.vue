@@ -211,8 +211,10 @@ const getPriorityLabel = (priority) => {
                 <div class="text-sm text-text-tertiary">
                   {{ step.estimated_hours ?? 0 }}h est.
                 </div>
-                <div class="text-xs px-2 py-1 rounded capitalize"
-                     :class="step.status === 'complete' ? 'bg-green-600/20 text-green-400' : step.status === 'in_progress' ? 'bg-amber-600/20 text-amber-400' : 'bg-steel-600 text-steel-300'">
+                <div
+                  class="text-xs px-2 py-1 rounded capitalize"
+                  :class="step.status === 'complete' ? 'bg-green-600/20 text-green-400' : step.status === 'in_progress' ? 'bg-amber-600/20 text-amber-400' : 'bg-steel-600 text-steel-300'"
+                >
                   {{ step.status }}
                 </div>
               </div>

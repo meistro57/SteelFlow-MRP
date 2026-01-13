@@ -38,7 +38,10 @@ const localWidgets = ref([...props.widgets]);
 const localLayout = ref([...props.layout]);
 const selectedWidget = ref(null);
 const isDragging = ref(false);
+const isResizing = ref(false);
 const draggedWidget = ref(null);
+const resizingWidget = ref(null);
+const initialResizePos = ref({ x: 0, y: 0, w: 0, h: 0 });
 const hasUnsavedChanges = ref(false);
 const isSaving = ref(false);
 const showSettings = ref(false);
@@ -171,7 +174,51 @@ const updateWidgetPosition = (widgetId, newX, newY) => {
     hasUnsavedChanges.value = true;
 };
 
-// Resize widget
+// Resize widget handlers
+const handleResizeStart = (event, widget) => {
+    isResizing.value = true;
+    resizingWidget.value = widget;
+    
+    const layoutItem = localLayout.value.find(l => l.i === widget.id);
+    if (layoutItem) {
+        initialResizePos.value = {
+            x: event.clientX,
+            y: event.clientY,
+            w: layoutItem.w,
+            h: layoutItem.h
+        };
+    }
+
+    window.addEventListener('mousemove', handleResizeMove);
+    window.addEventListener('mouseup', handleResizeEnd);
+};
+
+const handleResizeMove = (event) => {
+    if (!isResizing.value || !resizingWidget.value) return;
+
+    const rect = gridRef.value.getBoundingClientRect();
+    const colWidth = rect.width / props.dashboard.columns;
+    
+    const deltaX = event.clientX - initialResizePos.value.x;
+    const deltaY = event.clientY - initialResizePos.value.y;
+    
+    const additionalW = Math.round(deltaX / colWidth);
+    const additionalH = Math.round(deltaY / props.dashboard.row_height);
+    
+    const newW = initialResizePos.value.w + additionalW;
+    const newH = initialResizePos.value.h + additionalH;
+    
+    resizeWidget(resizingWidget.value.id, newW, newH);
+};
+
+const handleResizeEnd = () => {
+    isResizing.value = false;
+    resizingWidget.value = null;
+    window.removeEventListener('mousemove', handleResizeMove);
+    window.removeEventListener('mouseup', handleResizeEnd);
+};
+
+// Resize widget logic
 const resizeWidget = (widgetId, newW, newH) => {
     const layoutIndex = localLayout.value.findIndex(l => l.i === widgetId);
     if (layoutIndex === -1) return;
@@ -393,7 +440,7 @@ onUnmounted(() => {
             @remove="removeWidget(widget)"
             @drag-start="handleDragStart($event, widget)"
             @drag-end="handleDragEnd"
-            @resize="(w, h) => resizeWidget(widget.id, w, h)"
+            @resize="(event) => handleResizeStart(event, widget)"
           />
 
           <!-- Empty State -->
@@ -442,7 +489,7 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <form @submit.prevent="router.put(route('ui-editor.update', dashboard.id), { name: dashboardName.value, description: dashboardDescription.value })">
+        <form @submit.prevent="router.put(route('ui-editor.update', dashboard.id), { name: dashboardName, description: dashboardDescription })">
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-steel-300 mb-2">

@@ -32,9 +32,9 @@ class ReportingService
     {
         return [
             'active_projects' => Project::whereIn('status', ['active', 'production'])->count(),
-            'total_weight_lbs' => (float) \App\Models\Assembly::sum('total_weight_lbs'),
-            'production_completion_percentage' => $this->calculateProductionProgress(),
-            'ready_to_ship_pieces' => \App\Models\Assembly::whereHas('instances', function ($q): void {
+            'total_weight' => (float) \App\Models\Assembly::sum('total_weight_lbs'),
+            'production_progress' => $this->calculateProductionProgress(),
+            'ready_to_ship' => \App\Models\Assembly::whereHas('instances', function ($q): void {
                 $q->where('status', 'complete');
             })->count(),
         ];
@@ -71,11 +71,54 @@ class ReportingService
         return [
             'activeBatches' => $activeBatches,
             'partsCompletedToday' => $partsCompletedToday,
-            'onSchedulePercentage' => 94, // Placeholder until scheduling logic is fully implement
-            'shopEfficiency' => 87, // Placeholder until labor tracking is fully implemented
+            'onSchedulePercentage' => $this->calculateOnSchedulePercentage(), // Dynamic calculation
+            'shopEfficiency' => $this->calculateShopEfficiency(), // Dynamic calculation
             'workAreaStats' => $workAreaStats,
             'recentActivity' => $this->getRecentProductionActivity(),
         ];
+    }
+
+    /**
+     * Calculate what percentage of active projects are on schedule based on ship date.
+     */
+    protected function calculateOnSchedulePercentage(): float
+    {
+        $activeProjects = Project::whereIn('status', ['active', 'production'])->get();
+        if ($activeProjects->isEmpty()) {
+            return 100;
+        }
+
+        $onSchedule = $activeProjects->filter(function ($project) {
+            if (! $project->ship_date) {
+                return true;
+            }
+
+            // Simple logic: if ship date hasn't passed, it's "on schedule"
+            // In a real system you'd compare with current progress
+            return $project->ship_date >= now();
+        })->count();
+
+        return round(($onSchedule / $activeProjects->count()) * 100, 1);
+    }
+
+    /**
+     * Calculate overall shop efficiency based on estimated vs actual hours.
+     */
+    protected function calculateShopEfficiency(): float
+    {
+        $stats = DB::table('part_work_areas')
+            ->where('status', 'complete')
+            ->whereNotNull('estimated_hours')
+            ->whereNotNull('actual_hours')
+            ->where('actual_hours', '>', 0)
+            ->selectRaw('SUM(estimated_hours) as total_est, SUM(actual_hours) as total_act')
+            ->first();
+
+        if (! $stats || $stats->total_act == 0) {
+            return 0;
+        }
+
+        return round(($stats->total_est / $stats->total_act) * 100, 1);
     }
 
     /**
@@ -201,7 +244,7 @@ class ReportingService
                 ],
             ],
             'batches' => $batches,
-            'work_area_utilization' => $workAreaUtilization,
+            'workAreaUtilization' => $workAreaUtilization,
         ];
     }
 
@@ -240,8 +283,8 @@ class ReportingService
             });
 
         return [
-            'work_areas' => $workAreas,
-            'date_range' => [
+            'workAreas' => $workAreas,
+            'dateRange' => [
                 'start' => $startDate,
                 'end' => $endDate,
             ],
@@ -275,7 +318,7 @@ class ReportingService
 
         return [
             'batches' => $batches,
-            'average_duration' => $batches->avg('duration_hours'),
+            'averageDuration' => $batches->avg('duration_hours'),
         ];
     }
 }

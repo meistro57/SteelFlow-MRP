@@ -18,8 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $active_count
+ * @property int|null $total_steps
+ * @property int|null $completed_steps
+ * @property float|null $total_hours
+ * @property int|null $parts_completed
+ * @property-read string $badge_code
  * @property-read \App\Models\Department $department
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PartWorkArea> $routingSteps
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TimeEntry> $timeEntries
  */
 class WorkArea extends Model
 {
@@ -41,5 +47,15 @@ class WorkArea extends Model
     public function routingSteps(): HasMany
     {
         return $this->hasMany(PartWorkArea::class);
+    }
+
+    public function timeEntries(): HasMany
+    {
+        return $this->hasMany(TimeEntry::class);
+    }
+
+    public function getBadgeCodeAttribute(): string
+    {
+        return $this->code;
     }
 }

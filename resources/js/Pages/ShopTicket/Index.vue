@@ -389,8 +389,10 @@ const isOverdue = (ticket) => {
             :href="link.url ?? '#'"
             class="px-3 py-1 text-sm rounded"
             :class="link.active ? 'bg-forge-500 text-white' : 'bg-steel-800 text-text-secondary hover:bg-steel-700'"
-            v-html="link.label"
-          />
+          >
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="link.label" />
+          </Link>
         </div>
       </div>
     </section>

@@ -217,8 +217,10 @@ const progressPercentage = () => {
               class="flex items-center gap-4 p-4 bg-steel-900/60 border border-steel-700 rounded-sm"
               :class="{ 'border-forge-500': step.status === 'in_progress' }"
             >
-              <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
-                   :class="step.status === 'complete' ? 'bg-green-500 text-white' : step.status === 'in_progress' ? 'bg-amber-500 text-white' : 'bg-steel-700 text-text-secondary'">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                :class="step.status === 'complete' ? 'bg-green-500 text-white' : step.status === 'in_progress' ? 'bg-amber-500 text-white' : 'bg-steel-700 text-text-secondary'"
+              >
                 {{ step.sequence }}
               </div>
 

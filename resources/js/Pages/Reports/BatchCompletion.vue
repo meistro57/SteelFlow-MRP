@@ -5,7 +5,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     batches: Array,
-    average_duration: Number,
+    averageDuration: Number,
 });
 
 const formatDate = (date) => {
@@ -115,9 +115,9 @@ const slowestBatch = () => {
         </div>
         <div
           class="mt-4 text-3xl font-bold"
-          :class="getDurationColor(average_duration)"
+          :class="getDurationColor(averageDuration)"
         >
-          {{ formatDuration(average_duration) }}
+          {{ formatDuration(averageDuration) }}
         </div>
         <p class="mt-2 text-sm text-text-secondary">
           Across all completed batches.
@@ -188,7 +188,7 @@ const slowestBatch = () => {
                 <div
                   class="absolute inset-y-0 left-0 rounded-full transition-all"
                   :class="batch.duration_hours <= 24 ? 'bg-green-500' : batch.duration_hours <= 72 ? 'bg-amber-500' : 'bg-red-500'"
-                  :style="{ width: `${Math.min((batch.duration_hours / (average_duration * 2)) * 100, 100)}%` }"
+                  :style="{ width: `${Math.min((batch.duration_hours / (averageDuration * 2)) * 100, 100)}%` }"
                 />
               </div>
               <div class="text-xs text-text-tertiary">
@@ -297,10 +297,10 @@ const slowestBatch = () => {
               </td>
               <td class="py-3 text-right">
                 <span
-                  v-if="batch.duration_hours !== null && average_duration"
-                  :class="batch.duration_hours <= average_duration ? 'text-green-400' : 'text-red-400'"
+                  v-if="batch.duration_hours !== null && averageDuration"
+                  :class="batch.duration_hours <= averageDuration ? 'text-green-400' : 'text-red-400'"
                 >
-                  {{ batch.duration_hours <= average_duration ? '-' : '+' }}{{ Math.abs(batch.duration_hours - average_duration).toFixed(1) }}h
+                  {{ batch.duration_hours <= averageDuration ? '-' : '+' }}{{ Math.abs(batch.duration_hours - averageDuration).toFixed(1) }}h
                 </span>
                 <span
                   v-else

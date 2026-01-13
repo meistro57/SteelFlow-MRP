@@ -1,6 +1,6 @@
 <!-- resources/js/Pages/ShopTicket/Create.vue -->
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { Link, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
@@ -42,11 +42,6 @@ const removeStep = (index) => {
 
 const submit = () => {
     form.post(route('shop-tickets.store'));
-};
-
-const getWorkAreaName = (id) => {
-    const area = props.workAreas?.find(w => w.id === parseInt(id));
-    return area?.name ?? 'Unknown';
 };
 </script>
 

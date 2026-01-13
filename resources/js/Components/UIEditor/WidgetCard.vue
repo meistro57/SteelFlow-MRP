@@ -131,7 +131,7 @@ const handleDragStart = (event) => {
     <div
       v-if="isEditing"
       class="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize opacity-0 group-hover:opacity-100 transition-opacity"
-      @mousedown.stop.prevent="/* resize logic would go here */"
+      @mousedown.stop.prevent="$emit('resize', $event)"
     >
       <ArrowsPointingOutIcon class="w-4 h-4 text-steel-500 rotate-90" />
     </div>

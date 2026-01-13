@@ -7,7 +7,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 const props = defineProps({
     summary: Object,
     batches: Array,
-    work_area_utilization: Array,
+    workAreaUtilization: Array,
 });
 
 const startDate = ref(props.summary?.date_range?.start?.split('T')[0] ?? '');
@@ -183,7 +183,7 @@ const getStatusColor = (status) => {
 
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <div
-          v-for="area in work_area_utilization ?? []"
+          v-for="area in workAreaUtilization ?? []"
           :key="area.name"
           class="bg-steel-900/60 border border-steel-700 rounded-sm p-5"
         >
@@ -215,7 +215,7 @@ const getStatusColor = (status) => {
           </div>
         </div>
         <div
-          v-if="(work_area_utilization ?? []).length === 0"
+          v-if="(workAreaUtilization ?? []).length === 0"
           class="col-span-full text-center text-sm text-text-secondary py-8"
         >
           No work areas configured yet. Add work areas to track production utilization.

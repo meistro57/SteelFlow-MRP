@@ -5,12 +5,12 @@ import { Link, router } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
-    work_areas: Array,
-    date_range: Object,
+    workAreas: Array,
+    dateRange: Object,
 });
 
-const startDate = ref(props.date_range?.start?.split('T')[0] ?? '');
-const endDate = ref(props.date_range?.end?.split('T')[0] ?? '');
+const startDate = ref(props.dateRange?.start?.split('T')[0] ?? '');
+const endDate = ref(props.dateRange?.end?.split('T')[0] ?? '');
 
 const applyFilters = () => {
     router.get(route('reports.labor-efficiency'), {
@@ -29,11 +29,11 @@ const getEfficiencyColor = (partsPerHour) => {
 };
 
 const totalHours = () => {
-    return (props.work_areas ?? []).reduce((sum, area) => sum + (area.total_hours ?? 0), 0);
+    return (props.workAreas ?? []).reduce((sum, area) => sum + (area.total_hours ?? 0), 0);
 };
 
 const totalPartsCompleted = () => {
-    return (props.work_areas ?? []).reduce((sum, area) => sum + (area.parts_completed ?? 0), 0);
+    return (props.workAreas ?? []).reduce((sum, area) => sum + (area.parts_completed ?? 0), 0);
 };
 
 const overallEfficiency = () => {
@@ -186,7 +186,7 @@ const overallEfficiency = () => {
           </thead>
           <tbody>
             <tr
-              v-for="area in work_areas ?? []"
+              v-for="area in workAreas ?? []"
               :key="area.work_area"
               class="border-b border-steel-800/80 text-text-secondary"
             >
@@ -220,7 +220,7 @@ const overallEfficiency = () => {
                 </div>
               </td>
             </tr>
-            <tr v-if="(work_areas ?? []).length === 0">
+            <tr v-if="(workAreas ?? []).length === 0">
               <td
                 colspan="6"
                 class="py-6 text-center text-sm text-text-secondary"
@@ -229,7 +229,7 @@ const overallEfficiency = () => {
               </td>
             </tr>
           </tbody>
-          <tfoot v-if="(work_areas ?? []).length > 0">
+          <tfoot v-if="(workAreas ?? []).length > 0">
             <tr class="border-t-2 border-steel-600 text-white font-semibold">
               <td
                 colspan="2"

@@ -98,7 +98,7 @@ class ShopTicketController extends Controller
             'steps.*.estimated_hours' => 'nullable|numeric|min:0',
         ]);
 
-        DB::transaction(function () use ($validated, $request) {
+        DB::transaction(function () use ($validated) {
             $ticket = ShopTicket::create([
                 'ticket_number' => $this->generateTicketNumber(),
                 'project_id' => $validated['project_id'],
@@ -240,6 +240,7 @@ class ShopTicketController extends Controller
         $validated = $request->validate([
             'actual_hours' => 'required|numeric|min:0',
             'notes' => 'nullable|string|max:500',
+            'completed_by' => 'nullable|exists:employees,id',
         ]);
 
         $step->update([
@@ -247,7 +248,7 @@ class ShopTicketController extends Controller
             'actual_hours' => $validated['actual_hours'],
             'notes' => $validated['notes'] ?? null,
             'completed_at' => now(),
-            'completed_by' => $request->input('completed_by'),
+            'completed_by' => $validated['completed_by'] ?? null,
         ]);
 
         // Check if there's a next step and start it
@@ -286,7 +287,7 @@ class ShopTicketController extends Controller
 
         if ($lastTicket) {
             $lastNumber = (int) substr($lastTicket->ticket_number, -4);
-            $nextNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+            $nextNumber = str_pad((string) ($lastNumber + 1), 4, '0', STR_PAD_LEFT);
         } else {
             $nextNumber = '0001';
         }

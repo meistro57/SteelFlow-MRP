@@ -58,7 +58,7 @@ class UpfImportController extends Controller
                     $results['types'],
                     $results['grades'],
                     $results['prices'],
-                    implode('; ', array_slice($results['errors'], 0, 5))
+                    implode('; ', array_slice($results['errors'], 0, 5)),
                 );
 
                 return redirect()
@@ -70,7 +70,7 @@ class UpfImportController extends Controller
                 'Import successful: %d material types, %d grades, %d price items imported.',
                 $results['types'],
                 $results['grades'],
-                $results['prices']
+                $results['prices'],
             );
 
             return redirect()
