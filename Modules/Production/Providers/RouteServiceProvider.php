@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    protected $namespace = 'Modules\Production\Http\Controllers';
-
     public function boot(): void
     {
         parent::boot();
@@ -22,7 +20,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes(): void
     {
         Route::middleware('web')
-            ->namespace($this->namespace)
             ->group(__DIR__.'/../routes/web.php');
     }
 }
