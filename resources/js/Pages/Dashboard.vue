@@ -161,7 +161,10 @@ const recentActivity = [
         Quick Actions
       </h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <button class="btn-primary justify-start text-left h-auto py-4 flex-col items-start gap-2">
+        <Link
+          :href="route('projects.index')"
+          class="btn-primary justify-start text-left h-auto py-4 flex-col items-start gap-2"
+        >
           <div class="flex items-center gap-3 w-full">
             <ArrowUpTrayIcon class="w-8 h-8 flex-shrink-0" />
             <div>
@@ -173,7 +176,7 @@ const recentActivity = [
               </div>
             </div>
           </div>
-        </button>
+        </Link>
 
         <Link
           :href="route('projects.create')"

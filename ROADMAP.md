@@ -77,6 +77,10 @@ These are the critical gaps that need to be addressed:
 | Advanced Reports | Partial | Inventory + BOM reports live; purchasing/production reports pending |
 | Dashboard Widgets | Partial | Real-time metrics, project overview |
 | Gas Cylinder Tracking | Complete | Database schema and initial implementation |
+| **Welding Gas Bottle Service** | Planned | Gas cylinder tracking, delivery scheduling, rental billing |
+| **Shop Service Tickets** | Planned | Internal shop maintenance and service request tracking |
+| **Field Service Tickets** | Planned | On-site service dispatch, mobile tracking, customer site work |
+| **Crane Service Tickets** | Planned | Equipment rental tracking, crane dispatch, operator scheduling |
 | Service Call Dispatch | Planned | Mobile app, scheduling, field tracking, **Service Ticket Module** |
 | Multi-mode POS | Planned | Retail + gas sales + quick jobs support, **integrated sales dashboard** |
 | Truck Inventory Management | Planned | Service vehicle stock tracking |

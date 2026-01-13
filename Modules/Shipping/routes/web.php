@@ -10,4 +10,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/shipping/{load}', [ShippingController::class, 'show'])->name('shipping.show');
     Route::post('/shipping/{load}/add-item', [ShippingController::class, 'addItem'])->name('shipping.add-item');
     Route::post('/shipping/{load}/ship', [ShippingController::class, 'ship'])->name('shipping.ship');
+    Route::get('/shipping/{load}/bol', [ShippingController::class, 'printBol'])->name('shipping.print-bol');
 });

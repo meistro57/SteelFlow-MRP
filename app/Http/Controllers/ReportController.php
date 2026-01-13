@@ -160,4 +160,36 @@ class ReportController extends Controller
 
         return $inches > 0 ? "{$feet}' {$inches}\"" : "{$feet}'";
     }
+
+    /**
+     * Display production summary report.
+     */
+    public function production()
+    {
+        $filters = request()->only(['start_date', 'end_date']);
+        $data = $this->reportingService->getProductionReport($filters);
+
+        return Inertia::render('Reports/Production', $data);
+    }
+
+    /**
+     * Display labor efficiency report.
+     */
+    public function laborEfficiency()
+    {
+        $filters = request()->only(['start_date', 'end_date']);
+        $data = $this->reportingService->getLaborEfficiencyReport($filters);
+
+        return Inertia::render('Reports/LaborEfficiency', $data);
+    }
+
+    /**
+     * Display batch completion timeline report.
+     */
+    public function batchCompletion()
+    {
+        $data = $this->reportingService->getBatchCompletionReport();
+
+        return Inertia::render('Reports/BatchCompletion', $data);
+    }
 }

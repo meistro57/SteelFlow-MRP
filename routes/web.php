@@ -45,6 +45,10 @@ Route::middleware('auth')->group(function () {
 
     // Project Routes
     Route::resource('projects', ProjectController::class);
+    Route::get('/projects/{project}/import-kiss', [ProjectController::class, 'importKissForm'])->name('projects.import-kiss');
+    Route::post('/projects/{project}/import-kiss', [ProjectController::class, 'importKiss'])->name('projects.import-kiss.store');
+    Route::get('/projects/{project}/import-xsr', [ProjectController::class, 'importXsrForm'])->name('projects.import-xsr');
+    Route::post('/projects/{project}/import-xsr', [ProjectController::class, 'importXsr'])->name('projects.import-xsr.store');
 
     // Purchase Order Routes
     Route::resource('purchase-orders', PurchaseOrderController::class);
@@ -73,6 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/projects/{project}/bom', [ReportController::class, 'projectBom'])->name('reports.project.bom');
     Route::get('/reports/projects/{project}/bom/csv', [ReportController::class, 'projectBomCsv'])->name('reports.project.bom.csv');
     Route::get('/reports/projects/{project}/bom/pdf', [ReportController::class, 'projectBomPdf'])->name('reports.project.bom.pdf');
+    Route::get('/reports/production', [ReportController::class, 'production'])->name('reports.production');
+    Route::get('/reports/labor-efficiency', [ReportController::class, 'laborEfficiency'])->name('reports.labor-efficiency');
+    Route::get('/reports/batch-completion', [ReportController::class, 'batchCompletion'])->name('reports.batch-completion');
 
     // UI Editor / Dashboard Builder Routes
     Route::prefix('ui-editor')->name('ui-editor.')->group(function () {
