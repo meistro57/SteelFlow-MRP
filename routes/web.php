@@ -13,6 +13,7 @@ use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UIEditorController;
+use App\Http\Controllers\UpfImportController;
 use Illuminate\Support\Facades\Route;
 
 // Root route - redirect to dashboard if authenticated, otherwise to login
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/import-templates/kiss', [ImportTemplateController::class, 'kiss'])->name('import-templates.kiss');
     Route::get('/import-templates/xsr', [ImportTemplateController::class, 'xsr'])->name('import-templates.xsr');
     Route::get('/import-templates/upf', [ImportTemplateController::class, 'upf'])->name('import-templates.upf');
+
+    // UPF Import Routes
+    Route::get('/upf/import', [UpfImportController::class, 'index'])->name('upf-import.index');
+    Route::post('/upf/import', [UpfImportController::class, 'store'])->name('upf-import.store');
 
     // Customer Routes
     Route::get('/customers/import', [CustomerController::class, 'importForm'])->name('customers.import');

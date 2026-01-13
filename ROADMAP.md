@@ -12,8 +12,8 @@ This document tracks the current implementation status and development prioritie
 | Backend Services | Complete | 16+ services; UPF & core implemented |
 | Filament UI | Implemented | UPF Material Catalog & Admin foundation |
 | Authentication | Complete | Laravel Sanctum + Azure OAuth |
-| Controllers | In Progress | 21 controllers implemented for web UI |
-| Frontend Pages | In Progress | 35 Inertia/Vue pages |
+| Controllers | In Progress | 23 controllers implemented for web UI |
+| Frontend Pages | In Progress | 42 Inertia/Vue pages |
 | UI Components | Complete | Core component library established |
 | API Endpoints | Minimal | No dedicated API routes yet |
 
@@ -72,13 +72,13 @@ These are the critical gaps that need to be addressed:
 
 | Feature | Status | Description |
 |---------|--------|-------------|
-| Import UI | Needed | KISS/XSR file upload and preview |
-| Shipping UI | Partial | Dashboard live; load builder + BOL generation pending |
-| Advanced Reports | Partial | Inventory + BOM reports live; purchasing/production reports pending |
+| Import UI | Complete | KISS/XSR file upload with preview, UPF import UI |
+| Shipping UI | Complete | Dashboard live; load builder + enhanced BOL PDF generation |
+| Advanced Reports | Complete | Inventory, BOM, Production, Labor Efficiency, Batch Completion reports |
 | Dashboard Widgets | Partial | Real-time metrics, project overview |
 | Gas Cylinder Tracking | Complete | Database schema and initial implementation |
 | **Welding Gas Bottle Service** | Planned | Gas cylinder tracking, delivery scheduling, rental billing |
-| **Shop Service Tickets** | Planned | Internal shop maintenance and service request tracking |
+| **Shop Service Tickets** | Complete | Internal shop ticket module with workflow steps and tracking |
 | **Field Service Tickets** | Planned | On-site service dispatch, mobile tracking, customer site work |
 | **Crane Service Tickets** | Planned | Equipment rental tracking, crane dispatch, operator scheduling |
 | Service Call Dispatch | Planned | Mobile app, scheduling, field tracking, **Service Ticket Module** |
@@ -156,6 +156,17 @@ Items to address as development progresses:
 ---
 
 ## Recent Updates
+
+### January 13, 2026
+
+**Feature Expansion & Module Completion:**
+- **Advanced Reports UI:** Implemented three new report pages - Production Summary, Labor Efficiency, and Batch Completion Timeline with date filtering and visualizations.
+- **UPF Import UI:** Created dedicated import form for FabTrol Universal Product File data with catalog statistics and field mapping guidance.
+- **Shop Ticket Module:** Built complete Shop Ticket system with controller, routes, and Vue pages (Index, Show, Create, Edit) supporting workflow step management and status tracking.
+- **Enhanced BOL PDF:** Upgraded Bill of Lading template with additional sections including reference numbers, dual-unit weights (lbs/kg), freight class/NMFC, three-signature sections, freight charges, and terms & conditions.
+- **Import Templates Update:** Added links to import forms from the templates page for streamlined data import workflow.
+
+---
 
 ### January 12, 2026
 
