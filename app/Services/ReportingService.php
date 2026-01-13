@@ -148,4 +148,134 @@ class ReportingService
 
         return round(($completed / $total) * 100, 2);
     }
+
+    /**
+     * Get comprehensive production report data.
+     */
+    public function getProductionReport(array $filters = []): array
+    {
+        $startDate = $filters['start_date'] ?? now()->subDays(30);
+        $endDate = $filters['end_date'] ?? now();
+
+        $batches = \App\Models\ProductionBatch::with('project')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+
+        $laborHours = \App\Models\TimeEntry::whereBetween('created_at', [$startDate, $endDate])
+            ->sum('hours');
+
+        $partsCompleted = \App\Models\PartWorkArea::where('status', 'complete')
+            ->whereBetween('completed_at', [$startDate, $endDate])
+            ->count();
+
+        $workAreaUtilization = \App\Models\WorkArea::withCount([
+            'routingSteps as total_steps',
+            'routingSteps as completed_steps' => function ($query) use ($startDate, $endDate) {
+                $query->where('status', 'complete')
+                    ->whereBetween('completed_at', [$startDate, $endDate]);
+            },
+        ])->get()->map(function ($area) {
+            $utilization = $area->total_steps > 0
+                ? round(($area->completed_steps / $area->total_steps) * 100, 2)
+                : 0;
+
+            return [
+                'name' => $area->name,
+                'badge_code' => $area->badge_code,
+                'total_steps' => $area->total_steps,
+                'completed_steps' => $area->completed_steps,
+                'utilization_percentage' => $utilization,
+            ];
+        });
+
+        return [
+            'summary' => [
+                'total_batches' => $batches->count(),
+                'active_batches' => $batches->where('status', 'in_progress')->count(),
+                'completed_batches' => $batches->where('status', 'complete')->count(),
+                'labor_hours' => round($laborHours, 2),
+                'parts_completed' => $partsCompleted,
+                'date_range' => [
+                    'start' => $startDate,
+                    'end' => $endDate,
+                ],
+            ],
+            'batches' => $batches,
+            'work_area_utilization' => $workAreaUtilization,
+        ];
+    }
+
+    /**
+     * Get labor efficiency report by work area.
+     */
+    public function getLaborEfficiencyReport(array $filters = []): array
+    {
+        $startDate = $filters['start_date'] ?? now()->subDays(30);
+        $endDate = $filters['end_date'] ?? now();
+
+        $workAreas = \App\Models\WorkArea::with('department')
+            ->withCount([
+                'timeEntries as total_hours' => function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('created_at', [$startDate, $endDate])
+                        ->selectRaw('SUM(hours)');
+                },
+                'routingSteps as parts_completed' => function ($query) use ($startDate, $endDate) {
+                    $query->where('status', 'complete')
+                        ->whereBetween('completed_at', [$startDate, $endDate]);
+                },
+            ])
+            ->get()
+            ->map(function ($area) {
+                $efficiency = $area->total_hours > 0
+                    ? round($area->parts_completed / $area->total_hours, 2)
+                    : 0;
+
+                return [
+                    'work_area' => $area->name,
+                    'department' => $area->department->name ?? 'N/A',
+                    'total_hours' => $area->total_hours ?? 0,
+                    'parts_completed' => $area->parts_completed ?? 0,
+                    'parts_per_hour' => $efficiency,
+                ];
+            });
+
+        return [
+            'work_areas' => $workAreas,
+            'date_range' => [
+                'start' => $startDate,
+                'end' => $endDate,
+            ],
+        ];
+    }
+
+    /**
+     * Get batch completion timeline data.
+     */
+    public function getBatchCompletionReport(): array
+    {
+        $batches = \App\Models\ProductionBatch::with('project')
+            ->whereNotNull('completed_at')
+            ->orderByDesc('completed_at')
+            ->limit(50)
+            ->get()
+            ->map(function ($batch) {
+                $duration = $batch->completed_at && $batch->created_at
+                    ? $batch->created_at->diffInHours($batch->completed_at)
+                    : null;
+
+                return [
+                    'batch_number' => $batch->batch_number,
+                    'project' => $batch->project->job_number ?? 'N/A',
+                    'status' => $batch->status,
+                    'created_at' => $batch->created_at,
+                    'completed_at' => $batch->completed_at,
+                    'duration_hours' => $duration,
+                ];
+            });
+
+        return [
+            'batches' => $batches,
+            'average_duration' => $batches->avg('duration_hours'),
+        ];
+    }
 }

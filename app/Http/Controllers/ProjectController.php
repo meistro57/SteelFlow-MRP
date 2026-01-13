@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImportKissRequest;
+use App\Http\Requests\ImportXsrRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Customer;
 use App\Models\Project;
+use App\Services\Import\KissImporter;
+use App\Services\Import\XsrImporter;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -136,5 +140,69 @@ class ProjectController extends Controller
             'repair' => 'Repair',
             'miscellaneous' => 'Miscellaneous',
         ];
+    }
+
+    /**
+     * Show the KISS import form for a project.
+     */
+    public function importKissForm(Project $project): Response
+    {
+        return Inertia::render('Projects/ImportKiss', [
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Import KISS file for a project.
+     */
+    public function importKiss(ImportKissRequest $request, Project $project, KissImporter $importer): RedirectResponse
+    {
+        $file = $request->file('file');
+        $tempPath = $file->getRealPath();
+
+        $success = $importer->import($tempPath, $project);
+
+        if ($success) {
+            return redirect()
+                ->route('projects.show', $project)
+                ->with('success', 'KISS file imported successfully.');
+        }
+
+        return redirect()
+            ->back()
+            ->withErrors(['file' => 'Failed to import KISS file. Please check the file format.'])
+            ->withInput();
+    }
+
+    /**
+     * Show the XSR import form for a project.
+     */
+    public function importXsrForm(Project $project): Response
+    {
+        return Inertia::render('Projects/ImportXsr', [
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Import XSR file for a project.
+     */
+    public function importXsr(ImportXsrRequest $request, Project $project, XsrImporter $importer): RedirectResponse
+    {
+        $file = $request->file('file');
+        $tempPath = $file->getRealPath();
+
+        $success = $importer->import($tempPath, $project);
+
+        if ($success) {
+            return redirect()
+                ->route('projects.show', $project)
+                ->with('success', 'XSR file imported successfully.');
+        }
+
+        return redirect()
+            ->back()
+            ->withErrors(['file' => 'Failed to import XSR file. Please check the file format.'])
+            ->withInput();
     }
 }

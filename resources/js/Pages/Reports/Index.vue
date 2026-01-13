@@ -192,9 +192,41 @@ const inventorySummary = () => props.inventorySnapshot ?? { totalItems: 0, valua
             </div>
           </Link>
 
-          <div class="border border-steel-700 rounded-sm p-4 text-xs text-text-secondary">
-            More reports coming soon. Suggestions welcome.
-          </div>
+          <Link
+            href="/reports/production"
+            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+          >
+            <div class="text-sm font-semibold text-white">
+              Production Summary
+            </div>
+            <div class="mt-1 text-xs text-text-secondary">
+              Batch status, labor hours, and parts completed.
+            </div>
+          </Link>
+
+          <Link
+            href="/reports/labor-efficiency"
+            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+          >
+            <div class="text-sm font-semibold text-white">
+              Labor Efficiency
+            </div>
+            <div class="mt-1 text-xs text-text-secondary">
+              Parts per hour by work area and department.
+            </div>
+          </Link>
+
+          <Link
+            href="/reports/batch-completion"
+            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+          >
+            <div class="text-sm font-semibold text-white">
+              Batch Completion Timeline
+            </div>
+            <div class="mt-1 text-xs text-text-secondary">
+              Batch durations and completion history.
+            </div>
+          </Link>
         </div>
       </div>
     </section>

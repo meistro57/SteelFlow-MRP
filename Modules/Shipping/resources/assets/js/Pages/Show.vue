@@ -82,9 +82,13 @@ const shipLoad = () => {
           </div>
         </div>
         <div class="flex gap-3">
-          <button class="btn-secondary">
+          <a
+            :href="route('shipping.print-bol', load.id)"
+            class="btn-secondary"
+            target="_blank"
+          >
             Print BOL
-          </button>
+          </a>
           <button
             v-if="load.status === 'pending'"
             class="btn-success flex items-center gap-2"

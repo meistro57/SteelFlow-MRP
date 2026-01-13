@@ -9,6 +9,7 @@ use App\Models\AssemblyInstance;
 use App\Models\Load;
 use App\Models\Project;
 use App\Services\ShippingService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -206,5 +207,25 @@ class ShippingController extends Controller
                 ->back()
                 ->with('error', 'Failed to ship load: '.$e->getMessage());
         }
+    }
+
+    /**
+     * Generate and download Bill of Lading (BOL) PDF for a load.
+     */
+    public function printBol(Load $load)
+    {
+        $load->load(['project', 'items.assemblyInstance.assembly']);
+
+        // Calculate total pieces and weight
+        $totalPieces = $load->items->sum('quantity');
+        $totalWeight = $load->total_weight_lbs;
+
+        $pdf = Pdf::loadView('shipping::bol', [
+            'load' => $load,
+            'totalPieces' => $totalPieces,
+            'totalWeight' => $totalWeight,
+        ])->setPaper('letter', 'portrait');
+
+        return $pdf->download('BOL_'.$load->load_number.'_'.date('Y-m-d').'.pdf');
     }
 }

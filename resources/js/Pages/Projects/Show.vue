@@ -145,6 +145,18 @@ const formatDate = (date) => {
                 Full BOM
               </Link>
               <Link
+                :href="route('projects.import-kiss', project.id)"
+                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700"
+              >
+                Import KISS
+              </Link>
+              <Link
+                :href="route('projects.import-xsr', project.id)"
+                class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700"
+              >
+                Import XSR
+              </Link>
+              <Link
                 :href="route('projects.assemblies.create', project.id)"
                 class="inline-flex items-center px-4 py-2 bg-forge-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-forge-700"
               >
