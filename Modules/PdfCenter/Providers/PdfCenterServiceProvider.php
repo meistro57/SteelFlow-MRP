@@ -12,7 +12,7 @@ class PdfCenterServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadViewsFrom(module_path($this->name, 'resources/views'), $this->nameLower);
+        $this->loadViewsFrom(__DIR__.'/../resources/views', $this->nameLower);
     }
 
     public function register(): void {}

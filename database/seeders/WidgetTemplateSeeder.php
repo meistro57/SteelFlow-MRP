@@ -174,7 +174,7 @@ class WidgetTemplateSeeder extends Seeder
         foreach ($templates as $template) {
             WidgetTemplate::updateOrCreate(
                 ['slug' => $template['slug']],
-                $template
+                $template,
             );
         }
     }

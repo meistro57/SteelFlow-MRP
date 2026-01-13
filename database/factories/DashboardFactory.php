@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Dashboard;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Dashboard>
@@ -26,7 +25,6 @@ class DashboardFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => ucwords($name),
-            'slug' => Str::slug($name),
             'description' => fake()->optional()->sentence(),
             'is_default' => false,
             'is_shared' => false,

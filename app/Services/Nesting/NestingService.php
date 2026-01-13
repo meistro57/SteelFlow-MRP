@@ -86,7 +86,7 @@ class NestingService
                     }
 
                     // If not nested, pick a new bar from stock
-                    if (!$nested) {
+                    if (! $nested) {
                         $stockItem = $stockItems->first(fn ($si) => $si->length >= $partLength);
 
                         if ($stockItem) {

@@ -10,7 +10,7 @@ class AuthzServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->registerPolicies();
     }
 

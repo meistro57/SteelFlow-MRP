@@ -13,7 +13,7 @@ class DocumentsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerConfig();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     public function register(): void
@@ -24,10 +24,10 @@ class DocumentsServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->publishes([
-            module_path($this->name, 'config/config.php') => config_path($this->nameLower.'.php'),
+            __DIR__.'/../config/config.php' => config_path($this->nameLower.'.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->name, 'config/config.php'), $this->nameLower,
+            __DIR__.'/../config/config.php', $this->nameLower,
         );
     }
 }

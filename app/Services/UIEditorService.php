@@ -39,7 +39,7 @@ class UIEditorService
     /**
      * Create a new dashboard
      *
-     * @param array{name: string, description?: string, columns?: int, row_height?: int, settings?: array} $data
+     * @param  array{name: string, description?: string, columns?: int, row_height?: int, settings?: array}  $data
      */
     public function createDashboard(User $user, array $data): Dashboard
     {
@@ -62,7 +62,7 @@ class UIEditorService
     /**
      * Update dashboard settings
      *
-     * @param array{name?: string, description?: string, columns?: int, row_height?: int, settings?: array, is_shared?: bool} $data
+     * @param  array{name?: string, description?: string, columns?: int, row_height?: int, settings?: array, is_shared?: bool}  $data
      */
     public function updateDashboard(Dashboard $dashboard, array $data): Dashboard
     {
@@ -85,7 +85,7 @@ class UIEditorService
         return DB::transaction(function () use ($dashboard) {
             $dashboard->widgets()->delete();
 
-            return $dashboard->delete();
+            return (bool) $dashboard->delete();
         });
     }
 
@@ -106,7 +106,7 @@ class UIEditorService
     /**
      * Add a widget to a dashboard
      *
-     * @param array{widget_type: string, title?: string, grid_x?: int, grid_y?: int, grid_w?: int, grid_h?: int, config?: array, data_source?: array} $data
+     * @param  array{widget_type: string, title?: string, grid_x?: int, grid_y?: int, grid_w?: int, grid_h?: int, config?: array, data_source?: array}  $data
      */
     public function addWidget(Dashboard $dashboard, array $data): DashboardWidget
     {
@@ -135,7 +135,7 @@ class UIEditorService
     /**
      * Update a widget's configuration
      *
-     * @param array{title?: string, config?: array, data_source?: array, is_visible?: bool} $data
+     * @param  array{title?: string, config?: array, data_source?: array, is_visible?: bool}  $data
      */
     public function updateWidget(DashboardWidget $widget, array $data): DashboardWidget
     {
@@ -147,7 +147,7 @@ class UIEditorService
     /**
      * Update widget position on the grid
      *
-     * @param array{x: int, y: int, w: int, h: int} $position
+     * @param  array{x: int, y: int, w: int, h: int}  $position
      */
     public function updateWidgetPosition(DashboardWidget $widget, array $position): DashboardWidget
     {
@@ -159,7 +159,7 @@ class UIEditorService
     /**
      * Bulk update widget positions (for drag-and-drop saves)
      *
-     * @param array<int, array{i: int, x: int, y: int, w: int, h: int}> $layout
+     * @param  array<int, array{i: int, x: int, y: int, w: int, h: int}>  $layout
      */
     public function updateLayout(Dashboard $dashboard, array $layout): void
     {
@@ -182,7 +182,7 @@ class UIEditorService
      */
     public function removeWidget(DashboardWidget $widget): bool
     {
-        return $widget->delete();
+        return (bool) $widget->delete();
     }
 
     /**
@@ -396,12 +396,12 @@ class UIEditorService
 
     protected function getNextSortOrder(User $user): int
     {
-        return (Dashboard::where('user_id', $user->id)->max('sort_order') ?? 0) + 1;
+        return (int) (Dashboard::where('user_id', $user->id)->max('sort_order') ?? 0) + 1;
     }
 
     protected function getNextWidgetSortOrder(Dashboard $dashboard): int
     {
-        return ($dashboard->widgets()->max('sort_order') ?? 0) + 1;
+        return (int) ($dashboard->widgets()->max('sort_order') ?? 0) + 1;
     }
 
     protected function getNextGridY(Dashboard $dashboard): int
@@ -410,6 +410,6 @@ class UIEditorService
             ->selectRaw('MAX(grid_y + grid_h) as max_y')
             ->value('max_y');
 
-        return $maxY ?? 0;
+        return (int) ($maxY ?? 0);
     }
 }

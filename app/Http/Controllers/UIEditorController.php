@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateWidgetRequest;
 use App\Models\Dashboard;
 use App\Models\DashboardWidget;
 use App\Services\UIEditorService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ use Inertia\Response;
 
 class UIEditorController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(
         protected UIEditorService $uiEditorService,
     ) {}
@@ -54,7 +57,7 @@ class UIEditorController extends Controller
     {
         $dashboard = $this->uiEditorService->createDashboard(
             $request->user(),
-            $request->validated()
+            $request->validated(),
         );
 
         return redirect()
@@ -159,11 +162,11 @@ class UIEditorController extends Controller
     {
         $this->authorize('view', $dashboard);
 
-        $newName = $request->input('name', $dashboard->name . ' (Copy)');
+        $newName = $request->input('name', $dashboard->name.' (Copy)');
         $newDashboard = $this->uiEditorService->duplicateDashboard(
             $dashboard,
             $request->user(),
-            $newName
+            $newName,
         );
 
         return redirect()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class DashboardWidget extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'dashboard_id',
         'widget_type',
@@ -83,7 +86,7 @@ class DashboardWidget extends Model
     /**
      * Update position from grid layout
      *
-     * @param array{x: int, y: int, w: int, h: int} $position
+     * @param  array{x: int, y: int, w: int, h: int}  $position
      */
     public function updatePosition(array $position): void
     {

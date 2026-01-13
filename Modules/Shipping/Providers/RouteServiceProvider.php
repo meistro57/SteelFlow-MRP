@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    protected string $namespace = 'Modules\Shipping\Http\Controllers';
+    protected $namespace = 'Modules\Shipping\Http\Controllers';
 
     public function boot(): void
     {
@@ -23,6 +23,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('web')
             ->namespace($this->namespace)
-            ->group(module_path('Shipping', 'routes/web.php'));
+            ->group(__DIR__.'/../routes/web.php');
     }
 }

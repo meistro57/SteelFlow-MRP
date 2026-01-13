@@ -24,8 +24,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerConfig();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
@@ -33,6 +32,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->registerConfig();
         $this->app->register(RouteServiceProvider::class);
     }
 
@@ -41,7 +41,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     protected function registerConfig(): void
     {
-        $configPath = module_path($this->name, config('modules.paths.generator.config.path'));
+        $configPath = __DIR__.'/../config';
 
         if (! is_dir($configPath)) {
             return;
@@ -75,9 +75,6 @@ class CoreServiceProvider extends ServiceProvider
      */
     protected function mergeConfigFromPath(string $path, string $key): void
     {
-        $existing = config($key, []);
-        $moduleConfig = require $path;
-
-        config([$key => array_replace_recursive($existing, $moduleConfig)]);
+        $this->mergeConfigFrom($path, $key);
     }
 }

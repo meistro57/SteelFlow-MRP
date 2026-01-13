@@ -18,7 +18,7 @@ class ShippingServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
         $this->registerViews();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     public function register(): void
@@ -29,14 +29,14 @@ class ShippingServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->mergeConfigFrom(
-            module_path($this->name, 'config/config.php'), $this->nameLower
+            __DIR__.'/../config/config.php', $this->nameLower,
         );
     }
 
     public function registerViews(): void
     {
         $viewPath = resource_path('views/modules/'.$this->nameLower);
-        $sourcePath = module_path($this->name, 'resources/views');
+        $sourcePath = __DIR__.'/../resources/views';
 
         if (is_dir($sourcePath)) {
             $this->loadViewsFrom($sourcePath, $this->nameLower);

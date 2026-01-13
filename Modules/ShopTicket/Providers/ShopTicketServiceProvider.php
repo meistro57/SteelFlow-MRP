@@ -19,7 +19,7 @@ class ShopTicketServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerConfig();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
@@ -36,7 +36,7 @@ class ShopTicketServiceProvider extends ServiceProvider
     protected function registerConfig(): void
     {
         $this->mergeConfigFrom(
-            module_path($this->name, 'config/config.php'), $this->nameLower,
+            __DIR__.'/../config/config.php', $this->nameLower,
         );
     }
 }
