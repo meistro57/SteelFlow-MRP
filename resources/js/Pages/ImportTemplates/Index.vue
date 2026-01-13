@@ -1,11 +1,16 @@
 <!-- resources/js/Pages/ImportTemplates/Index.vue -->
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
     templates: Object,
 });
+
+const importLinks = {
+    customers: { route: 'customers.import', label: 'Import Customers' },
+    upf: { route: 'upf-import.index', label: 'Import UPF Data' },
+};
 
 const templateDetails = {
     customers: {
@@ -95,11 +100,18 @@ const templateDetails = {
           <span class="font-semibold">Note:</span> {{ templateDetails[key].notes }}
         </div>
 
-        <div class="mt-4 pt-4 border-t border-steel-700">
+        <div class="mt-4 pt-4 border-t border-steel-700 flex items-center justify-between">
           <div class="text-xs text-text-tertiary">
             <span class="font-semibold">Filename:</span>
             <span class="font-mono ml-1">{{ template.filename }}</span>
           </div>
+          <Link
+            v-if="importLinks[key]"
+            :href="route(importLinks[key].route)"
+            class="btn-secondary text-sm"
+          >
+            {{ importLinks[key].label }}
+          </Link>
         </div>
       </div>
     </div>
