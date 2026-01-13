@@ -13,11 +13,13 @@ import {
 import { StarIcon as StarSolidIcon } from '@heroicons/vue/24/solid';
 
 const props = defineProps({
-    dashboards: {
-        type: Array,
-        default: () => [],
-    },
+  dashboards: {
+    type: Array,
+    default: () => [],
+  },
 });
+
+// State
 
 const setDefault = (dashboard) => {
     router.post(route('ui-editor.set-default', dashboard.id), {}, {
@@ -63,11 +65,11 @@ const duplicateDashboard = (dashboard) => {
 
     <!-- Dashboards Grid -->
     <div
-      v-if="dashboards.length > 0"
+      v-if="props.dashboards.length > 0"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
     >
       <div
-        v-for="dashboard in dashboards"
+        v-for="dashboard in props.dashboards"
         :key="dashboard.id"
         class="card-elevated group hover:border-forge-500/50 transition-all"
       >

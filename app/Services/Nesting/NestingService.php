@@ -31,7 +31,7 @@ class NestingService
             ->whereNull('nesting_id')
             ->with(['part'])
             ->get()
-            ->filter(fn ($pi) => $pi->part && $pi->part->length > 0);
+            ->filter(fn ($pi) => $pi->part !== null && $pi->part->length > 0);
 
         if ($partInstances->isEmpty()) {
             throw new \Exception("No parts found for nesting in project {$project->job_number}.");

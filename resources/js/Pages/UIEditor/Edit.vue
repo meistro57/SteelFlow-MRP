@@ -44,6 +44,10 @@ const isSaving = ref(false);
 const showSettings = ref(false);
 const gridRef = ref(null);
 
+// Local state for dashboard settings form
+const dashboardName = ref(props.dashboard.name);
+const dashboardDescription = ref(props.dashboard.description || '');
+
 // Computed
 const gridStyle = computed(() => ({
     display: 'grid',
@@ -438,14 +442,14 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <form @submit.prevent="router.put(route('ui-editor.update', dashboard.id), { name: dashboard.name, description: dashboard.description })">
+        <form @submit.prevent="router.put(route('ui-editor.update', dashboard.id), { name: dashboardName.value, description: dashboardDescription.value })">
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-steel-300 mb-2">
                 Name
               </label>
               <input
-                v-model="dashboard.name"
+                v-model="dashboardName"
                 type="text"
                 class="input w-full"
               >
@@ -455,7 +459,7 @@ onUnmounted(() => {
                 Description
               </label>
               <textarea
-                v-model="dashboard.description"
+                v-model="dashboardDescription"
                 class="input w-full"
                 rows="3"
               />

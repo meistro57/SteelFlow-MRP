@@ -63,14 +63,14 @@ class WidgetTemplate extends Model
     /**
      * Get templates grouped by category
      *
-     * @return \Illuminate\Database\Eloquent\Collection<string, \Illuminate\Database\Eloquent\Collection<int, WidgetTemplate>>
+     * @return \Illuminate\Support\Collection<string, \Illuminate\Support\Collection<int, WidgetTemplate>>
      */
     public static function getGroupedByCategory()
     {
-        return static::where('is_active', true)
+        return collect(static::where('is_active', true)
             ->orderBy('category')
             ->orderBy('name')
-            ->get()
+            ->get())
             ->groupBy('category');
     }
 
