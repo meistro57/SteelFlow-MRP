@@ -1,7 +1,7 @@
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
     stockItems: Object,
@@ -11,6 +11,10 @@ const props = defineProps({
     locations: Object,
     grades: Array,
     statusCounts: Object,
+    projects: {
+        type: Array,
+        default: () => [],
+    },
 });
 
 const search = ref(props.filters?.search || '');
@@ -19,6 +23,72 @@ const locationFilter = ref(props.filters?.location || '');
 const gradeFilter = ref(props.filters?.grade || '');
 const sortBy = ref(props.filters?.sort_by || 'created_at');
 const sortDirection = ref(props.filters?.sort_direction || 'desc');
+
+// Bulk selection state
+const selectedItems = ref([]);
+const showBulkModal = ref(false);
+const bulkAction = ref('');
+
+const bulkForm = useForm({
+    item_ids: [],
+    action: '',
+    stock_area: '',
+    project_id: '',
+    reason: '',
+    notes: '',
+});
+
+const allSelected = computed(() => {
+    if (!props.stockItems?.data?.length) return false;
+    return props.stockItems.data.every(item => selectedItems.value.includes(item.id));
+});
+
+const someSelected = computed(() => {
+    return selectedItems.value.length > 0 && !allSelected.value;
+});
+
+const toggleSelectAll = () => {
+    if (allSelected.value) {
+        selectedItems.value = [];
+    } else {
+        selectedItems.value = props.stockItems.data.map(item => item.id);
+    }
+};
+
+const toggleSelect = (itemId) => {
+    const index = selectedItems.value.indexOf(itemId);
+    if (index > -1) {
+        selectedItems.value.splice(index, 1);
+    } else {
+        selectedItems.value.push(itemId);
+    }
+};
+
+const openBulkModal = (action) => {
+    bulkAction.value = action;
+    bulkForm.action = action;
+    bulkForm.item_ids = [...selectedItems.value];
+    showBulkModal.value = true;
+};
+
+const closeBulkModal = () => {
+    showBulkModal.value = false;
+    bulkAction.value = '';
+    bulkForm.reset();
+};
+
+const submitBulkAction = () => {
+    bulkForm.post('/inventory-bulk-action', {
+        onSuccess: () => {
+            closeBulkModal();
+            selectedItems.value = [];
+        },
+    });
+};
+
+const clearSelection = () => {
+    selectedItems.value = [];
+};
 
 watch([search, statusFilter, locationFilter, gradeFilter], () => {
     router.get('/inventory', {
@@ -77,6 +147,15 @@ const getStatusCount = (status) => {
     }
 
     return props.statusCounts[status] ?? 0;
+};
+
+const bulkActionLabels = {
+    transfer: 'Transfer Location',
+    assign: 'Assign to Project',
+    release: 'Release from Project',
+    commit: 'Commit to Production',
+    use: 'Mark as Used',
+    scrap: 'Scrap Items',
 };
 </script>
 
@@ -212,11 +291,76 @@ const getStatusCount = (status) => {
         </div>
       </div>
 
+      <!-- Bulk Action Bar -->
+      <div
+        v-if="selectedItems.length > 0"
+        class="mb-4 p-4 bg-weld-900/30 border border-weld-700 rounded-lg flex items-center justify-between"
+      >
+        <div class="flex items-center gap-4">
+          <span class="text-weld-400 font-semibold">
+            {{ selectedItems.length }} item{{ selectedItems.length > 1 ? 's' : '' }} selected
+          </span>
+          <button
+            class="text-text-tertiary hover:text-white text-sm"
+            @click="clearSelection"
+          >
+            Clear
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            class="btn-ghost text-sm py-2 px-3"
+            @click="openBulkModal('transfer')"
+          >
+            Transfer
+          </button>
+          <button
+            class="btn-ghost text-sm py-2 px-3"
+            @click="openBulkModal('assign')"
+          >
+            Assign
+          </button>
+          <button
+            class="btn-ghost text-sm py-2 px-3"
+            @click="openBulkModal('release')"
+          >
+            Release
+          </button>
+          <button
+            class="btn-ghost text-sm py-2 px-3"
+            @click="openBulkModal('commit')"
+          >
+            Commit
+          </button>
+          <button
+            class="btn-ghost text-sm py-2 px-3"
+            @click="openBulkModal('use')"
+          >
+            Use
+          </button>
+          <button
+            class="text-red-400 hover:text-red-300 text-sm py-2 px-3"
+            @click="openBulkModal('scrap')"
+          >
+            Scrap
+          </button>
+        </div>
+      </div>
+
       <!-- Industrial Table -->
       <div class="overflow-x-auto scrollbar-industrial">
         <table class="table-industrial">
           <thead>
             <tr>
+              <th class="w-12">
+                <input
+                  type="checkbox"
+                  class="form-checkbox rounded bg-steel-700 border-steel-600 text-weld-500 focus:ring-weld-500 focus:ring-offset-0"
+                  :checked="allSelected"
+                  :indeterminate="someSelected"
+                  @change="toggleSelectAll"
+                >
+              </th>
               <th
                 class="cursor-pointer hover:bg-steel-700 transition-colors"
                 @click="handleSort('stock_id')"
@@ -326,7 +470,16 @@ const getStatusCount = (status) => {
             <tr
               v-for="item in stockItems.data"
               :key="item.id"
+              :class="{ 'bg-weld-900/20': selectedItems.includes(item.id) }"
             >
+              <td class="w-12">
+                <input
+                  type="checkbox"
+                  class="form-checkbox rounded bg-steel-700 border-steel-600 text-weld-500 focus:ring-weld-500 focus:ring-offset-0"
+                  :checked="selectedItems.includes(item.id)"
+                  @change="toggleSelect(item.id)"
+                >
+              </td>
               <td class="table-data-mono">
                 <Link
                   :href="`/inventory/${item.id}`"
@@ -396,7 +549,7 @@ const getStatusCount = (status) => {
             </tr>
             <tr v-if="stockItems.data.length === 0">
               <td
-                colspan="10"
+                colspan="11"
                 class="text-center py-12"
               >
                 <div class="flex flex-col items-center justify-center">
@@ -494,5 +647,176 @@ const getStatusCount = (status) => {
         </div>
       </div>
     </div>
+
+    <!-- Bulk Action Modal -->
+    <Teleport to="body">
+      <div
+        v-if="showBulkModal"
+        class="fixed inset-0 z-50 overflow-y-auto"
+      >
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+          <!-- Backdrop -->
+          <div
+            class="fixed inset-0 bg-black/70 transition-opacity"
+            @click="closeBulkModal"
+          />
+
+          <!-- Modal -->
+          <div class="relative bg-steel-800 border border-steel-700 rounded-lg text-left overflow-hidden shadow-xl transform transition-all max-w-lg w-full">
+            <div class="p-6">
+              <h3 class="text-lg font-semibold text-white mb-4">
+                {{ bulkActionLabels[bulkAction] }}
+              </h3>
+              <p class="text-text-secondary text-sm mb-6">
+                Apply action to {{ selectedItems.length }} selected item{{ selectedItems.length > 1 ? 's' : '' }}.
+              </p>
+
+              <form @submit.prevent="submitBulkAction">
+                <!-- Transfer fields -->
+                <div
+                  v-if="bulkAction === 'transfer'"
+                  class="space-y-4"
+                >
+                  <div>
+                    <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+                      Destination Location *
+                    </label>
+                    <select
+                      v-model="bulkForm.stock_area"
+                      class="input-industrial w-full"
+                    >
+                      <option value="">
+                        Select Location
+                      </option>
+                      <option
+                        v-for="(label, value) in locations"
+                        :key="value"
+                        :value="value"
+                      >
+                        {{ label }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Assign fields -->
+                <div
+                  v-if="bulkAction === 'assign'"
+                  class="space-y-4"
+                >
+                  <div>
+                    <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+                      Project *
+                    </label>
+                    <select
+                      v-model="bulkForm.project_id"
+                      class="input-industrial w-full"
+                    >
+                      <option value="">
+                        Select Project
+                      </option>
+                      <option
+                        v-for="project in projects"
+                        :key="project.id"
+                        :value="project.id"
+                      >
+                        {{ project.job_number }} - {{ project.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Scrap fields -->
+                <div
+                  v-if="bulkAction === 'scrap'"
+                  class="space-y-4"
+                >
+                  <div>
+                    <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+                      Reason *
+                    </label>
+                    <select
+                      v-model="bulkForm.reason"
+                      class="input-industrial w-full"
+                    >
+                      <option value="">
+                        Select Reason
+                      </option>
+                      <option value="Damaged beyond repair">
+                        Damaged beyond repair
+                      </option>
+                      <option value="Corrosion/rust">
+                        Corrosion/rust
+                      </option>
+                      <option value="Wrong specification">
+                        Wrong specification
+                      </option>
+                      <option value="End of life">
+                        End of life
+                      </option>
+                      <option value="Other">
+                        Other
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Notes for all actions -->
+                <div class="mt-4">
+                  <label class="block text-xs text-text-tertiary uppercase tracking-wider mb-2 font-semibold">
+                    Notes (Optional)
+                  </label>
+                  <textarea
+                    v-model="bulkForm.notes"
+                    class="input-industrial w-full"
+                    rows="2"
+                    placeholder="Add notes..."
+                  />
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-steel-700">
+                  <button
+                    type="button"
+                    class="btn-ghost"
+                    @click="closeBulkModal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn-primary"
+                    :class="{ 'bg-red-600 hover:bg-red-700': bulkAction === 'scrap' }"
+                    :disabled="bulkForm.processing || (bulkAction === 'transfer' && !bulkForm.stock_area) || (bulkAction === 'assign' && !bulkForm.project_id) || (bulkAction === 'scrap' && !bulkForm.reason)"
+                  >
+                    <svg
+                      v-if="bulkForm.processing"
+                      class="w-5 h-5 mr-2 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                      />
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Confirm
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </AppLayout>
 </template>

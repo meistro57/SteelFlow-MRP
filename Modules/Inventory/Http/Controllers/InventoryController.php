@@ -84,6 +84,10 @@ class InventoryController extends Controller
 
         $stockItems = $query->paginate(20)->withQueryString();
 
+        $projects = Project::where('status', 'active')
+            ->orderBy('job_number')
+            ->get(['id', 'job_number', 'name']);
+
         return Inertia::render('Inventory::Index', [
             'stockItems' => $stockItems,
             'totalPieces' => $totalPieces,
@@ -92,6 +96,7 @@ class InventoryController extends Controller
             'locations' => $this->getStockAreas(),
             'grades' => $this->getUniqueGrades(),
             'statusCounts' => $statusCounts,
+            'projects' => $projects,
         ]);
     }
 
