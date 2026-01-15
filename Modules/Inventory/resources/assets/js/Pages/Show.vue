@@ -1,10 +1,41 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { ref } from 'vue';
 
-defineProps({
+const props = defineProps({
     stockItem: Object,
 });
+
+const showActionMenu = ref(false);
+
+const quickAction = (action) => {
+    showActionMenu.value = false;
+    router.post(`/inventory/${props.stockItem.id}/${action}`);
+};
+
+const canDoAction = (action) => {
+    const status = props.stockItem.status;
+    const transitions = {
+        free: ['assigned', 'committed', 'used', 'scrapped'],
+        assigned: ['free', 'committed', 'used', 'scrapped'],
+        committed: ['free', 'assigned', 'used', 'scrapped'],
+        used: ['free', 'scrapped'],
+        scrapped: [],
+    };
+
+    const actionToStatus = {
+        assign: 'assigned',
+        release: 'free',
+        commit: 'committed',
+        'mark-used': 'used',
+        return: 'free',
+        scrap: 'scrapped',
+    };
+
+    const targetStatus = actionToStatus[action];
+    return transitions[status]?.includes(targetStatus) ?? false;
+};
 
 const formatDate = (date) => {
     if (!date) return '-';
@@ -85,6 +116,254 @@ const getMovementTypeColor = (type) => {
           </div>
         </div>
         <div class="flex gap-3">
+          <!-- Quick Actions Dropdown -->
+          <div
+            v-if="stockItem.status !== 'scrapped'"
+            class="relative"
+          >
+            <button
+              class="btn-ghost flex items-center"
+              @click="showActionMenu = !showActionMenu"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              Actions
+              <svg
+                class="w-4 h-4 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <div
+              v-if="showActionMenu"
+              class="absolute right-0 mt-2 w-56 bg-steel-800 border border-steel-700 rounded-lg shadow-xl z-50"
+            >
+              <div class="py-1">
+                <!-- Location Actions -->
+                <div class="px-3 py-2 text-xs font-semibold text-text-tertiary uppercase tracking-wider border-b border-steel-700">
+                  Location
+                </div>
+                <Link
+                  :href="`/inventory/${stockItem.id}/transfer`"
+                  class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-purple-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                  Transfer Location
+                </Link>
+
+                <!-- Status Actions -->
+                <div class="px-3 py-2 text-xs font-semibold text-text-tertiary uppercase tracking-wider border-b border-steel-700 mt-1">
+                  Status Changes
+                </div>
+                <Link
+                  v-if="canDoAction('assign')"
+                  :href="`/inventory/${stockItem.id}/assign`"
+                  class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-blue-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  Assign to Project
+                </Link>
+                <button
+                  v-if="canDoAction('release')"
+                  class="w-full flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                  @click="quickAction('release')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-green-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Release from Project
+                </button>
+                <button
+                  v-if="canDoAction('commit')"
+                  class="w-full flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                  @click="quickAction('commit')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-weld-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                    />
+                  </svg>
+                  Commit to Production
+                </button>
+                <button
+                  v-if="canDoAction('mark-used')"
+                  class="w-full flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                  @click="quickAction('mark-used')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-forge-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Mark as Used
+                </button>
+                <button
+                  v-if="canDoAction('return')"
+                  class="w-full flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                  @click="quickAction('return')"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-safety-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+                    />
+                  </svg>
+                  Return to Free
+                </button>
+
+                <!-- Material Actions -->
+                <div class="px-3 py-2 text-xs font-semibold text-text-tertiary uppercase tracking-wider border-b border-steel-700 mt-1">
+                  Material
+                </div>
+                <Link
+                  :href="`/inventory/${stockItem.id}/adjust`"
+                  class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-yellow-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                    />
+                  </svg>
+                  Adjust Quantity
+                </Link>
+                <Link
+                  :href="`/inventory/${stockItem.id}/remnant`"
+                  class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-steel-700 hover:text-white transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3 text-safety-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                    />
+                  </svg>
+                  Create Remnant
+                </Link>
+
+                <!-- Destructive Actions -->
+                <div class="border-t border-steel-700 mt-1" />
+                <Link
+                  v-if="canDoAction('scrap')"
+                  :href="`/inventory/${stockItem.id}/scrap`"
+                  class="flex items-center px-4 py-2 text-sm text-red-400 hover:bg-red-900/50 transition-colors"
+                >
+                  <svg
+                    class="w-4 h-4 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Scrap Item
+                </Link>
+              </div>
+            </div>
+
+            <!-- Backdrop to close menu -->
+            <div
+              v-if="showActionMenu"
+              class="fixed inset-0 z-40"
+              @click="showActionMenu = false"
+            />
+          </div>
+
           <Link
             :href="`/inventory/${stockItem.id}/edit`"
             class="btn-primary"
