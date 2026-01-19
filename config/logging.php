@@ -14,6 +14,7 @@ return [
     | Default Log Channel
     |--------------------------------------------------------------------------
     */
+
     'default' => env('LOG_CHANNEL', 'stack'),
 
     /*
@@ -21,6 +22,7 @@ return [
     | Deprecations Log Channel
     |--------------------------------------------------------------------------
     */
+
     'deprecations' => [
         'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
         'trace' => env('LOG_DEPRECATIONS_TRACE', false),
@@ -31,10 +33,12 @@ return [
     | Log Channels
     |--------------------------------------------------------------------------
     */
+
     'channels' => [
 
         'stack' => [
             'driver' => 'stack',
+            'channels' => explode(',', env('LOG_STACK', 'single')),
             'channels' => explode(',', env('LOG_STACK', 'single,operations')),
             'ignore_exceptions' => false,
         ],

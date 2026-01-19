@@ -9,6 +9,7 @@ return [
     | Default Database Connection Name
     |--------------------------------------------------------------------------
     */
+
     'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
@@ -16,6 +17,7 @@ return [
     | Database Connections
     |--------------------------------------------------------------------------
     */
+
     'connections' => [
 
         'sqlite' => [
@@ -34,6 +36,9 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
             'database' => env('DB_DATABASE', 'steelflow'),
             'username' => env('DB_USERNAME', 'steelflow'),
             'password' => env('DB_PASSWORD', 'magic'),
@@ -54,6 +59,12 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_uca1400_ai_ci'),
             'database' => env('DB_DATABASE', 'steelflow'),
             'username' => env('DB_USERNAME', 'steelflow'),
             'password' => env('DB_PASSWORD', 'magic'),
@@ -74,6 +85,8 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
             'database' => env('DB_DATABASE', 'steelflow'),
             'username' => env('DB_USERNAME', 'steelflow'),
             'password' => env('DB_PASSWORD', ''),
@@ -89,6 +102,9 @@ return [
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
             'database' => env('DB_DATABASE', 'steelflow'),
             'username' => env('DB_USERNAME', 'steelflow'),
             'password' => env('DB_PASSWORD', 'magic'),
@@ -104,6 +120,7 @@ return [
     | Migration Repository Table
     |--------------------------------------------------------------------------
     */
+
     'migrations' => [
         'table' => 'migrations',
         'update_date_on_publish' => true,
@@ -114,6 +131,10 @@ return [
     | Redis Databases
     |--------------------------------------------------------------------------
     */
+
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
     'redis' => [
 
         'client' => env('REDIS_CLIENT', 'predis'),

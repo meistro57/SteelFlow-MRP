@@ -7,6 +7,7 @@ return [
     | Authentication Defaults
     |--------------------------------------------------------------------------
     */
+
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
@@ -17,6 +18,7 @@ return [
     | Authentication Guards
     |--------------------------------------------------------------------------
     */
+
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -34,6 +36,7 @@ return [
     | User Providers
     |--------------------------------------------------------------------------
     */
+
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
@@ -46,6 +49,7 @@ return [
     | Resetting Passwords
     |--------------------------------------------------------------------------
     */
+
     'passwords' => [
         'users' => [
             'provider' => 'users',
@@ -60,6 +64,7 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     */
+
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
 ];

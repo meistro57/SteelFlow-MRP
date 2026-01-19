@@ -7,6 +7,7 @@ return [
     | Default Queue Connection Name
     |--------------------------------------------------------------------------
     */
+
     'default' => env('QUEUE_CONNECTION', 'database'),
 
     /*
@@ -14,6 +15,7 @@ return [
     | Queue Connections
     |--------------------------------------------------------------------------
     */
+
     'connections' => [
 
         'sync' => [
@@ -65,6 +67,7 @@ return [
     | Job Batching
     |--------------------------------------------------------------------------
     */
+
     'batching' => [
         'database' => env('DB_CONNECTION', 'mysql'),
         'table' => 'job_batches',
@@ -75,6 +78,7 @@ return [
     | Failed Queue Jobs
     |--------------------------------------------------------------------------
     */
+
     'failed' => [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'mysql'),

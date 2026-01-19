@@ -9,6 +9,7 @@ return [
     | Default Session Driver
     |--------------------------------------------------------------------------
     */
+
     'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
@@ -16,6 +17,9 @@ return [
     | Session Lifetime
     |--------------------------------------------------------------------------
     */
+
+    'lifetime' => env('SESSION_LIFETIME', 120),
+
     'lifetime' => env('SESSION_LIFETIME', 120),
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
@@ -24,6 +28,7 @@ return [
     | Session Encryption
     |--------------------------------------------------------------------------
     */
+
     'encrypt' => env('SESSION_ENCRYPT', false),
 
     /*
@@ -31,6 +36,7 @@ return [
     | Session File Location
     |--------------------------------------------------------------------------
     */
+
     'files' => storage_path('framework/sessions'),
 
     /*
@@ -38,6 +44,7 @@ return [
     | Session Database Connection
     |--------------------------------------------------------------------------
     */
+
     'connection' => env('SESSION_CONNECTION'),
 
     /*
@@ -45,6 +52,7 @@ return [
     | Session Database Table
     |--------------------------------------------------------------------------
     */
+
     'table' => env('SESSION_TABLE', 'sessions'),
 
     /*
@@ -52,6 +60,7 @@ return [
     | Session Cache Store
     |--------------------------------------------------------------------------
     */
+
     'store' => env('SESSION_STORE'),
 
     /*
@@ -59,6 +68,7 @@ return [
     | Session Sweeping Lottery
     |--------------------------------------------------------------------------
     */
+
     'lottery' => [2, 100],
 
     /*
@@ -66,6 +76,10 @@ return [
     | Session Cookie Name
     |--------------------------------------------------------------------------
     */
+
+    'cookie' => env(
+        'SESSION_COOKIE',
+        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
     'cookie' => env(
         'SESSION_COOKIE',
         Str::slug(env('APP_NAME', 'laravel'), '_').'_session',
@@ -76,6 +90,7 @@ return [
     | Session Cookie Path
     |--------------------------------------------------------------------------
     */
+
     'path' => env('SESSION_PATH', '/'),
 
     /*
@@ -83,6 +98,7 @@ return [
     | Session Cookie Domain
     |--------------------------------------------------------------------------
     */
+
     'domain' => env('SESSION_DOMAIN'),
 
     /*
@@ -90,6 +106,7 @@ return [
     | HTTPS Only Cookies
     |--------------------------------------------------------------------------
     */
+
     'secure' => env('SESSION_SECURE_COOKIE'),
 
     /*
@@ -97,6 +114,7 @@ return [
     | HTTP Access Only
     |--------------------------------------------------------------------------
     */
+
     'http_only' => env('SESSION_HTTP_ONLY', true),
 
     /*
@@ -104,6 +122,7 @@ return [
     | Same-Site Cookies
     |--------------------------------------------------------------------------
     */
+
     'same_site' => env('SESSION_SAME_SITE', 'lax'),
 
     /*
@@ -111,6 +130,7 @@ return [
     | Partitioned Cookies
     |--------------------------------------------------------------------------
     */
+
     'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
 
 ];

@@ -11,6 +11,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    public function register(): void
+    {
+        if ($this->app->environment('local')) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
+    }
     public function register(): void {}
 
     /**
@@ -18,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        //
         Gate::define('viewPulse', function (User $user) {
             return $user->isAdmin();
         });

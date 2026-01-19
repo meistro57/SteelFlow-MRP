@@ -9,6 +9,7 @@ return [
     | Default Cache Store
     |--------------------------------------------------------------------------
     */
+
     'default' => env('CACHE_STORE', 'database'),
 
     /*
@@ -16,6 +17,7 @@ return [
     | Cache Stores
     |--------------------------------------------------------------------------
     */
+
     'stores' => [
 
         'array' => [
@@ -82,6 +84,7 @@ return [
     | Cache Key Prefix
     |--------------------------------------------------------------------------
     */
+
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache_'),
 
 ];
