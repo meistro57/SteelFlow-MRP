@@ -13,13 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [
-            \App\Http\Middleware\HandleInertiaRequests::class,
-            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
-        ]);
-    })
-    ->withExceptions(function (Exceptions $exceptions) {
-    ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(\App\Http\Middleware\TrustProxies::class);
 
         $middleware->web(
@@ -28,13 +21,14 @@ return Application::configure(basePath: dirname(__DIR__))
             ],
             append: [
                 \App\Http\Middleware\HandleInertiaRequests::class,
-            ],
+                \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            ]
         );
 
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

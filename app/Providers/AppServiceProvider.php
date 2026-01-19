@@ -18,7 +18,6 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
     }
-    public function register(): void {}
 
     /**
      * Bootstrap any application services.
