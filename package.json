@@ -1,29 +1,36 @@
 {
     "name": "steelflow-mrp",
-    "version": "1.0.0",
+    "version": "0.1.0-alpha",
     "private": true,
     "type": "module",
     "description": "SteelFlow MRP - Manufacturing Resource Planning for Steel Fabrication",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "lint": "eslint resources/js Modules/*/resources/assets/js --ext .js,.vue",
+        "lint:check": "eslint resources/js Modules/*/resources/assets/js --ext .js,.vue --quiet",
+        "lint:fix": "eslint resources/js Modules/*/resources/assets/js --ext .js,.vue --fix"
     },
     "devDependencies": {
         "@headlessui/vue": "^1.7.19",
         "@inertiajs/vue3": "^1.0.16",
         "@tailwindcss/forms": "^0.5.7",
+        "@tailwindcss/postcss": "^4.0.0",
         "@vitejs/plugin-vue": "^5.0.4",
         "autoprefixer": "^10.4.18",
         "axios": "^1.6.7",
+        "eslint": "^8.57.0",
+        "eslint-plugin-vue": "^9.23.0",
         "laravel-vite-plugin": "^1.0.2",
         "postcss": "^8.4.35",
-        "tailwindcss": "^3.4.1",
-        "vite": "^5.1.4",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.0.0",
         "vue": "^3.4.21"
     },
     "dependencies": {
         "@heroicons/vue": "^2.1.1",
-        "pinia": "^2.1.7"
+        "pinia": "^2.1.7",
+        "ziggy-js": "^2.6.0"
     }
 }

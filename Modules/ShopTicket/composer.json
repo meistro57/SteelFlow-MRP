@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/shopticket",
+    "description": "Shop Ticket module for SteelFlow MRP",
+    "authors": [
+        {
+            "name": "SteelFlow Team",
+            "email": "team@steelflow.local"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ShopTicket\\": "",
+            "Modules\\ShopTicket\\Database\\Factories\\": "database/factories/",
+            "Modules\\ShopTicket\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\ShopTicket\\Tests\\": "tests/"
+        }
+    }
+}

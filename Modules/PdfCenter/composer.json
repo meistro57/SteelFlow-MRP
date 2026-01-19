@@ -1,0 +1,16 @@
+{
+    "name": "steelflow/pdfcenter",
+    "description": "PDF generation module for SteelFlow MRP",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\PdfCenter\\Providers\\PdfCenterServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\PdfCenter\\": ""
+        }
+    }
+}

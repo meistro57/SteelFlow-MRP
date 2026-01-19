@@ -39,6 +39,9 @@ return [
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', 'steelflow'),
+            'username' => env('DB_USERNAME', 'steelflow'),
+            'password' => env('DB_PASSWORD', 'magic'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
@@ -62,6 +65,12 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_uca1400_ai_ci'),
+            'database' => env('DB_DATABASE', 'steelflow'),
+            'username' => env('DB_USERNAME', 'steelflow'),
+            'password' => env('DB_PASSWORD', 'magic'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
@@ -78,6 +87,8 @@ return [
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
+            'database' => env('DB_DATABASE', 'steelflow'),
+            'username' => env('DB_USERNAME', 'steelflow'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
@@ -94,6 +105,9 @@ return [
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', 'steelflow'),
+            'username' => env('DB_USERNAME', 'steelflow'),
+            'password' => env('DB_PASSWORD', 'magic'),
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
@@ -121,6 +135,9 @@ return [
     'redis' => [
 
         'client' => env('REDIS_CLIENT', 'phpredis'),
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'predis'),
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),

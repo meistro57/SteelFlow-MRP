@@ -1,0 +1,11 @@
+{
+    "name": "UPF",
+    "alias": "upf",
+    "description": "Universal Product File system (FabTrol compatible)",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\UPF\\Providers\\UPFServiceProvider"
+    ],
+    "files": []
+}

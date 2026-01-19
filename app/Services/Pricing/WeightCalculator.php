@@ -8,18 +8,19 @@ class WeightCalculator
 {
     /**
      * Calculate weights for a part.
-     * 
+     *
      * Imperial: lbs = unit_weight_lbs (per ft) * length (ft) * quantity
      * Metric: kg = unit_weight_kg (per m) * length (m) * quantity
-     * 
-     * Note: Part.length is stored in feet (standard FabTrol convention).
+     *
+     * Note: Part.length is stored in INCHES.
      */
     public function calculatePartWeights(Part $part): array
     {
-        $unitWeightLbs = $part->weight_each_lbs ?: ($part->material->unit_weight_lbs ?? 0);
-        $unitWeightKg = $part->weight_each_kg ?: ($part->material->unit_weight_kg ?? 0);
+        // Use null-safe operator to prevent errors when material is not loaded or null
+        $unitWeightLbs = $part->weight_each_lbs ?: ($part->material?->unit_weight_lbs ?? 0);
+        $unitWeightKg = $part->weight_each_kg ?: ($part->material?->unit_weight_kg ?? 0);
 
-        $lengthFt = $part->length;
+        $lengthFt = $part->length / 12; // Convert inches to feet
         $lengthM = $lengthFt * 0.3048;
 
         $weightEachLbs = $unitWeightLbs * $lengthFt;

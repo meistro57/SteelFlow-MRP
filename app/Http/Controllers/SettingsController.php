@@ -2,20 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateSettingsRequest;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class SettingsController extends Controller
 {
     /**
+     * Display the settings page
+     */
+    public function index()
+    {
+        return Inertia::render('Settings/Index');
+    }
+
+    /**
      * Update user settings (theme, layout, etc.)
      */
-    public function update(Request $request)
+    public function update(UpdateSettingsRequest $request)
     {
         $user = Auth::user();
-        
-        $settings = array_merge($user->settings ?? [], $request->only(['theme', 'layout_density', 'sidebar_collapsed']));
-        
+        $validated = $request->validated();
+
+        $settings = array_merge($user->settings ?? [], $validated);
+
         $user->update(['settings' => $settings]);
 
         return back()->with('status', 'settings-updated');

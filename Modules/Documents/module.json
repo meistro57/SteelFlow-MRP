@@ -1,0 +1,11 @@
+{
+    "name": "Documents",
+    "alias": "documents",
+    "description": "Centralized document management for SteelFlow MRP, supporting CAD drawings, specs, and versioning.",
+    "keywords": ["documents", "versioning", "cad", "attachments"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Documents\\Providers\\DocumentsServiceProvider"
+    ],
+    "files": []
+}

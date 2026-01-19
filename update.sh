@@ -31,12 +31,29 @@ function ensure_laravel_directories() {
     # Create bootstrap cache directory
     mkdir -p bootstrap/cache
 
-    # Add .gitkeep files to track empty directories
-    touch storage/logs/.gitkeep
-    touch bootstrap/cache/.gitkeep
+    # Add .gitkeep files to track empty directories (only if they don't exist)
+    [ -f storage/logs/.gitkeep ] || touch storage/logs/.gitkeep 2>/dev/null || true
+    [ -f bootstrap/cache/.gitkeep ] || touch bootstrap/cache/.gitkeep 2>/dev/null || true
 
     success "Laravel directories ready"
 }
+
+# Step 0: Ensure Laravel directory structure exists
+ensure_laravel_directories
+
+# NEW Step 0.5: Sync Environment for Vite
+status "Syncing Vite environment for current location..."
+# Detect current local IP
+DETECTED_IP=$(hostname -I | awk '{print $1}')
+TARGET_HOST=${DETECTED_IP:-localhost}
+
+# Force update the .env file (using sudo to handle the "unwritable" issue)
+if grep -q "VITE_HMR_HOST=" .env; then
+    sudo sed -i "s/^VITE_HMR_HOST=.*/VITE_HMR_HOST=$TARGET_HOST/" .env
+else
+    echo "VITE_HMR_HOST=$TARGET_HOST" | sudo tee -a .env > /dev/null
+fi
+success "Vite HMR host synced to $TARGET_HOST"
 
 # Function to wait for a container to be healthy
 function wait_for_container() {
@@ -98,6 +115,16 @@ else
     warning "Not a git repository - skipping git pull"
 fi
 
+# Step 1.5: Regenerate SSL certificates (in case IP addresses changed)
+status "Regenerating SSL certificates for current network configuration..."
+if [ -f "scripts/generate-ssl-certs.sh" ]; then
+    chmod +x scripts/generate-ssl-certs.sh
+    ./scripts/generate-ssl-certs.sh
+    success "SSL certificates regenerated"
+else
+    warning "SSL certificate generation script not found - skipping"
+fi
+
 # Step 2: Stop existing containers
 status "Stopping existing containers..."
 docker compose down
@@ -118,7 +145,7 @@ wait_for_container "steelflow-app"
 
 # Step 6: Wait for MySQL to be ready
 status "Waiting for MySQL to be ready..."
-until docker compose exec mysql mysqladmin ping -h"localhost" --silent; do
+until docker compose exec mysql mysqladmin ping -h"localhost" -p"${DB_PASSWORD:-secret}" --silent; do
     echo -n "."
     sleep 2
 done
@@ -130,11 +157,15 @@ status "Updating PHP dependencies..."
 docker compose exec app composer install --no-interaction --prefer-dist --optimize-autoloader
 success "PHP dependencies updated"
 
-# Step 8: Update frontend dependencies
+# Step 8: Update frontend dependencies inside the app container
 if [ -f "package.json" ]; then
-    status "Updating frontend dependencies..."
-    npm install
-    success "Frontend dependencies updated"
+    status "Updating frontend dependencies inside container..."
+    if docker compose exec app command -v npm > /dev/null 2>&1; then
+        docker compose exec app npm install
+        success "Frontend dependencies updated"
+    else
+        warning "npm is unavailable in the app container - check the Docker build"
+    fi
 else
     warning "No package.json found - skipping npm install"
 fi
@@ -157,9 +188,15 @@ else
 fi
 
 # Step 11: Run database migrations
-status "Running database migrations..."
-docker compose exec app php artisan migrate --force
-success "Database migrations completed"
+status "Checking if database migrations are pending..."
+# Check if there are pending migrations
+if docker compose exec app php artisan migrate:status --pending | grep -q "No pending migrations" 2>/dev/null; then
+    echo "   No pending database migrations. Skipping."
+else
+    status "Pending migrations found. Running migrations..."
+    docker compose exec app php artisan migrate --force
+    success "Database migrations completed."
+fi
 
 # Step 12: Seed database (optional - only if empty)
 status "Checking if database needs seeding..."
@@ -180,11 +217,15 @@ docker compose exec app php artisan route:cache
 docker compose exec app php artisan view:cache
 success "Application optimized"
 
-# Step 14: Build frontend assets
+# Step 14: Build frontend assets inside the container
 if [ -f "package.json" ]; then
-    status "Building frontend assets..."
-    npm run build
-    success "Frontend assets built"
+    status "Building frontend assets inside container..."
+    if docker compose exec app command -v npm > /dev/null 2>&1; then
+        docker compose exec app npm run build
+        success "Frontend assets built"
+    else
+        warning "npm is unavailable in the app container - skipping asset build"
+    fi
 fi
 
 # Step 15: Set proper permissions
@@ -203,7 +244,14 @@ echo "✨ Update Complete! ✨"
 echo ""
 echo "📊 Application URLs:"
 echo "   🌐 SteelFlow MRP:  http://localhost"
+echo "   🔒 SteelFlow MRP (HTTPS): https://localhost"
 echo "   🔧 phpMyAdmin:     http://localhost:8080"
+echo "   🔍 Meilisearch:    http://localhost:7700"
+echo ""
+echo "🌐 Network Access:"
+echo "   The application accepts connections on ANY IP address."
+echo "   Access via LAN: https://YOUR_IP_ADDRESS"
+echo "   (Browser will show SSL warning for self-signed cert - this is normal)"
 echo ""
 echo "🔐 Default Login Credentials:"
 echo "   📧 Email:    admin@steelflow.local"

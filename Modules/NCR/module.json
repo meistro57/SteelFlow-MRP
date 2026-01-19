@@ -1,0 +1,11 @@
+{
+    "name": "NCR",
+    "alias": "ncr",
+    "description": "Non-Conformance Reports and quality remediation workflow for SteelFlow MRP.",
+    "keywords": ["ncr", "quality", "remediation", "scrap", "rework"],
+    "priority": 0,
+    "providers": [
+        "Modules\\NCR\\Providers\\NCRServiceProvider"
+    ],
+    "files": []
+}

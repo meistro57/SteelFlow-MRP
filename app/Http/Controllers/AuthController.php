@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -16,6 +16,27 @@ class AuthController extends Controller
     public function login()
     {
         return \Inertia\Inertia::render('Auth/Login');
+    }
+
+    /**
+     * Handle an incoming authentication request.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     /**
@@ -45,7 +66,8 @@ class AuthController extends Controller
             'password' => bcrypt(Str::random(24)), // Random password for OAuth users
         ]);
 
-        Auth::login($user);
+        // Persist Azure SSO logins across browser sessions just like the standard "Remember me" flow
+        Auth::login($user, remember: true);
 
         return redirect()->intended('/dashboard');
     }

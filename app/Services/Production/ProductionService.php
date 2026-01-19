@@ -1,12 +1,16 @@
 <?php
 
+// app/Services/Production/ProductionService.php
+
 namespace App\Services\Production;
 
+use App\Models\Employee;
 use App\Models\PartWorkArea;
 use App\Models\TimeEntry;
-use App\Models\Employee;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProductionService
 {
@@ -15,6 +19,15 @@ class ProductionService
      */
     public function startWork(PartWorkArea $step, Employee $employee): void
     {
+        $operationId = Str::uuid()->toString();
+
+        Log::info('Starting work on routing step', [
+            'operation_id' => $operationId,
+            'step_id' => $step->id,
+            'work_area_id' => $step->work_area_id,
+            'employee_id' => $employee->id,
+        ]);
+
         $step->update([
             'status' => 'in_progress',
             'started_at' => now(),
@@ -29,6 +42,12 @@ class ProductionService
             'batch_id' => $step->batch_id,
             'start_time' => now(),
         ]);
+
+        Log::info('Routing step started', [
+            'operation_id' => $operationId,
+            'step_id' => $step->id,
+            'employee_id' => $employee->id,
+        ]);
     }
 
     /**
@@ -36,8 +55,18 @@ class ProductionService
      */
     public function completeWork(PartWorkArea $step, Employee $employee, array $data = []): void
     {
-        DB::transaction(function () use ($step, $employee, $data) {
+        $operationId = Str::uuid()->toString();
+
+        Log::info('Completing routing step', [
+            'operation_id' => $operationId,
+            'step_id' => $step->id,
+            'employee_id' => $employee->id,
+            'payload' => $data,
+        ]);
+
+        DB::transaction(function () use ($step, $employee, $data, $operationId): void {
             $now = now();
+            $hours = 0;
 
             // 1. Close open time entries
             $openEntry = TimeEntry::where('part_work_area_id', $step->id)
@@ -48,11 +77,23 @@ class ProductionService
             if ($openEntry) {
                 $startTime = Carbon::parse($openEntry->start_time);
                 $hours = $startTime->diffInMinutes($now) / 60;
-                
+
                 $openEntry->update([
                     'end_time' => $now,
                     'hours' => $hours,
                     'quantity' => $data['quantity'] ?? 1,
+                ]);
+
+                Log::info('Time entry closed for routing step', [
+                    'operation_id' => $operationId,
+                    'time_entry_id' => $openEntry->id,
+                    'hours_recorded' => $hours,
+                ]);
+            } else {
+                Log::warning('No open time entry found during completion', [
+                    'operation_id' => $operationId,
+                    'step_id' => $step->id,
+                    'employee_id' => $employee->id,
                 ]);
             }
 
@@ -61,7 +102,14 @@ class ProductionService
                 'status' => 'complete',
                 'completed_at' => $now,
                 'completed_by' => $employee->id,
-                'actual_hours' => ($step->actual_hours ?? 0) + ($hours ?? 0),
+                'actual_hours' => ($step->actual_hours ?? 0) + $hours,
+            ]);
+
+            Log::info('Routing step completed', [
+                'operation_id' => $operationId,
+                'step_id' => $step->id,
+                'employee_id' => $employee->id,
+                'duration_hours' => $hours,
             ]);
 
             // 3. Trigger events for assembly completion if all parts done

@@ -11,3 +11,12 @@
 .phpunit.result.cache
 docker-compose.override.yml
 user.ini
+/coverage
+storage/debugbar/
+logs-*.txt
+*.pem
+docker/certs/
+
+# Laravel bootstrap cache
+bootstrap/cache/*.php
+error.md

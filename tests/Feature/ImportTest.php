@@ -2,12 +2,13 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Project;
+use App\Services\BOMExtensionService;
 use App\Services\Import\KissImporter;
-use App\Services\ReferenceDataService;
 use App\Services\Pricing\WeightCalculator;
+use App\Services\ReferenceDataService;
 use Mockery;
+use Tests\TestCase;
 
 class ImportTest extends TestCase
 {
@@ -15,12 +16,13 @@ class ImportTest extends TestCase
     {
         $refData = Mockery::mock(ReferenceDataService::class);
         $weightCalc = Mockery::mock(WeightCalculator::class);
-        $importer = new KissImporter($refData, $weightCalc);
+        $bomExtension = Mockery::mock(BOMExtensionService::class);
+        $importer = new KissImporter($refData, $weightCalc, $bomExtension);
         $project = new Project();
 
         $result = $importer->import('non_existent_file.kiss', $project);
 
         $this->assertFalse($result);
-        $this->assertContains("File not found: non_existent_file.kiss", $importer->getErrors());
+        $this->assertContains('File not found: non_existent_file.kiss', $importer->getErrors());
     }
 }

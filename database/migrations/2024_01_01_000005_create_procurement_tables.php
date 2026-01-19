@@ -39,7 +39,7 @@ return new class extends Migration
             $table->integer('quantity_received')->default(0);
             $table->decimal('unit_price', 12, 4)->default(0);
             $table->decimal('extended_price', 12, 2)->default(0);
-            $table->unsignedBigInteger('nesting_id')->nullable(); 
+            $table->unsignedBigInteger('nesting_id')->nullable();
             $table->text('notes')->nullable();
             $table->unique(['purchase_order_id', 'line_number']);
             $table->timestamps();

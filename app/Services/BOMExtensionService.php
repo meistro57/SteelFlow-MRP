@@ -2,18 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\Project;
 use App\Models\Assembly;
-use App\Models\AssemblyInstance;
 use App\Models\Part;
 use App\Models\PartInstance;
+use App\Models\Project;
 use App\Services\Pricing\WeightCalculator;
 use Illuminate\Support\Facades\DB;
 
 class BOMExtensionService
 {
     public function __construct(
-        protected WeightCalculator $weightCalculator
+        protected WeightCalculator $weightCalculator,
     ) {}
 
     /**
@@ -21,7 +20,10 @@ class BOMExtensionService
      */
     public function extendProject(Project $project): void
     {
-        DB::transaction(function () use ($project) {
+        // Eager load all relationships needed to prevent N+1 queries
+        $project->load(['assemblies.parts.material', 'assemblies.instances']);
+
+        DB::transaction(function () use ($project): void {
             foreach ($project->assemblies as $assembly) {
                 $this->extendAssembly($assembly);
             }
@@ -36,7 +38,12 @@ class BOMExtensionService
      */
     public function extendAssembly(Assembly $assembly): void
     {
-        DB::transaction(function () use ($assembly) {
+        // Eager load parts with material if not already loaded
+        if (! $assembly->relationLoaded('parts')) {
+            $assembly->load('parts.material');
+        }
+
+        DB::transaction(function () use ($assembly): void {
             $totalLbs = 0;
             $totalKg = 0;
 
@@ -44,7 +51,7 @@ class BOMExtensionService
             foreach ($assembly->parts as $part) {
                 $weights = $this->weightCalculator->calculatePartWeights($part);
                 $part->update($weights);
-                
+
                 $totalLbs += $weights['total_weight_lbs'];
                 $totalKg += $weights['total_weight_kg'];
             }

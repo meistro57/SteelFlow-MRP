@@ -1,0 +1,11 @@
+{
+    "name": "Inventory",
+    "alias": "inventory",
+    "description": "Stock management, material tracking, and warehouse inventory services for SteelFlow MRP.",
+    "keywords": ["inventory", "stock", "warehouse", "tracking"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Inventory\\Providers\\InventoryServiceProvider"
+    ],
+    "files": []
+}

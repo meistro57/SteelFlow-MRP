@@ -1,8 +1,21 @@
 <template>
   <div class="relative w-full max-w-md mx-auto">
-    <video ref="video" autoplay playsinline class="w-full h-auto rounded-lg shadow-md bg-black"></video>
-    <div v-if="scanning" class="absolute inset-0 border-2 border-primary animate-pulse pointer-events-none"></div>
-    <div v-if="error" class="mt-2 text-red-500 text-sm">{{ error }}</div>
+    <video
+      ref="video"
+      autoplay
+      playsinline
+      class="w-full h-auto rounded-lg shadow-md bg-black"
+    />
+    <div
+      v-if="scanning"
+      class="absolute inset-0 border-2 border-primary animate-pulse pointer-events-none"
+    />
+    <div
+      v-if="error"
+      class="mt-2 text-red-500 text-sm"
+    >
+      {{ error }}
+    </div>
   </div>
 </template>
 
@@ -26,7 +39,7 @@ const startCamera = async () => {
             video.value.srcObject = stream;
         }
     } catch (err) {
-        error.value = "Camera access denied: " + err.message;
+        error.value = 'Camera access denied: ' + err.message;
         scanning.value = false;
     }
 };
@@ -53,12 +66,12 @@ onMounted(async () => {
                         emit('result', barcodes[0].rawValue);
                     }
                 } catch (err) {
-                    console.error("Barcode detection failed:", err);
+                    console.error('Barcode detection failed:', err);
                 }
             }
         }, 500);
     } else {
-        error.value = "Barcode Detector API not supported in this browser.";
+        error.value = 'Barcode Detector API not supported in this browser.';
     }
 });
 

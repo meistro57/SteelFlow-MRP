@@ -1,5 +1,7 @@
 <?php
 
+// config/logging.php
+
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -37,6 +39,7 @@ return [
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
+            'channels' => explode(',', env('LOG_STACK', 'single,operations')),
             'ignore_exceptions' => false,
         ],
 
@@ -107,6 +110,14 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'operations' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/operations.log'),
+            'level' => env('OPERATIONS_LOG_LEVEL', 'info'),
+            'days' => env('LOG_DAILY_DAYS', 14),
+            'replace_placeholders' => true,
         ],
 
     ],

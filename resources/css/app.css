@@ -1,3 +1,685 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@config '../../tailwind.config.js';
+
+@layer base {
+  :root {
+    --accent-primary: #ff5722; /* forge-600 */
+    --accent-secondary: #ff9800; /* forge-400 */
+    --accent-glow: rgba(255, 107, 53, 0.4);
+    --accent-glow-lg: rgba(255, 107, 53, 0.2);
+  }
+
+  [data-accent="weld"] {
+    --accent-primary: #0096c7; /* weld-600 */
+    --accent-secondary: #48cae4; /* weld-400 */
+    --accent-glow: rgba(0, 180, 216, 0.4);
+    --accent-glow-lg: rgba(0, 180, 216, 0.2);
+  }
+
+  [data-accent="plasma"] {
+    --accent-primary: #7e22ce; /* plasma-600 */
+    --accent-secondary: #9333ea; /* plasma-500 */
+    --accent-glow: rgba(147, 51, 234, 0.4);
+    --accent-glow-lg: rgba(147, 51, 234, 0.2);
+  }
+
+  [data-accent="safety"] {
+    --accent-primary: #d97706; /* safety-600 */
+    --accent-secondary: #fbbf24; /* safety-400 */
+    --accent-glow: rgba(245, 158, 11, 0.4);
+    --accent-glow-lg: rgba(245, 158, 11, 0.2);
+  }
+
+  /* Industrial Base Styles */
+  body {
+    @apply bg-steel-950 text-steel-300 font-sans antialiased;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* All numbers should be tabular */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-steel-300;
+  }
+
+  h1 { @apply text-3xl; }
+  h2 { @apply text-2xl; }
+  h3 { @apply text-xl; }
+}
+
+@layer components {
+  /* === BUTTONS === */
+  
+  .btn {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    background-color: var(--accent-primary);
+    @apply text-white border-none;
+    @apply hover:brightness-110 hover:-translate-y-0.5;
+    @apply active:brightness-90 active:translate-y-0;
+    box-shadow: 0 0 8px var(--accent-glow), 0 0 16px var(--accent-glow-lg);
+    @apply focus:ring-steel-500;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-steel-700 text-steel-300;
+    @apply border border-steel-600;
+    @apply hover:bg-steel-600 hover:text-steel-200;
+    @apply focus:ring-weld-500;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-transparent text-steel-400;
+    @apply hover:bg-steel-800 hover:text-steel-300;
+    @apply focus:ring-steel-600;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-red-600 text-white;
+    @apply hover:bg-red-700;
+    @apply shadow-[0_0_20px_rgba(239,68,68,0.25)];
+    @apply focus:ring-red-500;
+  }
+
+  .btn-weld {
+    @apply inline-flex items-center justify-center gap-2;
+    @apply px-6 py-3 rounded-industrial;
+    @apply font-semibold text-sm uppercase tracking-industrial;
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-steel-950;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply bg-weld-600 text-white;
+    @apply hover:bg-weld-700;
+    @apply shadow-glow-weld hover:shadow-glow-weld-lg;
+    @apply focus:ring-weld-500;
+  }
+
+  /* === CARDS === */
+  
+  .card {
+    @apply bg-gradient-steel rounded-industrial;
+    @apply border border-steel-700;
+    @apply shadow-industrial;
+    @apply p-6;
+  }
+
+  .card-elevated {
+    @apply bg-steel-800 rounded-industrial;
+    @apply border border-steel-600;
+    @apply shadow-industrial-lg;
+    @apply p-6;
+  }
+
+  .card-glow {
+    @apply bg-steel-800 rounded-industrial;
+    @apply border border-steel-600;
+    @apply shadow-industrial-lg;
+    @apply p-6;
+    @apply shadow-industrial-xl;
+    @apply hover:shadow-glow-forge transition-shadow duration-300;
+  }
+
+  /* === METRIC CARDS === */
+  
+  .metric-card {
+    @apply bg-steel-800 rounded-industrial;
+    @apply border border-steel-600;
+    @apply shadow-industrial-lg;
+    @apply p-6;
+    @apply relative overflow-hidden;
+    @apply min-h-[180px] flex flex-col justify-between;
+  }
+
+  .metric-label {
+    @apply text-sm text-steel-400 uppercase tracking-wide font-semibold;
+    @apply mb-3;
+  }
+
+  .metric-value {
+    @apply text-4xl font-bold font-mono tabular-nums text-steel-300;
+    @apply flex items-baseline gap-2;
+  }
+
+  .metric-unit {
+    @apply text-lg text-steel-500 font-normal;
+  }
+
+  .metric-icon {
+    @apply absolute top-6 right-6 text-5xl opacity-30;
+    @apply text-forge-500;
+    filter: drop-shadow(0 0 24px rgba(255, 107, 53, 0.3));
+  }
+
+  .metric-trend {
+    @apply text-sm font-medium mt-2;
+  }
+
+  .metric-trend-up {
+    @apply text-sm font-medium mt-2;
+    @apply text-green-400;
+  }
+
+  .metric-trend-down {
+    @apply text-sm font-medium mt-2;
+    @apply text-red-400;
+  }
+
+  /* === STATUS BADGES === */
+  
+  .badge {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border;
+  }
+
+  .badge-free {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-green-500/15 border-green-500 text-green-400;
+    @apply shadow-[0_0_8px_rgba(16,185,129,0.3)];
+  }
+
+  .badge-assigned {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-blue-500/15 border-blue-500 text-blue-400;
+    @apply shadow-[0_0_8px_rgba(59,130,246,0.3)];
+  }
+
+  .badge-in-progress {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    background-color: color-mix(in srgb, var(--accent-primary) 15%, transparent);
+    border-color: var(--accent-primary);
+    color: var(--accent-secondary);
+    box-shadow: 0 0 8px var(--accent-glow);
+    @apply animate-pulse-glow;
+  }
+
+  .badge-complete {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-green-500/15 border-green-500 text-green-400;
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-safety-500/15 border-safety-400 text-safety-400;
+    @apply animate-pulse-glow;
+  }
+
+  .badge-error {
+    @apply inline-flex items-center gap-1.5;
+    @apply px-3 py-1.5 rounded-industrial;
+    @apply text-xs font-bold uppercase tracking-wide;
+    @apply border bg-red-500/15 border-red-500 text-red-400;
+  }
+
+  /* === FORM INPUTS === */
+  
+  .input {
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-steel-700;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-weld-500;
+    @apply focus:ring-2 focus:ring-weld-500/20;
+    @apply focus:shadow-glow-weld;
+  }
+
+  .input-error {
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-red-500;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-red-500;
+    @apply focus:ring-2 focus:ring-red-500/20;
+    @apply focus:shadow-glow-weld;
+  }
+
+  .select {
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-steel-700;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-weld-500;
+    @apply focus:ring-2 focus:ring-weld-500/20;
+    @apply focus:shadow-glow-weld;
+    @apply cursor-pointer;
+    @apply bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMUw2IDZMMTEgMSIgc3Ryb2tlPSIjNzE3MTdhIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==')] bg-[right_1rem_center] bg-no-repeat pr-10;
+  }
+
+  .textarea {
+    @apply w-full px-4 py-2.5 rounded-industrial;
+    @apply bg-steel-850 border border-steel-700;
+    @apply text-steel-300 placeholder-steel-500;
+    @apply shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)];
+    @apply transition-all duration-200;
+    @apply focus:outline-none focus:border-weld-500;
+    @apply focus:ring-2 focus:ring-weld-500/20;
+    @apply focus:shadow-glow-weld;
+    @apply resize-y min-h-[100px];
+  }
+
+  .checkbox {
+    @apply w-5 h-5 rounded border-steel-600 bg-steel-800;
+    @apply text-forge-600 focus:ring-forge-500 focus:ring-offset-steel-950;
+    @apply cursor-pointer;
+  }
+
+  .radio {
+    @apply w-5 h-5 rounded border-steel-600 bg-steel-800;
+    @apply text-forge-600 focus:ring-forge-500 focus:ring-offset-steel-950;
+    @apply cursor-pointer;
+    @apply rounded-full;
+  }
+
+  /* === TABLES === */
+  
+  .table-industrial {
+    @apply w-full border-collapse;
+  }
+
+  .table-industrial thead {
+    @apply bg-steel-800 sticky top-0 z-10;
+  }
+
+  .table-industrial th {
+    @apply px-6 py-4 text-left text-xs font-semibold text-steel-300;
+    @apply uppercase tracking-wide border-b-2 border-steel-700;
+  }
+
+  .table-industrial tbody {
+    @apply bg-steel-900;
+  }
+
+  .table-industrial tr {
+    @apply border-b border-steel-800 transition-colors duration-150;
+  }
+
+  .table-industrial tbody tr:hover {
+    @apply bg-steel-850;
+  }
+
+  .table-industrial tbody tr:nth-child(even) {
+    @apply bg-steel-900/50;
+  }
+
+  .table-industrial td {
+    @apply px-6 py-4 text-sm text-steel-300;
+  }
+
+  .table-industrial .cell-id {
+    @apply font-mono text-forge-500 font-medium;
+  }
+
+  .table-industrial .cell-measurement {
+    @apply font-mono font-semibold tabular-nums;
+  }
+
+  .table-industrial .cell-status {
+    @apply text-center;
+  }
+
+  /* === NAVIGATION === */
+  
+  .nav-industrial {
+    @apply fixed top-0 left-0 right-0 z-50;
+    @apply h-16 bg-gradient-brushed border-b-2 border-forge-600;
+    @apply shadow-industrial;
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-link {
+    @apply px-4 py-2 text-sm font-semibold uppercase tracking-industrial;
+    @apply text-steel-400 transition-all duration-200;
+    @apply hover:text-steel-300;
+    @apply relative;
+  }
+
+  .nav-link-active {
+    @apply px-4 py-2 text-sm font-semibold uppercase tracking-industrial;
+    @apply text-steel-400 transition-all duration-200;
+    @apply hover:text-steel-300;
+    @apply relative;
+    color: var(--accent-secondary);
+  }
+
+  .nav-link-active::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 h-0.5;
+    background-color: var(--accent-secondary);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  /* === PROGRESS BARS === */
+  
+  .progress-bar {
+    @apply w-full h-3 bg-steel-800 rounded-industrial overflow-hidden;
+    @apply border border-steel-700;
+  }
+
+  .progress-fill {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    @apply h-full;
+    @apply shadow-glow-forge transition-all duration-500;
+  }
+
+  .progress-fill-weld {
+    @apply h-full bg-gradient-weld;
+    @apply shadow-glow-weld transition-all duration-500;
+  }
+
+  /* === DIVIDERS === */
+  
+  .divider {
+    @apply border-t border-steel-700 my-6;
+  }
+
+  .divider-glow {
+    @apply border-t border-steel-700 my-6;
+    @apply border-forge-600/30;
+    box-shadow: 0 1px 3px rgba(255, 107, 53, 0.2);
+  }
+
+  /* === TOOLTIPS === */
+  
+  .tooltip {
+    @apply absolute z-50 px-3 py-2 text-xs font-medium;
+    @apply bg-steel-800 text-steel-300 rounded-industrial;
+    @apply border border-steel-700 shadow-industrial-lg;
+    @apply pointer-events-none opacity-0 transition-opacity duration-200;
+  }
+
+  .tooltip-show {
+    @apply opacity-100;
+  }
+
+  /* === SCROLLBAR === */
+  
+  .scrollbar-industrial::-webkit-scrollbar {
+    @apply w-3 h-3;
+  }
+
+  .scrollbar-industrial::-webkit-scrollbar-track {
+    @apply bg-steel-900 rounded-industrial;
+  }
+
+  .scrollbar-industrial::-webkit-scrollbar-thumb {
+    @apply bg-steel-600 rounded-industrial;
+    @apply hover:bg-steel-500;
+    @apply border-2 border-steel-900;
+  }
+
+  .scrollbar-industrial::-webkit-scrollbar-corner {
+    @apply bg-steel-900;
+  }
+
+  /* === LOADING STATES === */
+  
+  .skeleton {
+    @apply bg-gradient-to-r from-steel-800 via-steel-700 to-steel-800;
+    @apply bg-[length:200%_100%];
+    @apply animate-shimmer;
+    @apply rounded-industrial;
+  }
+
+  .spinner {
+    @apply inline-block w-8 h-8 border-4 border-steel-700;
+    @apply border-t-forge-500 rounded-full;
+    @apply animate-spin;
+  }
+
+  /* === ALERTS & NOTIFICATIONS === */
+  
+  .alert {
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+  }
+
+  .alert-info {
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-weld-500/10 border-weld-500 text-weld-400;
+  }
+
+  .alert-warning {
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-safety-500/10 border-safety-500 text-safety-400;
+  }
+
+  .alert-error {
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-red-500/10 border-red-500 text-red-400;
+  }
+
+  .alert-success {
+    @apply flex items-start gap-3 p-4 rounded-industrial border;
+    @apply bg-green-500/10 border-green-500 text-green-400;
+  }
+
+  /* === UTILITY CLASSES === */
+  
+  .glow-forge {
+    @apply shadow-glow-forge;
+  }
+
+  .glow-forge-lg {
+    @apply shadow-glow-forge-lg;
+  }
+
+  .glow-weld {
+    @apply shadow-glow-weld;
+  }
+
+  .glow-plasma {
+    @apply shadow-glow-plasma;
+  }
+
+  .text-glow-forge {
+    text-shadow: 0 0 8px rgba(255, 107, 53, 0.5);
+  }
+
+  .text-glow-weld {
+    text-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
+  }
+
+  .border-glow-forge {
+    @apply border-forge-600;
+    box-shadow: 0 0 8px rgba(255, 107, 53, 0.3) inset;
+  }
+
+  .border-glow-weld {
+    @apply border-weld-600;
+    box-shadow: 0 0 8px rgba(0, 180, 216, 0.3) inset;
+  }
+
+  .brushed-steel {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px
+    );
+  }
+
+  .diamond-plate {
+    background-image: radial-gradient(
+        circle at 25% 25%,
+        rgba(255, 255, 255, 0.03) 2%,
+        transparent 0%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        rgba(255, 255, 255, 0.03) 2%,
+        transparent 0%
+      );
+    background-size: 16px 16px;
+  }
+}
+
+@layer utilities {
+  .text-industrial {
+    @apply uppercase tracking-industrial;
+  }
+
+  .text-wide {
+    @apply uppercase tracking-wide;
+  }
+
+  .gradient-text-forge {
+    @apply bg-gradient-forge bg-clip-text text-transparent;
+  }
+
+  .gradient-text-weld {
+    @apply bg-gradient-weld bg-clip-text text-transparent;
+  }
+
+  /* Layout Density Utilities */
+  /* Compact: Maximum information density for power users */
+  [data-density="compact"] .card,
+  [data-density="compact"] .card-elevated,
+  [data-density="compact"] .card-glow {
+    @apply p-4;
+  }
+
+  [data-density="compact"] .btn,
+  [data-density="compact"] .btn-primary,
+  [data-density="compact"] .btn-secondary,
+  [data-density="compact"] .btn-ghost,
+  [data-density="compact"] .btn-danger,
+  [data-density="compact"] .btn-weld {
+    @apply px-4 py-2 text-xs;
+  }
+
+  [data-density="compact"] .input,
+  [data-density="compact"] .select,
+  [data-density="compact"] .textarea {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  [data-density="compact"] .table-industrial th {
+    @apply px-4 py-2 text-xs;
+  }
+
+  [data-density="compact"] .table-industrial td {
+    @apply px-4 py-2 text-xs;
+  }
+
+  [data-density="compact"] .metric-card {
+    @apply p-4 min-h-[140px];
+  }
+
+  [data-density="compact"] .metric-label {
+    @apply text-xs mb-2;
+  }
+
+  [data-density="compact"] .metric-value {
+    @apply text-2xl;
+  }
+
+  /* Comfortable: Default balanced layout */
+  [data-density="comfortable"] .card,
+  [data-density="comfortable"] .card-elevated,
+  [data-density="comfortable"] .card-glow {
+    @apply p-6;
+  }
+
+  /* Spacious: Large touch targets for tablets */
+  [data-density="spacious"] .card,
+  [data-density="spacious"] .card-elevated,
+  [data-density="spacious"] .card-glow {
+    @apply p-8;
+  }
+
+  [data-density="spacious"] .btn,
+  [data-density="spacious"] .btn-primary,
+  [data-density="spacious"] .btn-secondary,
+  [data-density="spacious"] .btn-ghost,
+  [data-density="spacious"] .btn-danger,
+  [data-density="spacious"] .btn-weld {
+    @apply px-8 py-4 text-base;
+  }
+
+  [data-density="spacious"] .input,
+  [data-density="spacious"] .select,
+  [data-density="spacious"] .textarea {
+    @apply px-5 py-3.5 text-base;
+  }
+
+  [data-density="spacious"] .table-industrial th {
+    @apply px-8 py-5 text-sm;
+  }
+
+  [data-density="spacious"] .table-industrial td {
+    @apply px-8 py-5 text-base;
+  }
+
+  [data-density="spacious"] .metric-card {
+    @apply p-8 min-h-[220px];
+  }
+
+  [data-density="spacious"] .metric-label {
+    @apply text-base mb-4;
+  }
+
+  [data-density="spacious"] .metric-value {
+    @apply text-5xl;
+  }
+
+  /* Sidebar Collapsed State */
+  [data-sidebar="collapsed"] .sidebar {
+    @apply w-16;
+  }
+
+  [data-sidebar="collapsed"] .sidebar-content {
+    @apply hidden;
+  }
+}

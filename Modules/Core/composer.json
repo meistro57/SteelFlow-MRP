@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/core",
+    "description": "Core module for SteelFlow MRP",
+    "authors": [
+        {
+            "name": "SteelFlow Team",
+            "email": "team@steelflow.local"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Core\\Providers\\CoreServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Core\\": ""
+        }
+    }
+}

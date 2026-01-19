@@ -5,9 +5,13 @@
     "keywords": ["laravel", "mrp", "manufacturing", "steel", "fabrication"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "filament/filament": "^4.4",
         "guzzlehttp/guzzle": "^7.8",
         "inertiajs/inertia-laravel": "^1.0",
+        "khill/lavacharts": "^1.0",
+        "laravel/boost": "^1.8",
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.24",
         "laravel/sanctum": "^4.0",
@@ -15,22 +19,31 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9",
         "meilisearch/meilisearch-php": "^1.5",
+        "nwidart/laravel-modules": "^12.0",
         "predis/predis": "^2.2",
-        "socialiteproviders/microsoft-azure": "^5.1"
+        "socialiteproviders/microsoft-azure": "^5.1",
+        "spatie/laravel-model-states": "^2.12",
+        "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
-        "laravel/pint": "^1.13",
+        "larastan/larastan": "^2.9",
+        "laravel/pint": "^1.27",
         "laravel/sail": "^1.26",
         "laravel/telescope": "^5.0",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
+        "nunomaduro/collision": "^8.8",
+        "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-laravel": "^3.2",
         "phpunit/phpunit": "^11.0",
+        "rector/rector": "^1.2",
         "spatie/laravel-ignition": "^2.4"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
@@ -55,20 +68,44 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "lint": "pint",
+        "lint:check": "pint --test",
+        "analyse": "phpstan analyse --memory-limit=2G",
+        "test": "phpunit --no-coverage",
+        "quality": [
+            "@lint:check",
+            "@analyse",
+            "@test"
         ]
     },
     "extra": {
         "laravel": {
             "dont-discover": []
+        },
+        "merge-plugin": {
+            "include": [
+                "Modules/*/composer.json"
+            ],
+            "recurse": true,
+            "replace": false,
+            "ignore-duplicates": false,
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false
         }
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform": {
+            "php": "8.4.0"
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "minimum-stability": "stable",

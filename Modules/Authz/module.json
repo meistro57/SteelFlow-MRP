@@ -1,0 +1,11 @@
+{
+    "name": "Authz",
+    "alias": "authz",
+    "description": "Authorization, roles, and permissions module for SteelFlow MRP.",
+    "keywords": ["authorization", "roles", "permissions", "policies"],
+    "priority": 1,
+    "providers": [
+        "Modules\\Authz\\Providers\\AuthzServiceProvider"
+    ],
+    "files": []
+}

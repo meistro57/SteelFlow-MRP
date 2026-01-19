@@ -1,0 +1,17 @@
+{
+    "Core": true,
+    "Inventory": true,
+    "Backup": true,
+    "ShopTicket": true,
+    "UPF": true,
+    "Documents": true,
+    "AuditLog": true,
+    "Authz": true,
+    "NCR": true,
+    "PdfCenter": true,
+    "Finance": true,
+    "ProductionScheduling": true,
+    "Nesting": true,
+    "Shipping": true,
+    "Production": true
+}

@@ -1,0 +1,25 @@
+{
+    "name": "steelflow/documents",
+    "description": "Document management module for SteelFlow MRP",
+    "authors": [
+        {
+            "name": "SteelFlow Team",
+            "email": "dev@steelflow.local"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Documents\\Providers\\DocumentsServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Documents\\": "",
+            "Modules\\Documents\\Database\\Factories\\": "database/factories/",
+            "Modules\\Documents\\Database\\Seeders\\": "database/seeders/"
+        }
+    }
+}

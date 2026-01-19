@@ -1,0 +1,11 @@
+{
+    "name": "Core",
+    "alias": "core",
+    "description": "Shared core utilities, conventions, and UI helpers for SteelFlow MRP.",
+    "keywords": ["core", "shared", "helpers"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Core\\Providers\\CoreServiceProvider"
+    ],
+    "files": []
+}

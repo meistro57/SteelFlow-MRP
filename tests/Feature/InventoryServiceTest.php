@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Models\PurchaseOrder;        // (In Modules)
+use App\Models\User;     // (In Modules)
+// (In Modules)
+use Illuminate\Foundation\Testing\RefreshDatabase;       // <--- CHANGE THIS (Found in Modules)
+use Illuminate\Support\Facades\Auth;              // <--- KEEP THIS (Not found in Modules)
+use Modules\Inventory\Models\Grade;
+use Modules\Inventory\Models\Material;
+use Modules\Inventory\Models\Vendor;
+use Modules\Inventory\Services\InventoryService;
 use Tests\TestCase;
-use App\Models\PurchaseOrder;
-use App\Models\PurchaseOrderLine;
-use App\Models\Vendor;
-use App\Models\Material;
-use App\Models\Grade;
-use App\Models\User;
-use App\Services\InventoryService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 
 class InventoryServiceTest extends TestCase
 {
@@ -32,10 +32,10 @@ class InventoryServiceTest extends TestCase
 
         $grade = Grade::create(['code' => 'A36']);
         $material = Material::create([
-            'type' => 'W', 
-            'size_imperial' => 'W12X26', 
+            'type' => 'W',
+            'size_imperial' => 'W12X26',
             'grade_id' => $grade->id,
-            'unit_weight_lbs' => 26.0
+            'unit_weight_lbs' => 26.0,
         ]);
 
         $vendor = Vendor::create(['name' => 'Steel Corp', 'code' => 'V-001']);
@@ -60,7 +60,7 @@ class InventoryServiceTest extends TestCase
         $this->assertDatabaseCount('stock_items', 2);
         $this->assertDatabaseHas('stock_items', [
             'heat_number' => 'HEAT-123',
-            'po_number' => 'PO-100'
+            'po_number' => 'PO-100',
         ]);
     }
 }

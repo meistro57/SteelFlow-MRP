@@ -1,0 +1,16 @@
+{
+    "name": "steelflow/authz",
+    "description": "Authorization module for SteelFlow MRP",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Authz\\Providers\\AuthzServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Authz\\": ""
+        }
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 
+// bootstrap/app.php
+
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -17,5 +19,22 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->prepend(\App\Http\Middleware\TrustProxies::class);
+
+        $middleware->web(
+            prepend: [
+                \App\Http\Middleware\RequestContextMiddleware::class,
+            ],
+            append: [
+                \App\Http\Middleware\HandleInertiaRequests::class,
+            ],
+        );
+
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
