@@ -5,6 +5,7 @@ use App\Http\Controllers\AssemblyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DrawingController;
+use App\Http\Controllers\GasBottleController;
 use App\Http\Controllers\ImportTemplateController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\PartController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\UIEditorController;
 use App\Http\Controllers\UpfImportController;
 use Illuminate\Support\Facades\Route;
@@ -104,6 +106,34 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{dashboard}/widgets/{widget}', [UIEditorController::class, 'removeWidget'])->name('widgets.destroy');
         Route::put('/{dashboard}/layout', [UIEditorController::class, 'updateLayout'])->name('layout.update');
         Route::get('/{dashboard}/widgets/{widget}/data', [UIEditorController::class, 'getWidgetData'])->name('widgets.data');
+    });
+
+    // Gas Bottle Rental Routes
+    Route::prefix('gas-bottles')->name('gas-bottles.')->group(function () {
+        Route::get('/', [GasBottleController::class, 'index'])->name('index');
+        Route::get('/create', [GasBottleController::class, 'create'])->name('create');
+        Route::post('/', [GasBottleController::class, 'store'])->name('store');
+        Route::get('/{gasBottle}', [GasBottleController::class, 'show'])->name('show');
+        Route::post('/{gasBottle}/return', [GasBottleController::class, 'return'])->name('return');
+        Route::post('/{gasBottle}/swap', [GasBottleController::class, 'swap'])->name('swap');
+        Route::post('/{gasBottle}/flag', [GasBottleController::class, 'flag'])->name('flag');
+        Route::post('/{gasBottle}/schedule-inspection', [GasBottleController::class, 'scheduleInspection'])->name('schedule-inspection');
+    });
+
+    // Shipping & Load Routes
+    Route::prefix('shipping')->name('shipping.')->group(function () {
+        Route::get('/', [ShippingController::class, 'index'])->name('index');
+        Route::get('/create', [ShippingController::class, 'create'])->name('create');
+        Route::post('/', [ShippingController::class, 'store'])->name('store');
+        Route::get('/{load}', [ShippingController::class, 'show'])->name('show');
+        Route::get('/{load}/edit', [ShippingController::class, 'edit'])->name('edit');
+        Route::put('/{load}', [ShippingController::class, 'update'])->name('update');
+        Route::delete('/{load}', [ShippingController::class, 'destroy'])->name('destroy');
+        Route::post('/{load}/add-item', [ShippingController::class, 'addItem'])->name('add-item');
+        Route::delete('/{load}/items/{item}', [ShippingController::class, 'removeItem'])->name('remove-item');
+        Route::post('/{load}/plan', [ShippingController::class, 'plan'])->name('plan');
+        Route::post('/{load}/ship', [ShippingController::class, 'ship'])->name('ship');
+        Route::post('/{load}/deliver', [ShippingController::class, 'deliver'])->name('deliver');
     });
 });
 
