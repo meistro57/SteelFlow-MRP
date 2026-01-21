@@ -31,7 +31,38 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'azure_id' => null,
             'settings' => [],
+            'role' => 'user',
         ];
+    }
+
+    /**
+     * Indicate that the user is an admin.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a manager.
+     */
+    public function manager(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'manager',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a supervisor.
+     */
+    public function supervisor(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'supervisor',
+        ]);
     }
 
     /**
