@@ -9,6 +9,12 @@ class RouteServiceProvider extends ServiceProvider
 {
     protected $moduleNamespace = 'Modules\Finance\Http\Controllers';
 
+    public function boot(): void
+    {
+        parent::boot();
+        $this->map();
+    }
+
     public function map()
     {
         $this->mapWebRoutes();
