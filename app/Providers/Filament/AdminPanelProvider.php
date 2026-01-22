@@ -1,5 +1,7 @@
 <?php
 
+// AdminPanelProvider.php
+
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
@@ -38,6 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarCollapsibleOnDesktop()
             ->sidebarWidth('16rem')
             ->navigationGroups([
+                'Maintenance',
                 'Production',
                 'Procurement',
                 'Inventory',
