@@ -2,10 +2,43 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Inventory\Models\Grade;
+use Modules\Inventory\Models\Material;
 use Modules\Inventory\Models\StockItem;
 use Modules\NCR\Models\NCR;
 
 uses(RefreshDatabase::class);
+
+function createNcrTestMaterial(): int
+{
+    $grade = Grade::query()->firstOrCreate(
+        ['code' => 'A36'],
+        [
+            'description' => 'ASTM A36',
+            'is_active' => true,
+        ],
+    );
+
+    $material = Material::query()->firstOrCreate(
+        [
+            'type' => 'plate',
+            'size_imperial' => '1/2 x 48 x 120',
+            'grade_id' => $grade->id,
+        ],
+        [
+            'size_metric' => null,
+            'unit_weight_lbs' => 1,
+            'unit_weight_kg' => 0.4536,
+            'price_per_lb' => null,
+            'price_per_kg' => null,
+            'surface_area_sqft' => null,
+            'is_active' => true,
+            'sort_order' => 1,
+        ],
+    );
+
+    return $material->id;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +50,7 @@ describe('NCR Creation', function () {
     beforeEach(function () {
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createNcrTestMaterial();
     });
 
     it('can create an NCR', function () {
@@ -30,8 +64,9 @@ describe('NCR Creation', function () {
         expect($ncr)
             ->toBeInstanceOf(NCR::class)
             ->number->toBe('NCR-001')
-            ->status->toBe('created')
             ->failure_reason->toContain('Material defect');
+
+        expect($ncr->status->getName())->toBe('created');
 
         $this->assertDatabaseHas('ncrs', [
             'number' => 'NCR-001',
@@ -41,7 +76,7 @@ describe('NCR Creation', function () {
     it('can link NCR to stock item', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-NCR001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -83,6 +118,7 @@ describe('NCR Status Workflow', function () {
     beforeEach(function () {
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createNcrTestMaterial();
     });
 
     it('NCR starts in created status', function () {
@@ -93,7 +129,7 @@ describe('NCR Status Workflow', function () {
             'reported_by' => $this->user->id,
         ]);
 
-        expect($ncr->status)->toBe('created');
+        expect($ncr->status->getName())->toBe('created');
     });
 
     it('can transition to reported status', function () {
@@ -106,7 +142,7 @@ describe('NCR Status Workflow', function () {
 
         $ncr->update(['status' => 'reported']);
 
-        expect($ncr->refresh()->status)->toBe('reported');
+        expect($ncr->refresh()->status->getName())->toBe('reported');
     });
 
     it('can transition to dispositioned status with disposition', function () {
@@ -128,11 +164,10 @@ describe('NCR Status Workflow', function () {
 
         $ncr->refresh();
 
-        expect($ncr)
-            ->status->toBe('dispositioned')
-            ->disposition->toBe('scrap')
-            ->scrap_cost->toBe(500.0)
-            ->dispositioned_by->toBe($this->user->id);
+        expect($ncr->status->getName())->toBe('dispositioned');
+        expect($ncr->disposition)->toBe('scrap');
+        expect((float) $ncr->scrap_cost)->toBe(500.0);
+        expect($ncr->dispositioned_by)->toBe($this->user->id);
     });
 
     it('can transition to closed status', function () {
@@ -149,7 +184,7 @@ describe('NCR Status Workflow', function () {
 
         $ncr->update(['status' => 'closed']);
 
-        expect($ncr->refresh()->status)->toBe('closed');
+        expect($ncr->refresh()->status->getName())->toBe('closed');
     });
 });
 
@@ -163,6 +198,7 @@ describe('NCR Disposition Types', function () {
     beforeEach(function () {
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createNcrTestMaterial();
     });
 
     it('can disposition as scrap', function () {
@@ -182,9 +218,10 @@ describe('NCR Disposition Types', function () {
             'dispositioned_at' => now(),
         ]);
 
-        expect($ncr->refresh())
-            ->disposition->toBe('scrap')
-            ->scrap_cost->toBe(1500.0);
+        $ncr->refresh();
+
+        expect($ncr->disposition)->toBe('scrap');
+        expect((float) $ncr->scrap_cost)->toBe(1500.0);
     });
 
     it('can disposition as rework', function () {
@@ -240,6 +277,7 @@ describe('NCR Reporting', function () {
     beforeEach(function () {
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createNcrTestMaterial();
     });
 
     it('can query NCRs by status', function () {
@@ -319,7 +357,7 @@ describe('NCR Reporting', function () {
 
         $totalScrapCost = NCR::where('disposition', 'scrap')->sum('scrap_cost');
 
-        expect($totalScrapCost)->toBe(1250.0);
+        expect((float) $totalScrapCost)->toBe(1250.0);
     });
 });
 
@@ -333,6 +371,7 @@ describe('NCR Audit Trail', function () {
     beforeEach(function () {
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createNcrTestMaterial();
     });
 
     it('tracks who reported the NCR', function () {

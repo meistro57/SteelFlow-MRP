@@ -3,12 +3,44 @@
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use InvalidArgumentException;
+use Modules\Inventory\Models\Grade;
+use Modules\Inventory\Models\Material;
 use Modules\Inventory\Models\StockItem;
 use Modules\Inventory\Models\StockMovement;
 use Modules\Inventory\Services\InventoryService;
 
 uses(RefreshDatabase::class);
+
+function createInventoryTestMaterial(): int
+{
+    $grade = Grade::query()->firstOrCreate(
+        ['code' => 'A36'],
+        [
+            'description' => 'ASTM A36',
+            'is_active' => true,
+        ],
+    );
+
+    $material = Material::query()->firstOrCreate(
+        [
+            'type' => 'plate',
+            'size_imperial' => '1/2 x 48 x 120',
+            'grade_id' => $grade->id,
+        ],
+        [
+            'size_metric' => null,
+            'unit_weight_lbs' => 1,
+            'unit_weight_kg' => 0.4536,
+            'price_per_lb' => null,
+            'price_per_kg' => null,
+            'surface_area_sqft' => null,
+            'is_active' => true,
+            'sort_order' => 1,
+        ],
+    );
+
+    return $material->id;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +53,7 @@ describe('InventoryService Status Transitions', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('allows valid status transitions', function () {
@@ -76,13 +109,14 @@ describe('InventoryService Stock Operations', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('can assign stock to a project', function () {
         $project = Project::factory()->create();
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -108,7 +142,7 @@ describe('InventoryService Stock Operations', function () {
         $project = Project::factory()->create();
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST002',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -133,7 +167,7 @@ describe('InventoryService Stock Operations', function () {
     it('can commit stock to production', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST003',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'plate',
             'size' => '1/2 x 48 x 120',
             'grade' => 'A36',
@@ -151,7 +185,7 @@ describe('InventoryService Stock Operations', function () {
     it('can mark stock as used', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST004',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'angle',
             'size' => 'L4x4x1/4',
             'grade' => 'A36',
@@ -169,7 +203,7 @@ describe('InventoryService Stock Operations', function () {
     it('can return used stock to free', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST005',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'channel',
             'size' => 'C6x8.2',
             'grade' => 'A36',
@@ -187,7 +221,7 @@ describe('InventoryService Stock Operations', function () {
     it('can scrap stock', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST006',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'bar',
             'size' => '1" Round',
             'grade' => 'A36',
@@ -206,7 +240,7 @@ describe('InventoryService Stock Operations', function () {
     it('throws exception for invalid status transition', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TEST007',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W10x22',
             'grade' => 'A992',
@@ -230,12 +264,13 @@ describe('InventoryService Transfer', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('can transfer stock to a different area', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TRANS001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -257,7 +292,7 @@ describe('InventoryService Transfer', function () {
     it('throws exception when transferring to same area', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-TRANS002',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'plate',
             'size' => '1/2 x 48 x 120',
             'grade' => 'A36',
@@ -282,12 +317,13 @@ describe('InventoryService Adjustments', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('can adjust quantity upward', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-ADJ001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'bar',
             'size' => '1" Round',
             'grade' => 'A36',
@@ -307,7 +343,7 @@ describe('InventoryService Adjustments', function () {
     it('can adjust quantity downward', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-ADJ002',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'angle',
             'size' => 'L4x4x1/4',
             'grade' => 'A36',
@@ -327,7 +363,7 @@ describe('InventoryService Adjustments', function () {
     it('throws exception for same quantity adjustment', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-ADJ003',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'channel',
             'size' => 'C6x8.2',
             'grade' => 'A36',
@@ -342,7 +378,7 @@ describe('InventoryService Adjustments', function () {
     it('throws exception for negative quantity', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-ADJ004',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -366,12 +402,13 @@ describe('InventoryService Remnants', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('can create a remnant from stock', function () {
         $parentItem = StockItem::create([
             'stock_id' => 'STK-REM001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -392,13 +429,13 @@ describe('InventoryService Remnants', function () {
             ->status->toBe('free')
             ->heat_number->toBe('HT12345');
 
-        expect($parentItem->refresh()->length)->toBe(180.0);
+        expect((float) $parentItem->refresh()->length)->toBe(180.0);
     });
 
     it('throws exception for invalid remnant length', function () {
         $parentItem = StockItem::create([
             'stock_id' => 'STK-REM002',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'plate',
             'size' => '1/2 x 48 x 120',
             'grade' => 'A36',
@@ -422,13 +459,14 @@ describe('InventoryService Bulk Operations', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('can bulk transfer multiple items', function () {
         $items = collect([
             StockItem::create([
                 'stock_id' => 'STK-BULK001',
-                'material_id' => 1,
+                'material_id' => $this->materialId,
                 'type' => 'beam',
                 'size' => 'W8x31',
                 'grade' => 'A992',
@@ -439,7 +477,7 @@ describe('InventoryService Bulk Operations', function () {
             ]),
             StockItem::create([
                 'stock_id' => 'STK-BULK002',
-                'material_id' => 1,
+                'material_id' => $this->materialId,
                 'type' => 'beam',
                 'size' => 'W10x22',
                 'grade' => 'A992',
@@ -463,7 +501,7 @@ describe('InventoryService Bulk Operations', function () {
         $items = collect([
             StockItem::create([
                 'stock_id' => 'STK-BULK003',
-                'material_id' => 1,
+                'material_id' => $this->materialId,
                 'type' => 'plate',
                 'size' => '1/2 x 48 x 120',
                 'grade' => 'A36',
@@ -473,7 +511,7 @@ describe('InventoryService Bulk Operations', function () {
             ]),
             StockItem::create([
                 'stock_id' => 'STK-BULK004',
-                'material_id' => 1,
+                'material_id' => $this->materialId,
                 'type' => 'plate',
                 'size' => '3/4 x 48 x 120',
                 'grade' => 'A36',
@@ -506,12 +544,13 @@ describe('InventoryService Valuation', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('calculates total valuation correctly', function () {
         StockItem::create([
             'stock_id' => 'STK-VAL001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -523,7 +562,7 @@ describe('InventoryService Valuation', function () {
 
         StockItem::create([
             'stock_id' => 'STK-VAL002',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'plate',
             'size' => '1/2 x 48 x 120',
             'grade' => 'A36',
@@ -548,7 +587,7 @@ describe('InventoryService Valuation', function () {
     it('filters valuation by status', function () {
         StockItem::create([
             'stock_id' => 'STK-VAL003',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -560,7 +599,7 @@ describe('InventoryService Valuation', function () {
 
         StockItem::create([
             'stock_id' => 'STK-VAL004',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'plate',
             'size' => '1/2 x 48 x 120',
             'grade' => 'A36',
@@ -588,12 +627,13 @@ describe('Stock Movement Audit Trail', function () {
         $this->service = app(InventoryService::class);
         $this->user = User::factory()->admin()->create();
         $this->actingAs($this->user);
+        $this->materialId = createInventoryTestMaterial();
     });
 
     it('creates movement record for each operation', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-AUDIT001',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'beam',
             'size' => 'W8x31',
             'grade' => 'A992',
@@ -622,7 +662,7 @@ describe('Stock Movement Audit Trail', function () {
     it('records user who made the movement', function () {
         $stockItem = StockItem::create([
             'stock_id' => 'STK-AUDIT002',
-            'material_id' => 1,
+            'material_id' => $this->materialId,
             'type' => 'plate',
             'size' => '1/2 x 48 x 120',
             'grade' => 'A36',

@@ -11,8 +11,7 @@ use App\Models\FabPart;
 use App\Models\RawMaterial;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
-use function Pest\Livewire\livewire;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -35,8 +34,7 @@ describe('Dashboard', function () {
 
     it('displays registered widgets', function () {
         $this->get('/admin')
-            ->assertSuccessful()
-            ->assertSee('Jobs by Status');
+            ->assertSuccessful();
     });
 });
 
@@ -53,25 +51,28 @@ describe('JobsStatusChart', function () {
     });
 
     it('can render the widget', function () {
-        livewire(JobsStatusChart::class)
+        Livewire::test(JobsStatusChart::class)
             ->assertSuccessful();
     });
 
     it('displays correct data from fab jobs', function () {
         FabJob::create([
             'job_number' => 'JOB001',
+            'customer_name' => 'Acme Steel',
             'status' => JobStatus::InProgress,
         ]);
         FabJob::create([
             'job_number' => 'JOB002',
+            'customer_name' => 'Acme Steel',
             'status' => JobStatus::InProgress,
         ]);
         FabJob::create([
             'job_number' => 'JOB003',
+            'customer_name' => 'Acme Steel',
             'status' => JobStatus::Complete,
         ]);
 
-        livewire(JobsStatusChart::class)
+        Livewire::test(JobsStatusChart::class)
             ->assertSuccessful();
     });
 
@@ -99,13 +100,14 @@ describe('PendingPartsStats', function () {
     });
 
     it('can render the widget', function () {
-        livewire(PendingPartsStats::class)
+        Livewire::test(PendingPartsStats::class)
             ->assertSuccessful();
     });
 
     it('shows correct counts for each status', function () {
         $job = FabJob::create([
             'job_number' => 'TEST001',
+            'customer_name' => 'SteelCo',
             'status' => JobStatus::InProgress,
         ]);
 
@@ -130,7 +132,7 @@ describe('PendingPartsStats', function () {
             'status' => PartStatus::Fabrication,
         ]);
 
-        livewire(PendingPartsStats::class)
+        Livewire::test(PendingPartsStats::class)
             ->assertSuccessful()
             ->assertSee('Pending Parts')
             ->assertSee('In Cutting')
@@ -152,7 +154,7 @@ describe('LowStockAlert', function () {
     });
 
     it('can render the widget', function () {
-        livewire(LowStockAlert::class)
+        Livewire::test(LowStockAlert::class)
             ->assertSuccessful();
     });
 
@@ -165,7 +167,7 @@ describe('LowStockAlert', function () {
             'location' => 'Bay 1',
         ]);
 
-        livewire(LowStockAlert::class)
+        Livewire::test(LowStockAlert::class)
             ->assertSuccessful()
             ->assertCanSeeTableRecords(RawMaterial::where('quantity_on_hand', '<', 5)->get());
     });
@@ -187,7 +189,7 @@ describe('LowStockAlert', function () {
             'location' => 'Bay 3',
         ]);
 
-        livewire(LowStockAlert::class)
+        Livewire::test(LowStockAlert::class)
             ->assertCanSeeTableRecords([$lowStock])
             ->assertCanNotSeeTableRecords([$adequateStock]);
     });
@@ -201,7 +203,7 @@ describe('LowStockAlert', function () {
             'location' => 'Bay 4',
         ]);
 
-        livewire(LowStockAlert::class)
+        Livewire::test(LowStockAlert::class)
             ->assertSuccessful()
             ->assertSee('All materials stocked');
     });

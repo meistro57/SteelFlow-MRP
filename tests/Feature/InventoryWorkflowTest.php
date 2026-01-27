@@ -33,14 +33,22 @@ class InventoryWorkflowTest extends TestCase
         $this->user = User::factory()->create();
         Auth::login($this->user);
 
-        $this->grade = Grade::create(['code' => 'A36', 'is_active' => true]);
-        $this->material = Material::create([
-            'type' => 'W',
-            'size_imperial' => 'W12X26',
-            'grade_id' => $this->grade->id,
-            'unit_weight_lbs' => 26.0,
-            'is_active' => true,
-        ]);
+        $this->grade = Grade::firstOrCreate(
+            ['code' => 'A36'],
+            ['is_active' => true],
+        );
+
+        $this->material = Material::firstOrCreate(
+            [
+                'type' => 'W',
+                'size_imperial' => 'W12X26',
+                'grade_id' => $this->grade->id,
+            ],
+            [
+                'unit_weight_lbs' => 26.0,
+                'is_active' => true,
+            ],
+        );
     }
 
     protected function createStockItem(array $attributes = []): StockItem

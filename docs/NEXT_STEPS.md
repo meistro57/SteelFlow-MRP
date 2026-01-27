@@ -226,6 +226,11 @@ Route::get('/health', function () {
 - Line item management
 - Quote-to-project conversion
 
+### Recent Schema Updates (2026-01-27)
+- Added notifications table and publishable assets for Filament notifications.
+- Added audit columns (`created_by`, `updated_by`) to `ncrs` and `projects`.
+- Widened `stock_items.status` and `stock_movements.movement_type` to support current workflows.
+
 ### Point of Sale
 - Register session management
 - Transaction processing

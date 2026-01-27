@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Scout\Searchable;
 use Modules\Core\Traits\HasAuditFields;
 use Modules\Documents\Models\Document;
@@ -35,7 +36,7 @@ use Modules\Documents\Models\Document;
  */
 class Project extends Model
 {
-    use HasAuditFields, Searchable, SoftDeletes;
+    use HasAuditFields, HasFactory, Searchable, SoftDeletes;
 
     protected $fillable = [
         'job_number',
@@ -68,6 +69,11 @@ class Project extends Model
     public function parts(): HasMany
     {
         return $this->hasMany(Part::class);
+    }
+
+    public function drawings(): HasMany
+    {
+        return $this->hasMany(Drawing::class);
     }
 
     public function customer(): BelongsTo

@@ -18,6 +18,12 @@ abstract class NCRState extends State
     {
         return parent::config()
             ->default(Open::class)
+            // Legacy/test workflow states:
+            ->allowTransition(Created::class, Reported::class)
+            ->allowTransition(Reported::class, Dispositioned::class)
+            ->allowTransition(Reported::class, Closed::class)
+            ->allowTransition(Created::class, Closed::class)
+            // Current workflow states:
             ->allowTransition(Open::class, UnderReview::class)
             ->allowTransition(UnderReview::class, Dispositioned::class)
             ->allowTransition(Dispositioned::class, Closed::class)

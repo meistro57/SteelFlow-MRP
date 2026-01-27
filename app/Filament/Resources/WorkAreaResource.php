@@ -38,7 +38,7 @@ class WorkAreaResource extends Resource
                     TextInput::make('name')
                         ->required()
                         ->maxLength(255),
-                    TextInput::make('badge_code')
+                    TextInput::make('code')
                         ->required()
                         ->unique(ignoreRecord: true)
                         ->maxLength(20),
@@ -52,7 +52,7 @@ class WorkAreaResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('department.name')->sortable(),
-                Tables\Columns\TextColumn::make('badge_code')->searchable(),
+                Tables\Columns\TextColumn::make('code')->searchable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('department')

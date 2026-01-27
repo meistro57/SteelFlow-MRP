@@ -42,8 +42,9 @@ describe('Invoice Management', function () {
         expect($invoice)
             ->toBeInstanceOf(Invoice::class)
             ->invoice_number->toBe('INV-001')
-            ->total_amount->toBe(1080.0)
             ->status->toBe('draft');
+
+        expect((float) $invoice->total_amount)->toBe(1080.0);
 
         $this->assertDatabaseHas('invoices', [
             'invoice_number' => 'INV-001',
@@ -77,9 +78,11 @@ describe('Invoice Management', function () {
 
         expect($lineItem)
             ->toBeInstanceOf(InvoiceLineItem::class)
-            ->line_total->toBe(5000.0);
+            ->description->toBe('Steel fabrication - Phase 1');
 
-        expect($invoice->lineItems)->toHaveCount(1);
+        expect((float) $lineItem->line_total)->toBe(5000.0);
+
+        expect($invoice->lines)->toHaveCount(1);
     });
 
     it('calculates invoice totals correctly', function () {
@@ -100,8 +103,8 @@ describe('Invoice Management', function () {
             'created_by' => $this->user->id,
         ]);
 
-        expect($invoice->total_amount)->toBe(9800.0);
-        expect($invoice->retention_amount)->toBe(1000.0);
+        expect((float) $invoice->total_amount)->toBe(9800.0);
+        expect((float) $invoice->retention_amount)->toBe(1000.0);
     });
 });
 
@@ -140,20 +143,22 @@ describe('Payment Processing', function () {
             'amount' => 500.00,
             'payment_date' => now(),
             'payment_type' => 'customer_payment',
+            'payment_method' => 'check',
             'reference_number' => 'CHK-12345',
             'notes' => 'Partial payment',
         ]);
 
         expect($payment)
-            ->amount->toBe(500.0)
             ->payment_type->toBe('customer_payment');
+
+        expect((float) $payment->amount)->toBe(500.0);
 
         // Update invoice paid amount
         $invoice->update(['paid_amount' => 500.00, 'status' => 'partial']);
 
-        expect($invoice->refresh())
-            ->paid_amount->toBe(500.0)
-            ->status->toBe('partial');
+        $invoice->refresh();
+        expect((float) $invoice->paid_amount)->toBe(500.0);
+        expect($invoice->status)->toBe('partial');
     });
 
     it('marks invoice as paid when fully paid', function () {
@@ -179,6 +184,7 @@ describe('Payment Processing', function () {
             'amount' => 1000.00,
             'payment_date' => now(),
             'payment_type' => 'customer_payment',
+            'payment_method' => 'ach',
         ]);
 
         $invoice->update(['paid_amount' => 1000.00, 'status' => 'paid']);
@@ -262,6 +268,7 @@ describe('Invoice Relationships', function () {
             'amount' => 500.00,
             'payment_date' => now()->subDays(10),
             'payment_type' => 'customer_payment',
+            'payment_method' => 'check',
         ]);
 
         Payment::create([
@@ -269,10 +276,11 @@ describe('Invoice Relationships', function () {
             'amount' => 500.00,
             'payment_date' => now(),
             'payment_type' => 'customer_payment',
+            'payment_method' => 'check',
         ]);
 
         expect($invoice->payments)->toHaveCount(2);
-        expect($invoice->payments->sum('amount'))->toBe(1000.0);
+        expect((float) $invoice->payments->sum('amount'))->toBe(1000.0);
     });
 });
 
@@ -326,9 +334,9 @@ describe('Invoice Status Workflow', function () {
 
         $invoice->update(['status' => 'partial', 'paid_amount' => 500.00]);
 
-        expect($invoice->refresh())
-            ->status->toBe('partial')
-            ->paid_amount->toBe(500.0);
+        $invoice->refresh();
+        expect($invoice->status)->toBe('partial');
+        expect((float) $invoice->paid_amount)->toBe(500.0);
     });
 
     it('can transition invoice to paid status', function () {
@@ -350,8 +358,8 @@ describe('Invoice Status Workflow', function () {
 
         $invoice->update(['status' => 'paid', 'paid_amount' => 1000.00]);
 
-        expect($invoice->refresh())
-            ->status->toBe('paid')
-            ->paid_amount->toBe(1000.0);
+        $invoice->refresh();
+        expect($invoice->status)->toBe('paid');
+        expect((float) $invoice->paid_amount)->toBe(1000.0);
     });
 });

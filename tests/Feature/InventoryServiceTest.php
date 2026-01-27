@@ -30,13 +30,17 @@ class InventoryServiceTest extends TestCase
         $user = User::factory()->create();
         Auth::login($user);
 
-        $grade = Grade::create(['code' => 'A36']);
-        $material = Material::create([
-            'type' => 'W',
-            'size_imperial' => 'W12X26',
-            'grade_id' => $grade->id,
-            'unit_weight_lbs' => 26.0,
-        ]);
+        $grade = Grade::firstOrCreate(['code' => 'A36']);
+        $material = Material::firstOrCreate(
+            [
+                'type' => 'W',
+                'size_imperial' => 'W12X26',
+                'grade_id' => $grade->id,
+            ],
+            [
+                'unit_weight_lbs' => 26.0,
+            ],
+        );
 
         $vendor = Vendor::create(['name' => 'Steel Corp', 'code' => 'V-001']);
         $po = PurchaseOrder::create(['po_number' => 'PO-100', 'vendor_id' => $vendor->id]);

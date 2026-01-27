@@ -12,8 +12,7 @@ use App\Models\User;
 use App\Models\WorkArea;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Inventory\Models\Vendor;
-
-use function Pest\Livewire\livewire;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -66,6 +65,7 @@ describe('admin panel authorization', function () {
 describe('CustomerResource', function () {
     beforeEach(function () {
         $this->admin = User::factory()->admin()->create();
+        $this->actingAs($this->admin);
     });
 
     it('can render index page', function () {
@@ -91,7 +91,7 @@ describe('CustomerResource', function () {
     it('can list customers', function () {
         $customers = Customer::factory()->count(3)->create();
 
-        livewire(CustomerResource\Pages\ListCustomers::class)
+        Livewire::test(CustomerResource\Pages\ListCustomers::class)
             ->assertCanSeeTableRecords($customers);
     });
 
@@ -106,8 +106,15 @@ describe('CustomerResource', function () {
             'is_active' => true,
         ];
 
-        livewire(CustomerResource\Pages\CreateCustomer::class)
-            ->fillForm($newData)
+        Livewire::test(CustomerResource\Pages\CreateCustomer::class)
+            ->set('data.code', $newData['code'])
+            ->set('data.name', $newData['name'])
+            ->set('data.email', $newData['email'])
+            ->set('data.phone', $newData['phone'])
+            ->set('data.city', $newData['city'])
+            ->set('data.state', $newData['state'])
+            ->set('data.country', 'USA')
+            ->set('data.is_active', true)
             ->call('create')
             ->assertHasNoFormErrors();
 
@@ -120,12 +127,10 @@ describe('CustomerResource', function () {
     it('can update a customer', function () {
         $customer = Customer::factory()->create();
 
-        livewire(CustomerResource\Pages\EditCustomer::class, [
+        Livewire::test(CustomerResource\Pages\EditCustomer::class, [
             'record' => $customer->getRouteKey(),
         ])
-            ->fillForm([
-                'name' => 'Updated Customer Name',
-            ])
+            ->set('data.name', 'Updated Customer Name')
             ->call('save')
             ->assertHasNoFormErrors();
 
@@ -133,11 +138,9 @@ describe('CustomerResource', function () {
     });
 
     it('validates required fields on create', function () {
-        livewire(CustomerResource\Pages\CreateCustomer::class)
-            ->fillForm([
-                'name' => '',
-                'code' => '',
-            ])
+        Livewire::test(CustomerResource\Pages\CreateCustomer::class)
+            ->set('data.name', '')
+            ->set('data.code', '')
             ->call('create')
             ->assertHasFormErrors(['name' => 'required']);
     });
@@ -152,6 +155,7 @@ describe('CustomerResource', function () {
 describe('ProjectResource', function () {
     beforeEach(function () {
         $this->admin = User::factory()->admin()->create();
+        $this->actingAs($this->admin);
     });
 
     it('can render index page', function () {
@@ -177,7 +181,7 @@ describe('ProjectResource', function () {
     it('can list projects', function () {
         $projects = Project::factory()->count(3)->create();
 
-        livewire(ProjectResource\Pages\ListProjects::class)
+        Livewire::test(ProjectResource\Pages\ListProjects::class)
             ->assertCanSeeTableRecords($projects);
     });
 
@@ -191,8 +195,11 @@ describe('ProjectResource', function () {
             'status' => 'bid',
         ];
 
-        livewire(ProjectResource\Pages\CreateProject::class)
-            ->fillForm($newData)
+        Livewire::test(ProjectResource\Pages\CreateProject::class)
+            ->set('data.job_number', $newData['job_number'])
+            ->set('data.name', $newData['name'])
+            ->set('data.customer_id', $newData['customer_id'])
+            ->set('data.status', $newData['status'])
             ->call('create')
             ->assertHasNoFormErrors();
 
@@ -205,13 +212,13 @@ describe('ProjectResource', function () {
     it('can update a project', function () {
         $project = Project::factory()->create();
 
-        livewire(ProjectResource\Pages\EditProject::class, [
+        Livewire::test(ProjectResource\Pages\EditProject::class, [
             'record' => $project->getRouteKey(),
         ])
-            ->fillForm([
-                'name' => 'Updated Project Name',
-                'status' => 'active',
-            ])
+            ->set('data.job_number', $project->job_number)
+            ->set('data.customer_id', $project->customer_id)
+            ->set('data.name', 'Updated Project Name')
+            ->set('data.status', 'active')
             ->call('save')
             ->assertHasNoFormErrors();
 
@@ -223,13 +230,13 @@ describe('ProjectResource', function () {
     it('validates unique job number', function () {
         $existingProject = Project::factory()->create(['job_number' => 'UNIQUE01']);
 
-        livewire(ProjectResource\Pages\CreateProject::class)
-            ->fillForm([
-                'job_number' => 'UNIQUE01',
-                'name' => 'Test',
-                'customer_id' => Customer::factory()->create()->id,
-                'status' => 'bid',
-            ])
+        $customerId = Customer::factory()->create()->id;
+
+        Livewire::test(ProjectResource\Pages\CreateProject::class)
+            ->set('data.job_number', 'UNIQUE01')
+            ->set('data.name', 'Test')
+            ->set('data.customer_id', $customerId)
+            ->set('data.status', 'bid')
             ->call('create')
             ->assertHasFormErrors(['job_number' => 'unique']);
     });
@@ -238,7 +245,7 @@ describe('ProjectResource', function () {
         $activeProjects = Project::factory()->active()->count(2)->create();
         $completeProjects = Project::factory()->complete()->count(2)->create();
 
-        livewire(ProjectResource\Pages\ListProjects::class)
+        Livewire::test(ProjectResource\Pages\ListProjects::class)
             ->assertCanSeeTableRecords($activeProjects->merge($completeProjects))
             ->filterTable('status', 'active')
             ->assertCanSeeTableRecords($activeProjects)
@@ -255,6 +262,7 @@ describe('ProjectResource', function () {
 describe('VendorResource', function () {
     beforeEach(function () {
         $this->admin = User::factory()->admin()->create();
+        $this->actingAs($this->admin);
     });
 
     it('can render index page', function () {
@@ -272,7 +280,7 @@ describe('VendorResource', function () {
     it('can list vendors', function () {
         $vendors = Vendor::factory()->count(3)->create();
 
-        livewire(VendorResource\Pages\ListVendors::class)
+        Livewire::test(VendorResource\Pages\ListVendors::class)
             ->assertCanSeeTableRecords($vendors);
     });
 
@@ -286,8 +294,12 @@ describe('VendorResource', function () {
             'is_active' => true,
         ];
 
-        livewire(VendorResource\Pages\CreateVendor::class)
-            ->fillForm($newData)
+        Livewire::test(VendorResource\Pages\CreateVendor::class)
+            ->set('data.code', $newData['code'])
+            ->set('data.name', $newData['name'])
+            ->set('data.email', $newData['email'])
+            ->set('data.phone', $newData['phone'])
+            ->set('data.is_active', true)
             ->call('create')
             ->assertHasNoFormErrors();
 
@@ -307,6 +319,7 @@ describe('VendorResource', function () {
 describe('DepartmentResource', function () {
     beforeEach(function () {
         $this->admin = User::factory()->admin()->create();
+        $this->actingAs($this->admin);
     });
 
     it('can render index page', function () {
@@ -324,7 +337,7 @@ describe('DepartmentResource', function () {
     it('can list departments', function () {
         $departments = Department::factory()->count(3)->create();
 
-        livewire(DepartmentResource\Pages\ListDepartments::class)
+        Livewire::test(DepartmentResource\Pages\ListDepartments::class)
             ->assertCanSeeTableRecords($departments);
     });
 
@@ -336,8 +349,9 @@ describe('DepartmentResource', function () {
             'is_active' => true,
         ];
 
-        livewire(DepartmentResource\Pages\CreateDepartment::class)
-            ->fillForm($newData)
+        Livewire::test(DepartmentResource\Pages\CreateDepartment::class)
+            ->set('data.code', $newData['code'])
+            ->set('data.name', $newData['name'])
             ->call('create')
             ->assertHasNoFormErrors();
 
@@ -357,6 +371,7 @@ describe('DepartmentResource', function () {
 describe('WorkAreaResource', function () {
     beforeEach(function () {
         $this->admin = User::factory()->admin()->create();
+        $this->actingAs($this->admin);
     });
 
     it('can render index page', function () {
@@ -374,7 +389,7 @@ describe('WorkAreaResource', function () {
     it('can list work areas', function () {
         $workAreas = WorkArea::factory()->count(3)->create();
 
-        livewire(WorkAreaResource\Pages\ListWorkAreas::class)
+        Livewire::test(WorkAreaResource\Pages\ListWorkAreas::class)
             ->assertCanSeeTableRecords($workAreas);
     });
 
@@ -389,8 +404,10 @@ describe('WorkAreaResource', function () {
             'is_active' => true,
         ];
 
-        livewire(WorkAreaResource\Pages\CreateWorkArea::class)
-            ->fillForm($newData)
+        Livewire::test(WorkAreaResource\Pages\CreateWorkArea::class)
+            ->set('data.department_id', $newData['department_id'])
+            ->set('data.code', $newData['code'])
+            ->set('data.name', $newData['name'])
             ->call('create')
             ->assertHasNoFormErrors();
 

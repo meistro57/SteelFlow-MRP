@@ -3,6 +3,7 @@
 namespace Modules\Inventory\Models;
 
 use App\Models\PurchaseOrder;
+use Database\Factories\VendorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,5 +52,10 @@ class Vendor extends Model
     public function purchaseOrders(): HasMany
     {
         return $this->hasMany(PurchaseOrder::class);
+    }
+
+    protected static function newFactory(): VendorFactory
+    {
+        return VendorFactory::new();
     }
 }

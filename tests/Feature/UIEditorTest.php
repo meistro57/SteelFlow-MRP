@@ -20,7 +20,10 @@ describe('UIEditorController', function () {
     });
 
     it('creates a new dashboard', function () {
-        $this->withoutMiddleware();
+        $this->withoutMiddleware([
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        ]);
         $response = $this->post(route('ui-editor.store'), [
             'name' => 'Test Dashboard',
             'description' => 'A test dashboard',
@@ -42,6 +45,10 @@ describe('UIEditorController', function () {
 
 describe('Widget Management', function () {
     it('adds a widget to a dashboard', function () {
+        $this->withoutMiddleware([
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        ]);
         $dashboard = \App\Models\Dashboard::factory()->create(['user_id' => $this->user->id]);
 
         $response = $this->actingAs($this->user)->postJson(route('ui-editor.widgets.store', $dashboard), [
