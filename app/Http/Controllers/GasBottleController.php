@@ -16,7 +16,7 @@ use Modules\Inventory\Models\StockItem;
 class GasBottleController extends Controller
 {
     public function __construct(
-        protected GasBottleService $gasBottleService
+        protected GasBottleService $gasBottleService,
     ) {}
 
     /**
@@ -102,7 +102,7 @@ class GasBottleController extends Controller
                 $bottle,
                 $customer,
                 $validated['expires_at'] ? Carbon::parse($validated['expires_at']) : null,
-                $validated['project_id'] ?? null
+                $validated['project_id'] ?? null,
             );
         } else {
             // Create reservation first
@@ -110,7 +110,7 @@ class GasBottleController extends Controller
                 $bottle,
                 $customer,
                 null,
-                $validated['project_id'] ?? null
+                $validated['project_id'] ?? null,
             );
 
             // Then checkout immediately
@@ -119,7 +119,7 @@ class GasBottleController extends Controller
                 Carbon::parse($validated['due_back_at']),
                 $validated['deposit_cents'],
                 $validated['rental_rate_cents'],
-                $validated['rental_rate_period']
+                $validated['rental_rate_period'],
             );
 
             if ($validated['notes']) {
@@ -189,7 +189,7 @@ class GasBottleController extends Controller
         $newRental = $this->gasBottleService->swapBottle(
             $gasBottle,
             $replacement,
-            $validated['notes'] ?? null
+            $validated['notes'] ?? null,
         );
 
         return redirect()
@@ -210,7 +210,7 @@ class GasBottleController extends Controller
         $this->gasBottleService->flagLossOrDamage(
             $gasBottle,
             $validated['flag'],
-            $validated['notes'] ?? null
+            $validated['notes'] ?? null,
         );
 
         return redirect()
@@ -232,7 +232,7 @@ class GasBottleController extends Controller
             $gasBottle->stockItem,
             Carbon::parse($validated['scheduled_for']),
             null,
-            $validated['notes'] ?? null
+            $validated['notes'] ?? null,
         );
 
         return redirect()

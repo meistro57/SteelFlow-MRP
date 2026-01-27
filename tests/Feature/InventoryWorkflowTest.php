@@ -10,7 +10,6 @@ use InvalidArgumentException;
 use Modules\Inventory\Models\Grade;
 use Modules\Inventory\Models\Material;
 use Modules\Inventory\Models\StockItem;
-use Modules\Inventory\Models\StockMovement;
 use Modules\Inventory\Services\InventoryService;
 use Tests\TestCase;
 

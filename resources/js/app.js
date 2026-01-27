@@ -16,7 +16,10 @@ createInertiaApp({
         if (parts.length > 1) {
             const module = parts[0];
             const page = parts[1];
-            return resolvePageComponent(`../../Modules/${module}/resources/assets/js/Pages/${page}.vue`, import.meta.glob('../../Modules/**/*.vue'));
+            return resolvePageComponent(
+                `../../Modules/${module}/resources/assets/js/Pages/${page}.vue`,
+                import.meta.glob('../../Modules/**/resources/assets/js/Pages/**/*.vue', { eager: true })
+            );
         }
         return resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
     },

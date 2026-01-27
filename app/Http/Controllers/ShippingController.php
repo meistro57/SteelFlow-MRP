@@ -15,7 +15,7 @@ use Inertia\Response;
 class ShippingController extends Controller
 {
     public function __construct(
-        protected ShippingService $shippingService
+        protected ShippingService $shippingService,
     ) {}
 
     /**

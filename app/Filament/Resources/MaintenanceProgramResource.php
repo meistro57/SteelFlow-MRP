@@ -133,8 +133,7 @@ class MaintenanceProgramResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('interval_value')
                     ->label('Interval')
-                    ->formatStateUsing(fn (MaintenanceProgram $record): string =>
-                        $record->interval_value.' '.$record->interval_unit),
+                    ->formatStateUsing(fn (MaintenanceProgram $record): string => $record->interval_value.' '.$record->interval_unit),
                 Tables\Columns\TextColumn::make('priority')
                     ->badge(),
                 Tables\Columns\IconColumn::make('is_active')

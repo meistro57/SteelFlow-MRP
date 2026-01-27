@@ -11,8 +11,8 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\WorkArea;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Inventory\Models\Vendor;
 use Livewire\Livewire;
+use Modules\Inventory\Models\Vendor;
 
 uses(RefreshDatabase::class);
 

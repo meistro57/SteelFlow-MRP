@@ -11,4 +11,3 @@ class Reported extends NCRState
         return 'Reported';
     }
 }
-

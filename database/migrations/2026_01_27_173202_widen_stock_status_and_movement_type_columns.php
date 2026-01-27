@@ -8,7 +8,7 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("ALTER TABLE stock_items MODIFY status VARCHAR(20) NOT NULL DEFAULT 'free'");
-        DB::statement("ALTER TABLE stock_movements MODIFY movement_type VARCHAR(30) NOT NULL");
+        DB::statement('ALTER TABLE stock_movements MODIFY movement_type VARCHAR(30) NOT NULL');
     }
 
     public function down(): void

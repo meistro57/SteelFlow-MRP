@@ -11,4 +11,3 @@ class Created extends NCRState
         return 'Created';
     }
 }
-

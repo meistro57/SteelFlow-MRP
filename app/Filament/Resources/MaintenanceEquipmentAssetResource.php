@@ -135,8 +135,7 @@ class MaintenanceEquipmentAssetResource extends Resource
                     ->badge(),
                 Tables\Columns\TextColumn::make('current_usage')
                     ->label('Usage')
-                    ->formatStateUsing(fn (MaintenanceEquipmentAsset $record): string =>
-                        $record->current_usage.' '.$record->usage_unit),
+                    ->formatStateUsing(fn (MaintenanceEquipmentAsset $record): string => $record->current_usage.' '.$record->usage_unit),
                 Tables\Columns\TextColumn::make('next_service_due_date')
                     ->date()
                     ->label('Next Service'),

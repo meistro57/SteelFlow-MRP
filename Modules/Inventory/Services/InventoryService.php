@@ -439,7 +439,7 @@ class InventoryService
     {
         if (! $this->canTransition($fromStatus, $toStatus)) {
             throw new InvalidArgumentException(
-                "Invalid status transition from '{$fromStatus}' to '{$toStatus}'."
+                "Invalid status transition from '{$fromStatus}' to '{$toStatus}'.",
             );
         }
     }

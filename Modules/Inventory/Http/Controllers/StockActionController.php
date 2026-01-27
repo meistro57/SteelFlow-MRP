@@ -20,7 +20,7 @@ use Modules\Inventory\Services\InventoryService;
 class StockActionController extends Controller
 {
     public function __construct(
-        protected InventoryService $inventoryService
+        protected InventoryService $inventoryService,
     ) {}
 
     /**
@@ -43,7 +43,7 @@ class StockActionController extends Controller
             $this->inventoryService->transfer(
                 $inventory,
                 $request->validated('stock_area'),
-                $request->validated('notes')
+                $request->validated('notes'),
             );
 
             return redirect()
@@ -79,7 +79,7 @@ class StockActionController extends Controller
             $this->inventoryService->assign(
                 $inventory,
                 $request->validated('project_id'),
-                $request->validated('notes')
+                $request->validated('notes'),
             );
 
             return redirect()
@@ -174,7 +174,7 @@ class StockActionController extends Controller
                 $inventory,
                 $request->validated('quantity'),
                 $request->validated('reason'),
-                $request->validated('notes')
+                $request->validated('notes'),
             );
 
             return redirect()
@@ -205,7 +205,7 @@ class StockActionController extends Controller
             $this->inventoryService->scrap(
                 $inventory,
                 $request->validated('reason'),
-                $request->validated('notes')
+                $request->validated('notes'),
             );
 
             return redirect()
@@ -235,7 +235,7 @@ class StockActionController extends Controller
             $remnant = $this->inventoryService->createRemnant(
                 $inventory,
                 $request->validated('remnant_length'),
-                $request->validated('notes')
+                $request->validated('notes'),
             );
 
             return redirect()

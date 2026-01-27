@@ -2,6 +2,8 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import Breadcrumb from '@/Components/Breadcrumb.vue';
+import { ChartBarIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
     metrics: Object,
@@ -19,212 +21,224 @@ const formatCurrency = (value) => {
 };
 
 const inventorySummary = () => props.inventorySnapshot ?? { totalItems: 0, valuation: 0, byType: [] };
+
+const breadcrumbItems = [
+    { label: 'Reports' },
+];
 </script>
 
 <template>
   <AppLayout title="Reports">
-    <template #header>
-      <div class="flex flex-col gap-2">
-        <h2 class="font-semibold text-2xl text-white leading-tight">
+    <!-- Breadcrumb -->
+    <Breadcrumb :items="breadcrumbItems" />
+
+    <!-- Page Header -->
+    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-steel-100 uppercase tracking-wide text-glow-forge">
           Reports Command Centre
-        </h2>
-        <p class="text-text-secondary font-mono text-sm">
-          A clean overview of operational performance, inventory health, and project BOM detail.
+        </h1>
+        <p class="mt-1 text-sm text-steel-400 uppercase tracking-wider font-mono">
+          Operational Performance & Analytics
         </p>
       </div>
-    </template>
+    </div>
 
     <!-- Key metrics overview -->
-    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-      <div class="card-industrial">
-        <div class="text-xs uppercase tracking-wider text-text-tertiary font-semibold">
+    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+      <div class="card-glow p-6">
+        <div class="text-xs uppercase tracking-wider text-steel-500 font-mono mb-1">
           Active Projects
         </div>
-        <div class="mt-4 text-3xl font-bold text-white">
+        <div class="mt-2 text-3xl font-bold font-mono text-forge-400 glow-forge">
           {{ metrics?.active_projects ?? 0 }}
         </div>
-        <p class="mt-2 text-sm text-text-secondary">
-          Live jobs across production and active stages.
+        <p class="mt-3 text-sm text-steel-400">
+          Live jobs across production and active stages
         </p>
       </div>
 
-      <div class="card-industrial">
-        <div class="text-xs uppercase tracking-wider text-text-tertiary font-semibold">
+      <div class="card-glow p-6">
+        <div class="text-xs uppercase tracking-wider text-steel-500 font-mono mb-1">
           Total Weight
         </div>
-        <div class="mt-4 text-3xl font-bold text-white">
-          {{ metrics?.total_weight_lbs?.toLocaleString() ?? '0' }} lbs
+        <div class="mt-2 text-3xl font-bold font-mono text-weld-400 glow-weld">
+          {{ metrics?.total_weight_lbs?.toLocaleString() ?? '0' }} <span class="text-xl text-steel-400">lbs</span>
         </div>
-        <p class="mt-2 text-sm text-text-secondary">
-          Sum of assembly weights across the yard.
+        <p class="mt-3 text-sm text-steel-400">
+          Sum of assembly weights across the yard
         </p>
       </div>
 
-      <div class="card-industrial">
-        <div class="text-xs uppercase tracking-wider text-text-tertiary font-semibold">
+      <div class="card-glow p-6">
+        <div class="text-xs uppercase tracking-wider text-steel-500 font-mono mb-1">
           Production Progress
         </div>
-        <div class="mt-4 text-3xl font-bold text-white">
-          {{ metrics?.production_completion_percentage ?? 0 }}%
+        <div class="mt-2 text-3xl font-bold font-mono text-forge-400 glow-forge">
+          {{ metrics?.production_completion_percentage ?? 0 }}<span class="text-xl text-steel-400">%</span>
         </div>
-        <p class="mt-2 text-sm text-text-secondary">
-          Parts cleared as complete versus total scope.
+        <p class="mt-3 text-sm text-steel-400">
+          Parts cleared as complete versus total scope
         </p>
       </div>
 
-      <div class="card-industrial">
-        <div class="text-xs uppercase tracking-wider text-text-tertiary font-semibold">
+      <div class="card-glow p-6">
+        <div class="text-xs uppercase tracking-wider text-steel-500 font-mono mb-1">
           Ready to Ship
         </div>
-        <div class="mt-4 text-3xl font-bold text-white">
+        <div class="mt-2 text-3xl font-bold font-mono text-weld-400 glow-weld">
           {{ metrics?.ready_to_ship_pieces ?? 0 }}
         </div>
-        <p class="mt-2 text-sm text-text-secondary">
-          Completed assemblies awaiting logistics.
+        <p class="mt-3 text-sm text-steel-400">
+          Completed assemblies awaiting logistics
         </p>
       </div>
     </section>
 
     <!-- Available reports -->
-    <section class="mt-10 grid grid-cols-1 xl:grid-cols-3 gap-6">
-      <div class="xl:col-span-2 card-industrial">
-        <div class="flex items-center justify-between mb-6">
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div class="xl:col-span-2 card-elevated">
+        <div class="p-6 border-b border-steel-800">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-steel-100 uppercase tracking-wider">
+                Inventory Valuation Snapshot
+              </h3>
+              <p class="mt-1 text-sm text-steel-400">
+                A rapid read on current stock value and material mix
+              </p>
+            </div>
+            <Link
+              href="/reports/inventory"
+              class="btn-primary"
+            >
+              View Details
+            </Link>
+          </div>
+        </div>
+
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card p-5">
+              <div class="text-xs uppercase tracking-wider text-steel-500 font-mono mb-1">
+                Usable Stock Items
+              </div>
+              <div class="mt-2 text-2xl font-bold font-mono text-forge-400 glow-forge">
+                {{ inventorySummary().totalItems ?? 0 }}
+              </div>
+              <p class="mt-2 text-sm text-steel-400">
+                Items not yet marked as used
+              </p>
+            </div>
+            <div class="card p-5">
+              <div class="text-xs uppercase tracking-wider text-steel-500 font-mono mb-1">
+                Estimated Valuation
+              </div>
+              <div class="mt-2 text-2xl font-bold font-mono text-weld-400 glow-weld">
+                {{ formatCurrency(inventorySummary().valuation ?? 0) }}
+              </div>
+              <p class="mt-2 text-sm text-steel-400">
+                Based on length × cost per unit
+              </p>
+            </div>
+          </div>
+
           <div>
-            <h3 class="text-lg font-semibold text-white">
-              Inventory Valuation Snapshot
-            </h3>
-            <p class="text-sm text-text-secondary">
-              A rapid read on current stock value and material mix.
-            </p>
-          </div>
-          <Link
-            href="/reports/inventory"
-            class="btn-secondary"
-          >
-            View Inventory Report
-          </Link>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-steel-900/60 border border-steel-700 rounded-sm p-5">
-            <div class="text-xs uppercase tracking-wider text-text-tertiary font-semibold">
-              Usable Stock Items
-            </div>
-            <div class="mt-3 text-2xl font-semibold text-white">
-              {{ inventorySummary().totalItems ?? 0 }}
-            </div>
-            <p class="mt-2 text-sm text-text-secondary">
-              Items not yet marked as used.
-            </p>
-          </div>
-          <div class="bg-steel-900/60 border border-steel-700 rounded-sm p-5">
-            <div class="text-xs uppercase tracking-wider text-text-tertiary font-semibold">
-              Estimated Valuation
-            </div>
-            <div class="mt-3 text-2xl font-semibold text-white">
-              {{ formatCurrency(inventorySummary().valuation ?? 0) }}
-            </div>
-            <p class="mt-2 text-sm text-text-secondary">
-              Based on length × cost per unit.
-            </p>
-          </div>
-        </div>
-
-        <div class="mt-6">
-          <h4 class="text-sm uppercase tracking-wider text-text-tertiary font-semibold">
-            Top Material Types
-          </h4>
-          <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div
-              v-for="type in (inventorySummary().byType ?? []).slice(0, 3)"
-              :key="type.type"
-              class="bg-steel-900/40 border border-steel-700 rounded-sm p-4"
-            >
-              <div class="text-sm font-semibold text-white">
-                {{ type.type || 'Unknown' }}
+            <h4 class="text-sm uppercase tracking-wider text-steel-500 font-mono mb-3">
+              Top Material Types
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                v-for="type in (inventorySummary().byType ?? []).slice(0, 3)"
+                :key="type.type"
+                class="card p-4"
+              >
+                <div class="text-sm font-bold text-steel-100 uppercase tracking-wider">
+                  {{ type.type || 'Unknown' }}
+                </div>
+                <div class="mt-2 text-xs text-steel-400 font-mono">
+                  {{ type.count }} items • {{ type.total_length ?? 0 }}" total length
+                </div>
               </div>
-              <div class="mt-2 text-xs text-text-secondary">
-                {{ type.count }} items • {{ type.total_length ?? 0 }}" total length
+              <div
+                v-if="(inventorySummary().byType ?? []).length === 0"
+                class="card p-4 text-sm text-steel-500"
+              >
+                No inventory data yet. Add stock to build the valuation report.
               </div>
-            </div>
-            <div
-              v-if="(inventorySummary().byType ?? []).length === 0"
-              class="bg-steel-900/40 border border-steel-700 rounded-sm p-4 text-sm text-text-secondary"
-            >
-              No inventory data yet. Add stock to build the valuation report.
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card-industrial">
-        <div class="mb-6">
-          <h3 class="text-lg font-semibold text-white">
+      <div class="card-elevated">
+        <div class="p-6 border-b border-steel-800">
+          <h3 class="text-lg font-bold text-steel-100 uppercase tracking-wider">
             Report Library
           </h3>
-          <p class="text-sm text-text-secondary">
-            Quick access to frequently used reporting views.
+          <p class="mt-1 text-sm text-steel-400">
+            Quick access to frequently used reporting views
           </p>
         </div>
 
-        <div class="space-y-4">
+        <div class="p-6 space-y-4">
           <Link
             href="/reports/inventory"
-            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+            class="block card p-4 hover:border-forge-500 transition-colors group"
           >
-            <div class="text-sm font-semibold text-white">
+            <div class="text-sm font-bold text-steel-100 uppercase tracking-wider group-hover:text-forge-400 transition-colors">
               Inventory Snapshot
             </div>
-            <div class="mt-1 text-xs text-text-secondary">
-              Stock valuation, usage, and type totals.
+            <div class="mt-1 text-xs text-steel-400">
+              Stock valuation, usage, and type totals
             </div>
           </Link>
 
           <Link
             href="/projects"
-            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+            class="block card p-4 hover:border-forge-500 transition-colors group"
           >
-            <div class="text-sm font-semibold text-white">
+            <div class="text-sm font-bold text-steel-100 uppercase tracking-wider group-hover:text-forge-400 transition-colors">
               Project BOMs
             </div>
-            <div class="mt-1 text-xs text-text-secondary">
-              Select a project to open its Bill of Materials report.
+            <div class="mt-1 text-xs text-steel-400">
+              Select a project to open its Bill of Materials report
             </div>
           </Link>
 
           <Link
             href="/reports/production"
-            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+            class="block card p-4 hover:border-forge-500 transition-colors group"
           >
-            <div class="text-sm font-semibold text-white">
+            <div class="text-sm font-bold text-steel-100 uppercase tracking-wider group-hover:text-forge-400 transition-colors">
               Production Summary
             </div>
-            <div class="mt-1 text-xs text-text-secondary">
-              Batch status, labor hours, and parts completed.
+            <div class="mt-1 text-xs text-steel-400">
+              Batch status, labor hours, and parts completed
             </div>
           </Link>
 
           <Link
             href="/reports/labor-efficiency"
-            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+            class="block card p-4 hover:border-forge-500 transition-colors group"
           >
-            <div class="text-sm font-semibold text-white">
+            <div class="text-sm font-bold text-steel-100 uppercase tracking-wider group-hover:text-forge-400 transition-colors">
               Labor Efficiency
             </div>
-            <div class="mt-1 text-xs text-text-secondary">
-              Parts per hour by work area and department.
+            <div class="mt-1 text-xs text-steel-400">
+              Parts per hour by work area and department
             </div>
           </Link>
 
           <Link
             href="/reports/batch-completion"
-            class="block border border-steel-700 rounded-sm p-4 hover:border-forge-500 transition-colors"
+            class="block card p-4 hover:border-forge-500 transition-colors group"
           >
-            <div class="text-sm font-semibold text-white">
+            <div class="text-sm font-bold text-steel-100 uppercase tracking-wider group-hover:text-forge-400 transition-colors">
               Batch Completion Timeline
             </div>
-            <div class="mt-1 text-xs text-text-secondary">
-              Batch durations and completion history.
+            <div class="mt-1 text-xs text-steel-400">
+              Batch durations and completion history
             </div>
           </Link>
         </div>
@@ -232,38 +246,35 @@ const inventorySummary = () => props.inventorySnapshot ?? { totalItems: 0, valua
     </section>
 
     <!-- Recent projects for BOM access -->
-    <section class="mt-10 card-industrial">
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h3 class="text-lg font-semibold text-white">
-            Recent Project BOMs
-          </h3>
-          <p class="text-sm text-text-secondary">
-            Jump straight into the most recently updated jobs.
-          </p>
+    <section class="mt-8 card-elevated">
+      <div class="p-6 border-b border-steel-800">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-steel-100 uppercase tracking-wider">
+              Recent Project BOMs
+            </h3>
+            <p class="mt-1 text-sm text-steel-400">
+              Jump straight into the most recently updated jobs
+            </p>
+          </div>
+          <Link
+            href="/projects"
+            class="btn-primary"
+          >
+            View All Projects
+          </Link>
         </div>
-        <Link
-          href="/projects"
-          class="btn-secondary"
-        >
-          View All Projects
-        </Link>
       </div>
 
       <div class="overflow-x-auto">
-        <table class="min-w-full text-sm">
-          <thead class="text-xs uppercase tracking-wider text-text-tertiary">
-            <tr class="border-b border-steel-700">
-              <th class="py-3 text-left">
-                Job
-              </th>
-              <th class="py-3 text-left">
-                Customer
-              </th>
-              <th class="py-3 text-left">
-                Status
-              </th>
-              <th class="py-3 text-right">
+        <table class="table-industrial">
+          <thead>
+            <tr>
+              <th>Job Number</th>
+              <th>Project Name</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th class="text-right">
                 Actions
               </th>
             </tr>
@@ -272,26 +283,51 @@ const inventorySummary = () => props.inventorySnapshot ?? { totalItems: 0, valua
             <tr
               v-for="project in projects ?? []"
               :key="project.id"
-              class="border-b border-steel-800/80 text-text-secondary"
             >
-              <td class="py-3 text-white">
-                <div class="font-semibold">
-                  {{ project.name ?? 'Untitled Project' }}
-                </div>
-                <div class="text-xs text-text-tertiary">
-                  {{ project.job_number ?? 'No job number' }}
-                </div>
+              <td class="cell-id">
+                {{ project.job_number ?? 'No job number' }}
               </td>
-              <td class="py-3">
+              <td>
+                <Link
+                  :href="`/projects/${project.id}`"
+                  class="text-forge-400 hover:text-forge-300 font-bold glow-forge"
+                >
+                  {{ project.name ?? 'Untitled Project' }}
+                </Link>
+              </td>
+              <td class="text-steel-400 font-mono text-sm">
                 {{ project.customer?.name ?? 'No customer' }}
               </td>
-              <td class="py-3 capitalize">
-                {{ project.status ?? 'unknown' }}
+              <td class="cell-status">
+                <span
+                  v-if="project.status === 'active'"
+                  class="badge-in-progress"
+                >
+                  Active
+                </span>
+                <span
+                  v-else-if="project.status === 'complete'"
+                  class="badge-complete"
+                >
+                  Complete
+                </span>
+                <span
+                  v-else-if="project.status === 'production'"
+                  class="badge-warning"
+                >
+                  Production
+                </span>
+                <span
+                  v-else
+                  class="badge-free"
+                >
+                  {{ project.status ?? 'unknown' }}
+                </span>
               </td>
-              <td class="py-3 text-right">
+              <td class="text-right">
                 <Link
                   :href="`/reports/project/${project.id}/bom`"
-                  class="btn-primary"
+                  class="text-weld-400 hover:text-weld-300 text-sm uppercase tracking-wider font-mono glow-weld"
                 >
                   View BOM
                 </Link>
@@ -299,8 +335,8 @@ const inventorySummary = () => props.inventorySnapshot ?? { totalItems: 0, valua
             </tr>
             <tr v-if="(projects ?? []).length === 0">
               <td
-                colspan="4"
-                class="py-6 text-center text-sm text-text-secondary"
+                colspan="5"
+                class="text-center py-12 text-steel-500"
               >
                 No projects yet. Add a project to unlock BOM reporting.
               </td>

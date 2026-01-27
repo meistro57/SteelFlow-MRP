@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
 
 class EquipmentMaintenanceOverview extends StatsOverviewWidget
 {
-    protected static ?string $heading = 'Equipment Maintenance Snapshot';
+    protected ?string $heading = 'Equipment Maintenance Snapshot';
 
     protected function getStats(): array
     {

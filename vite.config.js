@@ -6,6 +6,36 @@ import path from 'path';
 import os from 'os';
 
 /**
+ * Collect module asset entry points
+ */
+function collectModuleAssets() {
+    const modulesPath = path.resolve(__dirname, 'Modules');
+    const assets = [];
+
+    if (fs.existsSync(modulesPath)) {
+        const modules = fs.readdirSync(modulesPath);
+        for (const module of modules) {
+            const modulePath = path.join(modulesPath, module);
+            if (fs.statSync(modulePath).isDirectory()) {
+                // Check for js/app.js
+                const jsPath = path.join(modulePath, 'resources/assets/js/app.js');
+                if (fs.existsSync(jsPath)) {
+                    assets.push(`Modules/${module}/resources/assets/js/app.js`);
+                }
+
+                // Check for css/app.css
+                const cssPath = path.join(modulePath, 'resources/assets/css/app.css');
+                if (fs.existsSync(cssPath)) {
+                    assets.push(`Modules/${module}/resources/assets/css/app.css`);
+                }
+            }
+        }
+    }
+
+    return assets;
+}
+
+/**
  * Automatically detect the best hostname for Vite HMR based on environment
  */
 function detectHmrHost(env) {
@@ -61,7 +91,7 @@ export default defineConfig(({ mode }) => {
                     'resources/css/app.css',
                     'resources/js/app.js',
                     'resources/css/filament/admin/theme.css',
-                 //   ...collectModuleAssets(),
+                    ...collectModuleAssets(),
                 ],
                 refresh: true,
             }),

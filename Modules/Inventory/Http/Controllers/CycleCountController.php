@@ -18,7 +18,7 @@ use Modules\Inventory\Services\InventoryService;
 class CycleCountController extends Controller
 {
     public function __construct(
-        protected InventoryService $inventoryService
+        protected InventoryService $inventoryService,
     ) {}
 
     /**
@@ -234,7 +234,7 @@ class CycleCountController extends Controller
                         $stockItem,
                         $line->counted_quantity,
                         'Cycle count adjustment',
-                        "Cycle count {$cycleCount->count_number}: ".($reconciliation['variance_reason'] ?? 'No reason provided')
+                        "Cycle count {$cycleCount->count_number}: ".($reconciliation['variance_reason'] ?? 'No reason provided'),
                     );
                 }
 
