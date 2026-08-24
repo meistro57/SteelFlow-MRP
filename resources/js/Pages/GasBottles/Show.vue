@@ -1,7 +1,7 @@
 <!-- resources/js/Pages/GasBottles/Show.vue -->
 <script setup>
 import { ref } from 'vue';
-import { Link, router, useForm, usePage } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({

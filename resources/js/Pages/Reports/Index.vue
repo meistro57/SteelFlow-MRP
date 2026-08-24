@@ -3,7 +3,6 @@
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Breadcrumb from '@/Components/Breadcrumb.vue';
-import { ChartBarIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
     metrics: Object,

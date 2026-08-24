@@ -2,7 +2,7 @@
 import { Link, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
-const props = defineProps({
+defineProps({
     stockAreas: Object,
     types: Array,
     grades: Array,

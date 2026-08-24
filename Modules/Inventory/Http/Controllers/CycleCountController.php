@@ -294,7 +294,7 @@ class CycleCountController extends Controller
 
         if ($lastCount) {
             $lastNumber = (int) substr($lastCount->count_number, -4);
-            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+            $newNumber = str_pad((string) ($lastNumber + 1), 4, '0', STR_PAD_LEFT);
         } else {
             $newNumber = '0001';
         }

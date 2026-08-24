@@ -20,6 +20,10 @@ parameters:
         -
             identifier: missingType.iterableValue
             reportUnmatched: false
+        # Ignore dynamic (magic __call) methods on Faker\Generator
+        -
+            message: '#Call to an undefined method Faker\\Generator::.*#'
+            reportUnmatched: false
 
     excludePaths:
         - app/Console/Kernel.php
