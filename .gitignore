@@ -21,3 +21,8 @@ docker/certs/
 bootstrap/cache/*.php
 error.md
 /bootstrap/cache_backup
+
+# Let's Encrypt secrets (private keys/certs must never be committed)
+docker/letsencrypt/live/
+docker/letsencrypt/archive/
+docker/letsencrypt/accounts/

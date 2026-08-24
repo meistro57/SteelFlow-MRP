@@ -80,9 +80,22 @@ export default defineConfig(({ mode }) => {
     // Automatically detect the best HMR host for this environment
     const hmrHost = detectHmrHost(env);
 
-    // Only use HTTPS for localhost (SSL cert is only valid for localhost)
+    // Only terminate TLS directly on Vite's own listener for the pure-localhost
+    // case (SSL cert is only valid for localhost). In every other case Nginx
+    // sits in front, terminates TLS, and proxies to Vite over plain HTTP
+    // internally, so Vite's own listener stays HTTP.
     const useHttps = hmrHost === 'localhost' && fs.existsSync('/etc/nginx/certs/localhost-key.pem') && fs.existsSync('/etc/nginx/certs/localhost.pem');
-    const protocol = useHttps ? 'https' : 'http';
+
+    // The HMR *client* protocol (what the browser connects with) must match
+    // the scheme the page was actually loaded over, since Nginx is the one
+    // terminating TLS externally - this is independent of Vite's own listener.
+    let publicIsHttps = false;
+    try {
+        publicIsHttps = new URL(env.APP_URL || 'http://localhost').protocol === 'https:';
+    } catch {
+        // Invalid APP_URL, fall back to non-TLS.
+    }
+    const protocol = publicIsHttps ? 'wss' : 'ws';
 
     return {
         plugins: [
@@ -113,7 +126,8 @@ export default defineConfig(({ mode }) => {
             hmr: {
                 host: hmrHost,
                 protocol: protocol,
-                clientPort: protocol === 'https' ? 443 : 80, // Use Nginx port for HMR client
+                clientPort: protocol === 'wss' ? 443 : 80, // Use Nginx port for HMR client
+                path: 'vite-hmr', // Distinct path so Nginx can proxy the HMR websocket specifically
             },
             cors: {
                 origin: '*', // Allow all origins for development
