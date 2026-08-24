@@ -29,7 +29,7 @@ const activeProjects = props.metrics?.active_projects ?? 0;
 const totalWeight = props.metrics?.total_weight_lbs ?? 0;
 const productionProgress = props.metrics?.production_completion_percentage ?? 0;
 const readyToShip = props.metrics?.ready_to_ship_pieces ?? 0;
-const repositoryUrl = 'https://github.com/SteelFlow-MRP/SteelFlow-MRP'; // Default repo link; update if hosted elsewhere.
+const repositoryUrl = 'https://github.com/meistro57/SteelFlow-MRP';
 
 const recentActivity = [
     { id: 1, type: 'production', message: 'Batch B-2024-147 started cutting', time: '2 min ago', status: 'in_progress' },
