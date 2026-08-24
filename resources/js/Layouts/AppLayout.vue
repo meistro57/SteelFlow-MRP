@@ -59,15 +59,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-steel-900 text-steel-50">
+  <div class="min-h-screen bg-steel-100 text-steel-900 dark:bg-steel-900 dark:text-steel-50">
     <Head :title="title" />
 
     <!-- Industrial Navigation Bar -->
-    <nav class="nav-industrial sticky top-0 z-50 border-b border-steel-700 bg-steel-900/80 backdrop-blur-md">
+    <nav class="nav-industrial sticky top-0 z-50 border-b border-steel-300 bg-steel-100/90 backdrop-blur-md dark:border-steel-700 dark:bg-steel-900/80">
       <div class="max-w-full mx-auto px-6">
         <div class="flex justify-between items-center h-16">
           <!-- Logo & Branding -->
-          <div class="flex items-center space-x-8 text-neutral-50">
+          <div class="flex items-center space-x-8 text-neutral-900 dark:text-neutral-50">
             <Link
               href="/"
               class="flex items-center space-x-3 group"
@@ -88,7 +88,7 @@ onMounted(() => {
                 </svg>
               </div>
               <div class="flex flex-col">
-                <span class="text-white font-bold text-xl tracking-tight">SteelFlow</span>
+                <span class="text-steel-900 font-bold text-xl tracking-tight dark:text-white">SteelFlow</span>
                 <span class="text-xs text-steel-500 uppercase tracking-widest font-mono">MRP v0.1.0-alpha</span>
               </div>
             </Link>
@@ -133,7 +133,7 @@ onMounted(() => {
           <div class="flex items-center space-x-2 md:space-x-4">
             <!-- Search (placeholder) -->
             <button
-              class="hidden sm:block p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
+              class="hidden sm:block p-2 text-steel-600 hover:text-steel-900 transition-colors rounded-sm hover:bg-steel-200 dark:text-steel-400 dark:hover:text-white dark:hover:bg-steel-800"
               title="Search"
             >
               <svg
@@ -153,7 +153,7 @@ onMounted(() => {
 
             <!-- Notifications -->
             <button
-              class="hidden sm:block p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800 relative"
+              class="hidden sm:block p-2 text-steel-600 hover:text-steel-900 transition-colors rounded-sm hover:bg-steel-200 relative dark:text-steel-400 dark:hover:text-white dark:hover:bg-steel-800"
               title="Notifications"
             >
               <svg
@@ -175,7 +175,7 @@ onMounted(() => {
             <!-- Settings -->
             <Link
               :href="route('settings.index')"
-              class="hidden sm:block p-2 text-steel-400 hover:text-white transition-colors rounded-sm hover:bg-steel-800"
+              class="hidden sm:block p-2 text-steel-600 hover:text-steel-900 transition-colors rounded-sm hover:bg-steel-200 dark:text-steel-400 dark:hover:text-white dark:hover:bg-steel-800"
               :class="{ 'text-forge-500 bg-steel-800': $page.url === '/settings' }"
               title="Settings"
             >
@@ -203,10 +203,10 @@ onMounted(() => {
             <!-- User Menu -->
             <div
               v-if="$page.props.auth?.user"
-              class="flex items-center space-x-2 sm:space-x-3 sm:pl-4 sm:border-l sm:border-steel-700"
+              class="flex items-center space-x-2 sm:space-x-3 sm:pl-4 sm:border-l sm:border-steel-300 dark:sm:border-steel-700"
             >
               <div class="hidden sm:block text-right">
-                <div class="text-sm font-medium text-white">
+                <div class="text-sm font-medium text-steel-900 dark:text-white">
                   {{ $page.props.auth.user.name }}
                 </div>
                 <div class="text-xs text-steel-500 font-mono">
@@ -217,7 +217,7 @@ onMounted(() => {
                 :href="route('logout')"
                 method="post"
                 as="button"
-                class="w-9 h-9 bg-steel-700 rounded-sm flex items-center justify-center text-white font-bold hover:bg-steel-600 transition-colors"
+                class="w-9 h-9 bg-steel-300 rounded-sm flex items-center justify-center text-steel-900 font-bold hover:bg-steel-400 transition-colors dark:bg-steel-700 dark:text-white dark:hover:bg-steel-600"
                 title="Log Out"
               >
                 {{ $page.props.auth.user.name?.split(' ').map(n => n[0]).join('').toUpperCase() || '?' }}
@@ -228,7 +228,7 @@ onMounted(() => {
             <!-- Mobile menu button -->
             <div class="md:hidden flex items-center">
               <button
-                class="inline-flex items-center justify-center p-2 rounded-md text-steel-400 hover:text-white hover:bg-steel-800 focus:outline-none"
+                class="inline-flex items-center justify-center p-2 rounded-md text-steel-600 hover:text-steel-900 hover:bg-steel-200 focus:outline-none dark:text-steel-400 dark:hover:text-white dark:hover:bg-steel-800"
                 @click="mobileMenuOpen = !mobileMenuOpen"
               >
                 <span class="sr-only">Open main menu</span>
@@ -273,14 +273,14 @@ onMounted(() => {
       <!-- Mobile menu, show/hide based on menu state. -->
       <div
         v-if="mobileMenuOpen"
-        class="md:hidden bg-steel-900 border-b border-steel-700"
+        class="md:hidden bg-steel-100 border-b border-steel-300 dark:bg-steel-900 dark:border-steel-700"
       >
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
             v-for="item in navigation"
             :key="item.name"
             :href="item.href"
-            class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800 transition-all"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-steel-700 hover:text-steel-900 hover:bg-steel-200 transition-all dark:text-steel-300 dark:hover:text-white dark:hover:bg-steel-800"
             :class="{ 'text-forge-500 bg-steel-800': $page.url === item.href }"
             @click="mobileMenuOpen = false"
           >
@@ -292,7 +292,7 @@ onMounted(() => {
           </Link>
 
           <template v-if="$page.props.auth?.user?.role === 'admin'">
-            <div class="border-t border-steel-800 my-2 pt-2 px-3 text-xs font-bold text-steel-500 uppercase">
+            <div class="border-t border-steel-300 my-2 pt-2 px-3 text-xs font-bold text-steel-500 uppercase dark:border-steel-800">
               Admin
             </div>
             <Link
@@ -311,10 +311,10 @@ onMounted(() => {
           </template>
 
 
-          <div class="border-t border-steel-800 my-2 pt-2">
+          <div class="border-t border-steel-300 my-2 pt-2 dark:border-steel-800">
             <Link
               :href="route('settings.index')"
-              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-steel-300 hover:text-white hover:bg-steel-800 transition-all"
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-steel-700 hover:text-steel-900 hover:bg-steel-200 transition-all dark:text-steel-300 dark:hover:text-white dark:hover:bg-steel-800"
               @click="mobileMenuOpen = false"
             >
               <CogIcon class="w-5 h-5" />
@@ -328,7 +328,7 @@ onMounted(() => {
     <!-- Page Header (if provided) -->
     <header
       v-if="$slots.header"
-      class="bg-steel-800 border-b border-steel-700"
+      class="bg-steel-200 border-b border-steel-300 dark:bg-steel-800 dark:border-steel-700"
     >
       <div class="max-w-full mx-auto px-6 py-6">
         <slot name="header" />
@@ -341,9 +341,9 @@ onMounted(() => {
     </main>
 
     <!-- Footer -->
-    <footer class="bg-steel-900 border-t border-steel-700 mt-16">
+    <footer class="bg-steel-100 border-t border-steel-300 mt-16 dark:bg-steel-900 dark:border-steel-700">
       <div class="max-w-full mx-auto px-6 py-6">
-        <div class="flex justify-between items-center text-sm text-steel-500">
+        <div class="flex justify-between items-center text-sm text-steel-600 dark:text-steel-500">
           <div class="font-mono">
             SteelFlow MRP © 2026 • Built for Steel Fabricators
           </div>

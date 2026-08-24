@@ -33,10 +33,16 @@
 
   /* Industrial Base Styles */
   body {
-    @apply bg-steel-950 text-steel-300 font-sans antialiased;
+    @apply bg-steel-100 text-steel-900 font-sans antialiased;
+    background-image: linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  html.dark body {
+    @apply bg-steel-950 text-steel-300;
     background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 20px 20px;
   }
 
   /* All numbers should be tabular */
@@ -46,7 +52,11 @@
 
   /* Headings */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-steel-300;
+    @apply font-bold text-steel-900;
+  }
+
+  html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+    @apply text-steel-300;
   }
 
   h1 { @apply text-3xl; }
@@ -373,23 +383,39 @@
   
   .nav-industrial {
     @apply fixed top-0 left-0 right-0 z-50;
-    @apply h-16 bg-gradient-brushed border-b-2 border-forge-600;
+    @apply h-16 border-b-2 border-forge-600;
     @apply shadow-industrial;
+    background: linear-gradient(90deg, #f8fafc 0%, #e2e8f0 25%, #f8fafc 50%, #e2e8f0 75%, #f8fafc 100%);
     backdrop-filter: blur(12px);
+  }
+
+  html.dark .nav-industrial {
+    background: linear-gradient(90deg, #232326 0%, #2d2d31 25%, #232326 50%, #2d2d31 75%, #232326 100%);
   }
 
   .nav-link {
     @apply px-4 py-2 text-sm font-semibold uppercase tracking-industrial;
-    @apply text-steel-400 transition-all duration-200;
-    @apply hover:text-steel-300;
+    @apply text-steel-700 transition-all duration-200;
+    @apply hover:text-steel-900;
     @apply relative;
+  }
+
+  html.dark .nav-link {
+    @apply text-steel-400;
+    @apply hover:text-steel-300;
   }
 
   .nav-link-active {
     @apply px-4 py-2 text-sm font-semibold uppercase tracking-industrial;
-    @apply text-steel-400 transition-all duration-200;
-    @apply hover:text-steel-300;
+    @apply text-steel-700 transition-all duration-200;
+    @apply hover:text-steel-900;
     @apply relative;
+    color: var(--accent-secondary);
+  }
+
+  html.dark .nav-link-active {
+    @apply text-steel-400;
+    @apply hover:text-steel-300;
     color: var(--accent-secondary);
   }
 
