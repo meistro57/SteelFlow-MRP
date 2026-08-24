@@ -22,6 +22,10 @@ import {
 // Props received from Laravel via Inertia
 const props = defineProps({
     metrics: Object,
+    repositoryUrl: {
+        type: String,
+        default: 'https://github.com/meistro57/SteelFlow-MRP/issues/new',
+    },
 });
 
 // Use props for metrics with fallbacks
@@ -29,7 +33,7 @@ const activeProjects = props.metrics?.active_projects ?? 0;
 const totalWeight = props.metrics?.total_weight_lbs ?? 0;
 const productionProgress = props.metrics?.production_completion_percentage ?? 0;
 const readyToShip = props.metrics?.ready_to_ship_pieces ?? 0;
-const repositoryUrl = 'https://github.com/meistro57/SteelFlow-MRP';
+const repositoryUrl = props.repositoryUrl;
 
 const recentActivity = [
     { id: 1, type: 'production', message: 'Batch B-2024-147 started cutting', time: '2 min ago', status: 'in_progress' },

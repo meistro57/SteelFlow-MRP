@@ -94,7 +94,10 @@ onMounted(() => {
             </Link>
 
             <!-- Primary Navigation -->
-            <div class="hidden md:flex items-center space-x-1">
+            <div
+              class="hidden items-center space-x-1"
+              :class="{ 'md:flex': !sidebarCollapsed }"
+            >
               <Link
                 v-for="item in navigation"
                 :key="item.name"

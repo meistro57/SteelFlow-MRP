@@ -23,7 +23,8 @@ class ReportControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
-        // CHANGE: 'Reports/Index' -> 'Dashboard'
-        $response->assertInertia(fn ($page) => $page->component('Dashboard'));
+        $response->assertInertia(fn ($page) => $page
+            ->component('Dashboard')
+            ->where('repositoryUrl', 'https://github.com/meistro57/SteelFlow-MRP/issues/new'));
     }
 }

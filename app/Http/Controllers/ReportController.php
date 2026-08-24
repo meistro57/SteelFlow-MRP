@@ -24,6 +24,7 @@ class ReportController extends Controller
     {
         return Inertia::render('Dashboard', [
             'metrics' => $this->reportingService->getDashboardMetrics(),
+            'repositoryUrl' => 'https://github.com/meistro57/SteelFlow-MRP/issues/new',
         ]);
     }
 

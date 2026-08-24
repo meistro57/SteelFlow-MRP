@@ -32,6 +32,27 @@ class SettingsControllerTest extends TestCase
         $this->assertFalse($user->settings['sidebar_collapsed']);
     }
 
+    public function test_user_can_update_sidebar_setting(): void
+    {
+        $user = User::factory()->create([
+            'settings' => [
+                'theme' => 'light',
+                'sidebar_collapsed' => false,
+            ],
+        ]);
+
+        $response = $this->actingAs($user)->post(route('settings.update'), [
+            'sidebar_collapsed' => true,
+        ]);
+
+        $response->assertRedirect();
+
+        $user->refresh();
+
+        $this->assertTrue($user->settings['sidebar_collapsed']);
+        $this->assertSame('light', $user->settings['theme']);
+    }
+
     public function test_user_cannot_set_invalid_theme(): void
     {
         $user = User::factory()->create();
