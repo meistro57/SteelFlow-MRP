@@ -104,6 +104,7 @@ After installation, the following services will be running:
 | Service | Container Name | Port | URL |
 |---------|---------------|------|-----|
 | Application | `steelflow-app` | - | (internal PHP-FPM) |
+| Queue Worker (Horizon) | `steelflow-horizon` | - | (internal) |
 | Web Server | `steelflow-web` | 80 | http://localhost |
 | Database | `steelflow-db` | 3306 | mysql://localhost:3306 |
 | Redis Cache | `steelflow-redis` | 6379 | (internal) |
@@ -516,19 +517,14 @@ docker compose exec app php artisan event:cache
 
 ### 4. Queue Workers
 
-Configure a process manager (Supervisor) for queue workers:
+Queue processing runs through Horizon in the dedicated `steelflow-horizon` container.
 
-```ini
-[program:steelflow-worker]
-process_name=%(program_name)s_%(process_num)02d
-command=docker compose exec app php artisan queue:work redis --sleep=3 --tries=3
-autostart=true
-autorestart=true
-numprocs=2
-user=www-data
-redirect_stderr=true
-stdout_logfile=/var/www/storage/logs/worker.log
+```bash
+docker compose up -d horizon
+docker compose exec app php artisan horizon:status
 ```
+
+For host-level process supervision, monitor the `docker compose up -d horizon` service lifecycle rather than running `queue:work` directly.
 
 ### 5. Database Backups
 
