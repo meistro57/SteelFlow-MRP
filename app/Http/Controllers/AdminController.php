@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -82,19 +83,29 @@ class AdminController extends Controller
 
         switch ($type) {
             case 'route':
-                \Illuminate\Support\Facades\Artisan::call('route:clear');
+                Artisan::call('route:clear');
                 break;
             case 'config':
-                \Illuminate\Support\Facades\Artisan::call('config:clear');
+                Artisan::call('config:clear');
                 break;
             case 'view':
-                \Illuminate\Support\Facades\Artisan::call('view:clear');
+                Artisan::call('view:clear');
                 break;
             default:
-                \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+                Artisan::call('optimize:clear');
                 break;
         }
 
         return redirect()->back()->with('success', 'System cache cleared successfully.');
+    }
+
+    public function seedTestData()
+    {
+        Artisan::call('db:seed', [
+            '--class' => 'DatabaseSeeder',
+            '--force' => true,
+        ]);
+
+        return redirect()->back()->with('success', 'Test data seeded successfully.');
     }
 }

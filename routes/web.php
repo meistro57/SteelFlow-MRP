@@ -144,4 +144,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/system', [AdminController::class, 'system'])->name('system');
     Route::post('/system/clear-cache', [AdminController::class, 'clearCache'])->name('system.clear-cache');
+    Route::post('/system/seed-test-data', [AdminController::class, 'seedTestData'])->name('system.seed-test-data');
 });

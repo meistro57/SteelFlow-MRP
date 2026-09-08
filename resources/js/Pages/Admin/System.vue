@@ -3,11 +3,15 @@ import { router } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const clearCache = (type = 'all') => {
-    router.post(route('admin.system.clear-cache'), { type }, {
-        onSuccess: () => {
-            // Optional: notifications
-        }
-    });
+    router.post(route('admin.system.clear-cache'), { type });
+};
+
+const seedTestData = () => {
+    if (!window.confirm('This will populate the database with test data. Continue?')) {
+        return;
+    }
+
+    router.post(route('admin.system.seed-test-data'));
 };
 </script>
 
@@ -68,6 +72,22 @@ const clearCache = (type = 'all') => {
             <span class="text-xs font-normal opacity-70">artisan optimize:clear</span>
           </button>
         </div>
+      </div>
+
+      <div class="card-industrial">
+        <h3 class="text-lg font-semibold text-white mb-4">
+          Test Data
+        </h3>
+        <p class="text-text-secondary text-sm mb-6">
+          Populate the database with default demo records, including admin users, customers, and reference data.
+        </p>
+
+        <button
+          class="btn-primary flex items-center justify-center px-6 py-3"
+          @click="seedTestData"
+        >
+          Seed Test Data
+        </button>
       </div>
 
       <div class="card-industrial">

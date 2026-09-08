@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
@@ -46,5 +47,36 @@ class AdminTest extends TestCase
             'email' => 'newuser@example.com',
             'role' => 'user',
         ]);
+    }
+
+    public function test_non_admin_cannot_seed_test_data(): void
+    {
+        $user = User::factory()->create(['role' => 'user']);
+
+        $response = $this->actingAs($user)
+            ->withSession(['_token' => 'test-token'])
+            ->post(route('admin.system.seed-test-data'), ['_token' => 'test-token']);
+
+        $response->assertForbidden();
+    }
+
+    public function test_admin_can_seed_test_data(): void
+    {
+        Artisan::shouldReceive('call')
+            ->once()
+            ->with('db:seed', [
+                '--class' => 'DatabaseSeeder',
+                '--force' => true,
+            ])
+            ->andReturn(0);
+
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $response = $this->actingAs($admin)
+            ->withSession(['_token' => 'test-token'])
+            ->post(route('admin.system.seed-test-data'), ['_token' => 'test-token']);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success', 'Test data seeded successfully.');
     }
 }
