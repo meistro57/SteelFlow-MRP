@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/projects/{project}/import-kiss', [ProjectController::class, 'importKiss'])->name('projects.import-kiss.store');
     Route::get('/projects/{project}/import-xsr', [ProjectController::class, 'importXsrForm'])->name('projects.import-xsr');
     Route::post('/projects/{project}/import-xsr', [ProjectController::class, 'importXsr'])->name('projects.import-xsr.store');
+    Route::get('/projects/{project}/import-smlx', [ProjectController::class, 'importSmlxForm'])->name('projects.import-smlx');
+    Route::post('/projects/{project}/import-smlx', [ProjectController::class, 'importSmlx'])->name('projects.import-smlx.store');
 
     // Purchase Order Routes
     Route::resource('purchase-orders', PurchaseOrderController::class);

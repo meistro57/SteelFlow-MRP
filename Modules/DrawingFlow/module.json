@@ -1,0 +1,19 @@
+{
+  "name": "DrawingFlow",
+  "alias": "drawingflow",
+  "description": "Shop-drawing workflow: submittal, approval, and fab-release handoff to Production.",
+  "keywords": [
+    "drawing",
+    "submittal",
+    "approval",
+    "fab",
+    "release",
+    "cnc",
+    "nesting"
+  ],
+  "priority": 0,
+  "providers": [
+    "Modules\\DrawingFlow\\Providers\\DrawingFlowServiceProvider"
+  ],
+  "files": []
+}

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ImportKissRequest;
+use App\Http\Requests\ImportSmlxRequest;
 use App\Http\Requests\ImportXsrRequest;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Customer;
 use App\Models\Project;
 use App\Services\Import\KissImporter;
+use App\Services\Import\SmlxImporter;
 use App\Services\Import\XsrImporter;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -203,6 +205,38 @@ class ProjectController extends Controller
         return redirect()
             ->back()
             ->withErrors(['file' => 'Failed to import XSR file. Please check the file format.'])
+            ->withInput();
+    }
+
+    /**
+     * Show the SMLX import form for a project.
+     */
+    public function importSmlxForm(Project $project): Response
+    {
+        return Inertia::render('Projects/ImportSmlx', [
+            'project' => $project,
+        ]);
+    }
+
+    /**
+     * Import SMLX file for a project.
+     */
+    public function importSmlx(ImportSmlxRequest $request, Project $project, SmlxImporter $importer): RedirectResponse
+    {
+        $file = $request->file('file');
+        $tempPath = $file->getRealPath();
+
+        $success = $importer->import($tempPath, $project);
+
+        if ($success) {
+            return redirect()
+                ->route('projects.show', $project)
+                ->with('success', 'SMLX file imported successfully.');
+        }
+
+        return redirect()
+            ->back()
+            ->withErrors(['file' => 'Failed to import SMLX file. Please check the file format.'])
             ->withInput();
     }
 }
