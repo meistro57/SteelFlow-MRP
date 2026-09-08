@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Schema;
 use Modules\Inventory\Models\Grade;
 use Modules\Inventory\Models\Material;
 
@@ -29,7 +30,8 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         // Many tests assume material_id=1 exists. Create a minimal reference set.
-        if (! Grade::query()->exists()) {
+        // Only seed when the grades table exists: unit tests do not run migrations.
+        if (Schema::hasTable('grades') && ! Grade::query()->exists()) {
             $grade = Grade::query()->create([
                 'code' => 'A36',
                 'description' => 'ASTM A36',
