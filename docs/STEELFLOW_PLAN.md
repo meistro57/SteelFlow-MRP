@@ -46,14 +46,17 @@ a **fab release** (its `FabQueue`), and that release **includes plate nests and
 CNC data** — the full fabrication package, not just approved drawings. Then
 **Production ties into Procurement and Inventory**: the fab release fires the
 shop floor, and production's material needs drive purchasing (Procurement) and
-draw down stock (Inventory). So the fold must model the full chain:
+draw down stock (Inventory). The **input** to this whole chain is the **model
+export (SMLX or KISS)** from Meistro's modeling software, which feeds the
+drawing stage. So the fold must model the full chain:
 
-    DrawingFlow (submittal/approval) → fab release (drawings + nests + CNC)
-      → Production (work orders/batches) → Procurement (buy) + Inventory (stock)
+    Model export (SMLX / KISS) → DrawingFlow (submittal/approval) →
+      fab release (drawings + nests + CNC) → Production (work orders/batches)
+      → Procurement (buy) + Inventory (stock)
 
 `Drawing` stays the data entity; DrawingFlow is the approval+nesting+CNC stage
-*upstream* of production; the fab-release event is the seam between them, and
-production is the seam that ties into procurement/inventory.
+*upstream* of production; the fab-release event is the seam between DrawingFlow
+and Production, and production is the seam that ties into procurement/inventory.
 
 ## Wave 3 — Estimating (greenfield)
 
