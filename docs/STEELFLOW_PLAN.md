@@ -43,11 +43,17 @@ renumber migrations preserving timestamps.
 **Workflow relationship (confirmed by Meistro):** DrawingFlow is the entire
 shop-drawing **submittal → approval** stage. It hands its info to Production via
 a **fab release** (its `FabQueue`), and that release **includes plate nests and
-CNC data** — the full fabrication package, not just approved drawings. So the
-fold must model that handoff: DrawingFlow emits a fab release (drawings + nests +
-CNC) → Production consumes it as work orders/batches. `Drawing` stays the data
-entity; DrawingFlow is the approval+nesting+CNC stage *upstream* of production;
-the fab-release event is the seam between them.
+CNC data** — the full fabrication package, not just approved drawings. Then
+**Production ties into Procurement and Inventory**: the fab release fires the
+shop floor, and production's material needs drive purchasing (Procurement) and
+draw down stock (Inventory). So the fold must model the full chain:
+
+    DrawingFlow (submittal/approval) → fab release (drawings + nests + CNC)
+      → Production (work orders/batches) → Procurement (buy) + Inventory (stock)
+
+`Drawing` stays the data entity; DrawingFlow is the approval+nesting+CNC stage
+*upstream* of production; the fab-release event is the seam between them, and
+production is the seam that ties into procurement/inventory.
 
 ## Wave 3 — Estimating (greenfield)
 
