@@ -40,9 +40,13 @@ drop DrawingFlow's own Customer/Project/User and re-point to SteelFlow Core (one
 auth, one customers table); port the 6 services + controllers/routes/tests;
 renumber migrations preserving timestamps.
 
-**Open question for Meistro:** does DrawingFlow's workflow absorb SteelFlow's
-existing `Drawing` model + `Modules/Documents`, or coexist (Drawing = data entity,
-DrawingFlow adds approval + fab-queue on top)? Our read: coexist.
+**Workflow relationship (confirmed by Meistro):** DrawingFlow is the entire
+shop-drawing **submittal → approval** stage. It hands its info to Production via
+a **fab release** (its `FabQueue`). So the fold must model that handoff:
+DrawingFlow emits a fab release → Production consumes it as work orders/batches.
+DrawingFlow does NOT absorb SteelFlow's existing `Drawing`/`Documents` — `Drawing`
+stays the data entity, DrawingFlow is the approval stage *upstream* of production,
+and the two are connected by the fab-release event.
 
 ## Wave 3 — Estimating (greenfield)
 
