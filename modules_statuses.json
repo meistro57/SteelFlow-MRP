@@ -14,5 +14,6 @@
     "Nesting": true,
     "Shipping": true,
     "Production": true,
-    "DrawingFlow": true
+    "DrawingFlow": true,
+    "CncData": true
 }

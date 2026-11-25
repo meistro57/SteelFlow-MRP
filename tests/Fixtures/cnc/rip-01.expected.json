@@ -1,0 +1,79 @@
+{
+  "schema": "steelflow.cnc-analysis/1",
+  "units": "in",
+  "line_count": 27,
+  "material": {
+    "name": "Mild Steel",
+    "thickness": 0.5,
+    "sheet": {
+      "x": 60,
+      "y": 220
+    }
+  },
+  "process": {
+    "label": "300Amp O2/N2",
+    "amps": 300,
+    "plasma_gas": "O2",
+    "shield_gas": "N2"
+  },
+  "lengths": {
+    "cut": 398.75,
+    "mark": 0,
+    "travel": 0,
+    "rapid": 0.9107
+  },
+  "pierces": {
+    "cut": 1,
+    "true_hole": 0,
+    "mark_starts": 0
+  },
+  "times_min": {
+    "cut": 2.5726,
+    "mark": 0,
+    "travel": 0,
+    "rapid": 0.0015,
+    "dwell": 0,
+    "pierce_delay": 0.0067,
+    "total": 2.5808
+  },
+  "cut_feeds": [
+    {
+      "feed": 155,
+      "length": 398.75
+    }
+  ],
+  "kerf_values": [
+    0.185
+  ],
+  "extents": {
+    "path": {
+      "min_x": 0,
+      "min_y": 0,
+      "max_x": 8.7569,
+      "max_y": 192.0065
+    },
+    "cut": {
+      "min_x": 0.5069,
+      "min_y": 0.5065,
+      "max_x": 8.7569,
+      "max_y": 192.0065
+    }
+  },
+  "chart": {
+    "amps": 300,
+    "name": "Mild steel 300 A, O2 plasma / Air shield",
+    "source": "XPR Cut Charts IM 809830 R1 p.28–29",
+    "thickness": 0.5,
+    "speed": 155,
+    "arc_volts": 147,
+    "pierce_delay_s": 0.4,
+    "kerf": 0.19,
+    "note": "N2 shield on this row",
+    "feed_ok": true,
+    "kerf_ok": true
+  },
+  "warnings": [],
+  "options": {
+    "rapid_rate": 600
+  }
+}

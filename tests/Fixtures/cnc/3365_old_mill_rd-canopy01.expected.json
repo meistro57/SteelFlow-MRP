@@ -1,0 +1,88 @@
+{
+  "schema": "steelflow.cnc-analysis/1",
+  "units": "in",
+  "line_count": 1430,
+  "material": {
+    "name": "Mild Steel",
+    "thickness": 0.75,
+    "sheet": {
+      "x": 60,
+      "y": 120
+    }
+  },
+  "process": {
+    "label": "170Amp O2/Air [True Bevel] _True Hole_",
+    "amps": 170,
+    "plasma_gas": "O2",
+    "shield_gas": "Air"
+  },
+  "lengths": {
+    "cut": 438.519,
+    "mark": 179.9991,
+    "travel": 0,
+    "rapid": 450.9529
+  },
+  "pierces": {
+    "cut": 19,
+    "true_hole": 8,
+    "mark_starts": 70
+  },
+  "times_min": {
+    "cut": 7.6343,
+    "mark": 1.8,
+    "travel": 0,
+    "rapid": 0.7516,
+    "dwell": 0.0083,
+    "pierce_delay": 0.2533,
+    "total": 10.4476
+  },
+  "cut_feeds": [
+    {
+      "feed": 21,
+      "length": 25.7539
+    },
+    {
+      "feed": 36.3,
+      "length": 4.7444
+    },
+    {
+      "feed": 65,
+      "length": 408.0207
+    }
+  ],
+  "kerf_values": [
+    0.127,
+    0.172
+  ],
+  "extents": {
+    "path": {
+      "min_x": 0,
+      "min_y": 0,
+      "max_x": 53.3153,
+      "max_y": 25.773
+    },
+    "cut": {
+      "min_x": 0.7537,
+      "min_y": 0.7571,
+      "max_x": 53.3153,
+      "max_y": 25.773
+    }
+  },
+  "chart": {
+    "amps": 170,
+    "name": "Mild steel 170 A, O2 plasma / Air shield",
+    "source": "XPR Cut Charts IM 809830 R1 p.26–27",
+    "thickness": 0.75,
+    "speed": 65,
+    "arc_volts": 137,
+    "pierce_delay_s": 0.8,
+    "kerf": 0.13,
+    "note": null,
+    "feed_ok": true,
+    "kerf_ok": true
+  },
+  "warnings": [],
+  "options": {
+    "rapid_rate": 600
+  }
+}

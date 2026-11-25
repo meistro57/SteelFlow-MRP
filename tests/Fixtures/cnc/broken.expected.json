@@ -1,0 +1,144 @@
+{
+  "schema": "steelflow.cnc-analysis/1",
+  "units": "in",
+  "line_count": 18,
+  "material": {
+    "name": "Mild Steel",
+    "thickness": 0.5,
+    "sheet": {
+      "x": 20,
+      "y": 20
+    }
+  },
+  "process": {
+    "label": "170Amp O2/Air",
+    "amps": 170,
+    "plasma_gas": "O2",
+    "shield_gas": "Air"
+  },
+  "lengths": {
+    "cut": 38.1416,
+    "mark": 0,
+    "travel": 1,
+    "rapid": 3.8284
+  },
+  "pierces": {
+    "cut": 2,
+    "true_hole": 0,
+    "mark_starts": 0
+  },
+  "times_min": {
+    "cut": 0.2882,
+    "mark": 0,
+    "travel": 0.0087,
+    "rapid": 0.0064,
+    "dwell": 0,
+    "pierce_delay": 0.0167,
+    "total": 0.3199
+  },
+  "cut_feeds": [
+    {
+      "feed": 0,
+      "length": 5
+    },
+    {
+      "feed": 115,
+      "length": 33.1416
+    }
+  ],
+  "kerf_values": [
+    0.1
+  ],
+  "extents": {
+    "path": {
+      "min_x": 0,
+      "min_y": 0,
+      "max_x": 11,
+      "max_y": 32
+    },
+    "cut": {
+      "min_x": 2,
+      "min_y": 0.9983,
+      "max_x": 10.0021,
+      "max_y": 32
+    }
+  },
+  "chart": {
+    "amps": 170,
+    "name": "Mild steel 170 A, O2 plasma / Air shield",
+    "source": "XPR Cut Charts IM 809830 R1 p.26–27",
+    "thickness": 0.5,
+    "speed": 115,
+    "arc_volts": 129,
+    "pierce_delay_s": 0.5,
+    "kerf": 0.1,
+    "note": null,
+    "feed_ok": false,
+    "kerf_ok": true
+  },
+  "warnings": [
+    {
+      "line": 1,
+      "code": "NO_UNITS",
+      "severity": "info",
+      "message": "No G20/G21 units code, so inches are assumed"
+    },
+    {
+      "line": 4,
+      "code": "NO_MOTION_MODE",
+      "severity": "error",
+      "message": "Coordinates given with no G00/G01/G02/G03 active"
+    },
+    {
+      "line": 9,
+      "code": "NO_FEED",
+      "severity": "error",
+      "message": "Feed move with no feedrate (F) set"
+    },
+    {
+      "line": 9,
+      "code": "CHART_FEED",
+      "severity": "warning",
+      "message": "Cut feed F0 is -100% off the cut chart (115 in/min)"
+    },
+    {
+      "line": 10,
+      "code": "TORCH_ALREADY_ON",
+      "severity": "error",
+      "message": "M07 cut-on while the torch is already on"
+    },
+    {
+      "line": 11,
+      "code": "RAPID_TORCH_ON",
+      "severity": "error",
+      "message": "Rapid (G00) move with the torch on"
+    },
+    {
+      "line": 13,
+      "code": "ARC_RADIUS",
+      "severity": "warning",
+      "message": "Arc start and end radius differ: 1.1000 vs 0.9000"
+    },
+    {
+      "line": 14,
+      "code": "OFF_PLATE",
+      "severity": "error",
+      "message": "Cut runs off the plate edge"
+    },
+    {
+      "line": 16,
+      "code": "TORCH_ALREADY_OFF",
+      "severity": "warning",
+      "message": "M08 cut-off while the torch is already off"
+    },
+    {
+      "line": 18,
+      "code": "NO_END",
+      "severity": "warning",
+      "message": "No M02/M30 program end"
+    }
+  ],
+  "options": {
+    "rapid_rate": 600
+  }
+}
