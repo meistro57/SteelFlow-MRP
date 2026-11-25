@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Modules\DrawingFlow\Http\Controllers\DrawingFlowController;
-
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('drawingflows', DrawingFlowController::class)->names('drawingflow');
-});
+/*
+| DrawingFlow has no API routes yet. The module scaffold's placeholder
+| `drawingflows` resource pointed at a DrawingFlowController that was never
+| written, which made `php artisan route:list` crash.
+*/
