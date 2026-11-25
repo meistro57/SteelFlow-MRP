@@ -1,9 +1,10 @@
 <?php
 
+use App\Models\Assembly;
+use App\Models\Part;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\CncData\Enums\CncProgramStatus;
 use Modules\CncData\Models\CncProcessRate;
@@ -94,9 +95,8 @@ it('costs a program from shop rates and says when it is provisional', function (
 
 it('links piece marks to parts in the project', function () {
     $project = Project::factory()->create();
-    // Raw insert: Part::create() fails while logged in (HasAuditFields, but parts has no created_by column).
-    $assemblyId = DB::table('assemblies')->insertGetId(['project_id' => $project->id, 'mark' => 'C1', 'quantity' => 1, 'created_at' => now(), 'updated_at' => now()]);
-    $partId = DB::table('parts')->insertGetId(['project_id' => $project->id, 'assembly_id' => $assemblyId, 'material_id' => cncTestMaterialId(), 'type' => 'PL', 'part_mark' => 'p1021', 'quantity' => 4, 'created_at' => now(), 'updated_at' => now()]);
+    $assemblyId = Assembly::create(['project_id' => $project->id, 'mark' => 'C1', 'quantity' => 1])->id;
+    $partId = Part::create(['project_id' => $project->id, 'assembly_id' => $assemblyId, 'material_id' => cncTestMaterialId(), 'type' => 'PL', 'part_mark' => 'p1021', 'quantity' => 4])->id;
     $p = $this->service->store(cncFixture('rip-01.CNC'), 'rip-01.CNC', ['project_id' => $project->id]);
     $this->service->syncParts($p, [['piece_mark' => 'p1021', 'quantity' => 4], ['piece_mark' => 'p1013']]);
 
