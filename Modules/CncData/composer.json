@@ -1,0 +1,16 @@
+{
+    "name": "steelflow/cnc-data",
+    "description": "CNC program analysis for SteelFlow MRP",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\CncData\\Providers\\CncDataServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\CncData\\": ""
+        }
+    }
+}

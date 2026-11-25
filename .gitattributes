@@ -1,0 +1,3 @@
+
+# CNC program fixtures keep their original CRLF line endings
+tests/Fixtures/cnc/*.CNC -text

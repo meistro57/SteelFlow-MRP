@@ -1,0 +1,11 @@
+{
+    "name": "CncData",
+    "alias": "cncdata",
+    "description": "Reads plasma CNC programs (Hypertherm Phoenix / ProNest) into production data: lengths, pierces, machine time, checks, actual-vs-estimate.",
+    "keywords": ["cnc", "plasma", "phoenix", "pronest", "xpr", "production"],
+    "priority": 0,
+    "providers": [
+        "Modules\\CncData\\Providers\\CncDataServiceProvider"
+    ],
+    "files": []
+}
